@@ -29,7 +29,20 @@
 
                         <p:column headerText="Número do Quarto" sortBy="#{quarto.nroQuarto}" 
                                   filterBy="#{quarto.nroQuarto}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{quarto.nroQuarto}"/>
+                            
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{quarto.nroQuarto}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputNumber id="nroQuarto" value="#{quartoMB.quarto.nroQuarto}" 
+                                                   required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de quarto inválido"
+                                                   title="Número de 1 até 32.768" minValue="0" maxValue="+32767" thousandSeparator="." emptyValue="sign" >
+                                        <f:validateLength minimum="1" maximum="5"/>
+                                    </p:inputNumber>
+                                </f:facet>
+                            </p:cellEditor>
+                            
                         </p:column>
 
                         <p:column headerText="Categoria de Quarto" sortBy="#{quarto.codCategoria}" 
@@ -80,7 +93,7 @@
                         <p:growl id="msgi" showDetail="true"/>
 
                         <p:panelGrid columns="2">
-                            
+
                             <h:outputLabel for="nroQuarto" value="Número do Quarto" />
                             <p:inputNumber id="nroQuarto" value="#{quartoMB.quarto.nroQuarto}" 
                                            required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de quarto inválido" 
@@ -100,7 +113,7 @@
                             </p:selectOneMenu>
                             <p:tooltip id="categoriasTip" for="categorias" showEvent="focus" hideEvent="blur" />
                             <p:message for="categorias"/>
-                            
+
                             <p:commandButton value="Inserir" action="#{quartoMB.inserir}" onclick="PF('modalInsercao').hide();" update="msgi"/>
                         </p:panelGrid>
                     </h:form>

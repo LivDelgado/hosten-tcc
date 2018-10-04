@@ -51,22 +51,18 @@ public class ServicoAreaMB implements Serializable {
         servicoArea = (ServicoArea) event.getObject();
 
         IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
-
         try {
-            System.out.println("codServicoAreaAlterar => " + codServicoAreaAlterar);
-            System.out.println("servicoAreaaa => " + servicoArea.getNomServicoArea() + " / " + servicoArea.getCodServicoArea());
             boolean testeAlteracao = manterServicoArea.alterar(codServicoAreaAlterar, servicoArea);
+            
             if (testeAlteracao) {
                 ContextUtils.mostrarMensagem("Alteração efetuada", "Registro alterado com sucesso!", true);
             } else {
                 ContextUtils.mostrarMensagem("Falha na alteração", "Falha ao alterar o registro!", true);
             }
         } catch (NegocioException | SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
             ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
-            ContextUtils.redireciona(null);
         }
+        ContextUtils.redireciona(null);
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -77,9 +73,7 @@ public class ServicoAreaMB implements Serializable {
         this.servicoArea = servicoArea;
 
         IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
-
         try {
-            System.out.println("servicoArea => " + servicoArea.getCodServicoArea());
             boolean testeExclusao = manterServicoArea.excluir(servicoArea.getCodServicoArea());
             if (testeExclusao) {
                 ContextUtils.mostrarMensagem("Exclusão efetuada", "Registro excluído com sucesso!", true);
@@ -96,7 +90,6 @@ public class ServicoAreaMB implements Serializable {
 
     public String inserir() {
         IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
-
         try {
             boolean testeInsercao = manterServicoArea.inserir(servicoArea);
             if (testeInsercao) {

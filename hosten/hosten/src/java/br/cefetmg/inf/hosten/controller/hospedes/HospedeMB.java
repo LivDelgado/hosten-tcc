@@ -16,11 +16,11 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 @Named("hospedeMB")
 public class HospedeMB implements Serializable {
-    
+
     private List<Hospede> listaHospedes;
     private Hospede hospede;
     private String codHospedeAlterar;
-    
+
     public HospedeMB() {
         hospede = new Hospede(null, null, null, null);
         IManterHospede manterHospede = new ManterHospedeProxy();
@@ -38,18 +38,19 @@ public class HospedeMB implements Serializable {
     public void setHospede(Hospede hospede) {
         this.hospede = hospede;
     }
-    
+
     public List<Hospede> getListaHospedes() {
+        System.out.println("listaHospede => " + listaHospedes == null);
         return listaHospedes;
     }
-    
+
     public void onRowInit(RowEditEvent event) {
-        codHospedeAlterar = (String) event.getComponent().getAttributes().get("hospedeEditar");           
+        codHospedeAlterar = (String) event.getComponent().getAttributes().get("hospedeEditar");
     }
-    
+
     public void onRowEdit(RowEditEvent event) throws IOException {
         hospede = (Hospede) event.getObject();
-        
+
         IManterHospede manterHospede = new ManterHospedeProxy();
         try {
             boolean testeAlteracao = manterHospede.alterar(codHospedeAlterar, hospede);
@@ -60,17 +61,17 @@ public class HospedeMB implements Serializable {
             }
         } catch (NegocioException | SQLException ex) {
             ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
-            ContextUtils.redireciona(null);
         }
+        ContextUtils.redireciona(null);
     }
-    
+
     public void onRowCancel(RowEditEvent event) {
         ContextUtils.mostrarMensagem("Edição Cancelada", ((Hospede) event.getObject()).getCodCPF(), false);
     }
-        
+
     public String inserir() {
         IManterHospede manterHospede = new ManterHospedeProxy();
-        
+
         try {
             boolean testeInsercao = manterHospede.inserir(hospede);
             if (testeInsercao) {
@@ -83,7 +84,6 @@ public class HospedeMB implements Serializable {
         } catch (NegocioException | SQLException ex) {
             ContextUtils.mostrarMensagem("Falha na inserção", ex.getMessage(), true);
             return "falha";
-        }  
+        }
     }
-
 }

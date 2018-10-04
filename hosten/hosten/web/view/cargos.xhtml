@@ -31,7 +31,9 @@
                                   filterBy="#{cargo.codCargo}" filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="input">
-                                    <h:inputText value="#{cargo.codCargo}"/>
+                                    <h:inputText value="#{cargo.codCargo}" required="true" 
+                                                 requiredMessage="Campo obrigatório" validatorMessage="Código inválido" 
+                                                 title="Código de 3 caracteres"/>
                                 </f:facet>
                                 <f:facet name="output">
                                     <h:outputText value="#{cargo.codCargo}"/>

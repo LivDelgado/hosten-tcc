@@ -34,24 +34,31 @@
 
                         <p:column headerText="Nome" sortBy="#{categoria.nomCategoria}" 
                                   filterBy="#{categoria.nomCategoria}" filterStyle="width: 80%" style="text-align: center">
+                            
                             <p:cellEditor>
+                                
                                 <f:facet name="output">
                                     <h:outputText value="#{categoria.nomCategoria}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="nomCategoria" value="#{categoria.nomCategoria}" required="true" 
-                                                 requiredMessage="Campo obrigatório" validatorMessage="Nome inválido"
-                                                 title="Nome da categoria com máximo de 40 caracteres">
-                                        <f:validateLength maximum="40"/>
+                                    <p:inputText id="codCategoria" value="#{categoria.codCategoria}" required="true" 
+                                                 requiredMessage="Campo obrigatório" validatorMessage="Código inválido" 
+                                                 title="Código de 3 caracteres">
+                                        <f:validateLength minimum="3" maximum="3"/>
                                     </p:inputText>
-                                    <p:tooltip id="nomCategoriaTip" for="nomCategoria" showEvent="focus" hideEvent="blur" />
+                                    <p:tooltip id="codCategoriaTip" for="codCategoria" showEvent="focus" hideEvent="blur" />
+                                    <p:message for="codCategoria"/>
                                 </f:facet>
+                                
                             </p:cellEditor>
+                            
                         </p:column>
 
                         <p:column headerText="Valor da diária" sortBy="#{categoria.vlrDiaria}" 
                                   filterBy="#{categoria.vlrDiaria}" filterStyle="width: 80%" style="text-align: center">
+                            
                             <p:cellEditor>
+                                
                                 <f:facet name="output">
                                     <h:outputText value="#{categoria.vlrDiaria}"/>
                                 </f:facet>
@@ -63,11 +70,15 @@
                                     </p:inputNumber>
                                     <p:tooltip id="vlrDiariaTip" for="vlrDiaria" showEvent="focus" hideEvent="blur" />
                                 </f:facet>
+                                
                             </p:cellEditor>
+                            
                         </p:column>
 
                         <p:column headerText="Itens de conforto" style="text-align: center">
+                            
                             <p:cellEditor>
+                                
                                 <f:facet name="output">
                                     <p:dataList value="#{categoriaMB.getItensRelacionados(categoria)}" var="reg">
                                         <h:outputText value="#{reg.desItem}" style="display:inline-block"/>                                        
@@ -81,7 +92,9 @@
                                         <f:selectItems value="#{itemMB.listaItens}" var="item" itemLabel="#{item.desItem}" itemValue="#{item}"/>
                                     </p:selectCheckboxMenu>
                                 </f:facet>
+                                
                             </p:cellEditor>
+                            
                         </p:column>
 
                         <p:column headerText="Editar" style="width: 55px">

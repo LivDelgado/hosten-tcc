@@ -60,8 +60,8 @@ public class ItemConfortoMB implements Serializable {
             }
         } catch (NegocioException | SQLException ex) {
             ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
-            ContextUtils.redireciona(null);
         }
+            ContextUtils.redireciona(null);
     }
     
     public void onRowCancel(RowEditEvent event) {

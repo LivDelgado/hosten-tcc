@@ -90,8 +90,7 @@ public class FuncionarioMB implements Serializable {
                 }
             } catch (NegocioException | SQLException ex) {
                 ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
-            }
-            
+            }            
         } else {
             ContextUtils.mostrarMensagem("Falha na alteração", "Você não pode alterar seu próprio usuário enquanto logado", true);
         }

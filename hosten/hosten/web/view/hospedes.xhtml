@@ -19,7 +19,9 @@
 
                     <p:dataTable id="registros" var="hospede" value="#{hospedeMB.listaHospedes}" editable="true">
                         <f:facet name="header">
+                            
                             <h:outputText value="Hóspedes" style="font-size: 25px"/>
+                            
                         </f:facet>
 
                         <f:attribute name="hospedeEditar" value="#{hospede.codCPF}" />
@@ -28,7 +30,21 @@
                         <p:ajax event="rowEditCancel" listener="#{hospedeMB.onRowCancel}" update=":formRegistro:msgs" />
 
                         <p:column headerText="CPF" sortBy="#{hospede.codCPF}" filterBy="#{hospede.codCPF}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{hospede.codCPF}"/>
+
+                            <p:cellEditor>
+
+                                <f:facet name="output">
+                                    <h:outputText value="#{hospede.codCPF}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputMask id="codCPF" value="#{hospedeMB.hospede.codCPF}" required="true" requiredMessage="Campo obrigatório"
+                                                 title="Código de 11 caracteres" mask="999.999.999-99"/>
+                                    <p:tooltip id="codCPFTip" for="codCPF" showEvent="focus" hideEvent="blur" />
+                                    <p:message for="codCPF"/>
+                                </f:facet>
+
+                            </p:cellEditor>
+
                         </p:column>
 
                         <p:column headerText="Nome" sortBy="#{hospede.nomHospede}" filterBy="#{hospede.nomHospede}" filterStyle="width: 80%" style="text-align: center">
@@ -41,7 +57,7 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        
+
                         <p:column headerText="Email" sortBy="#{hospede.desEmail}" filterBy="#{hospede.desEmail}" filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{hospede.desEmail}"/></f:facet>
@@ -52,7 +68,7 @@
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-                        
+
                         <p:column headerText="Telefone" sortBy="#{hospede.desTelefone}" filterBy="#{hospede.desTelefone}" filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{hospede.desTelefone}"/></f:facet>
@@ -82,33 +98,33 @@
                         <p:panelGrid columns="2">
                             <h:outputLabel for="codCPF" value="CPF" />
                             <p:inputMask id="codCPF" value="#{hospedeMB.hospede.codCPF}" required="true" requiredMessage="Campo obrigatório"
-                                        title="Código de 11 caracteres" mask="999.999.999-99"/>
+                                         title="Código de 11 caracteres" mask="999.999.999-99"/>
                             <p:tooltip id="codCPFTip" for="codCPF" showEvent="focus" hideEvent="blur" />
                             <p:message for="codCPF"/>
 
                             <h:outputLabel for="nomHospede" value="Nome" />
                             <p:inputText id="nomHospede" value="#{hospedeMB.hospede.nomHospede}" required="true" 
-                                        requiredMessage="Campo obrigatório" validatorMessage="Nome inválido"
-                                        title="Nome do hóspede com máximo de 90 caracteres" maxlength="90">
+                                         requiredMessage="Campo obrigatório" validatorMessage="Nome inválido"
+                                         title="Nome do hóspede com máximo de 90 caracteres" maxlength="90">
                                 <f:validateLength maximum="90"/>
                                 <f:validateRegex pattern="^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$"/>
                             </p:inputText>
                             <p:tooltip id="nomHospedeTip" for="nomHospede" showEvent="focus" hideEvent="blur" />
                             <p:message for="nomHospede"/>
-                            
+
                             <h:outputLabel for="desEmail" value="Email" />
                             <p:inputText id="desEmail" value="#{hospedeMB.hospede.desEmail}" required="true" 
-                                        requiredMessage="Campo obrigatório" validatorMessage="Email inválido"
-                                        title="Email do hóspede com máximo de 90 caracteres" maxlength="90">
+                                         requiredMessage="Campo obrigatório" validatorMessage="Email inválido"
+                                         title="Email do hóspede com máximo de 90 caracteres" maxlength="90">
                                 <f:validateLength maximum="90"/>
                                 <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
                             </p:inputText>
                             <p:tooltip id="desEmailTip" for="desEmail" showEvent="focus" hideEvent="blur" />
                             <p:message for="desEmail"/>
-                            
+
                             <h:outputLabel for="desTelefone" value="Telefone" />
                             <p:inputMask id="desTelefone" value="#{hospedeMB.hospede.desTelefone}" required="true" requiredMessage="Campo obrigatório" 
-                                        title="Telefone celular do hóspede" mask="(999)99999-9999"/>
+                                         title="Telefone celular do hóspede" mask="(999)9999-9999"/>
                             <p:tooltip id="desTelefoneTip" for="desTelefone" showEvent="focus" hideEvent="blur" />
                             <p:message for="desTelefone"/>
 

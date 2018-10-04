@@ -34,7 +34,9 @@
                                     <h:outputText value="#{funcionario.codUsuario}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <h:inputText value="#{funcionario.codUsuario}"/>
+                                    <h:inputText value="#{funcionario.codUsuario}" required="true" 
+                                         requiredMessage="Campo obrigatório" validatorMessage="Código inválido" 
+                                         title="Código de 4 caracteres"/>
                                 </f:facet>
                             </p:cellEditor>
                             

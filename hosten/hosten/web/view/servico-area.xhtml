@@ -27,11 +27,24 @@
                         <p:ajax event="rowEdit" listener="#{servicoAreaMB.onRowEdit}" update=":formRegistro:msgs" />
                         <p:ajax event="rowEditCancel" listener="#{servicoAreaMB.onRowCancel}" update=":formRegistro:msgs" />
 
-                        <p:column headerText="Código" sortBy="#{servicoArea.codServicoArea}" filterBy="#{servicoArea.codServicoArea}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{servicoArea.codServicoArea}"/>
+                        <p:column headerText="Código" sortBy="#{servicoArea.codServicoArea}" filterBy="#{servicoArea.codServicoArea}" 
+                                  filterStyle="width: 80%" style="text-align: center">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{servicoArea.codServicoArea}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="codServicoArea" value="#{servicoArea.codServicoArea}" required="true" 
+                                                 requiredMessage="Campo obrigatório" validatorMessage="Código inválido" 
+                                                 title="Código de 3 caracteres">
+                                        <f:validateLength minimum="3" maximum="3"/>
+                                    </p:inputText>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
 
-                        <p:column headerText="Nome" sortBy="#{servicoArea.nomServicoArea}" filterBy="#{servicoArea.nomServicoArea}" filterStyle="width: 80%" style="text-align: center">
+                        <p:column headerText="Nome" sortBy="#{servicoArea.nomServicoArea}" filterBy="#{servicoArea.nomServicoArea}" 
+                                  filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{servicoArea.nomServicoArea}"/>

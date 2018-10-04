@@ -74,8 +74,8 @@ public class CategoriaQuartoMB implements Serializable {
             }
         } catch (NegocioException | SQLException ex) {
             ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
-            ContextUtils.redireciona(null);
         }
+        ContextUtils.redireciona(null);
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -140,10 +140,8 @@ public class CategoriaQuartoMB implements Serializable {
             if (itensRelacionados != null) {
                 System.out.println("tamanho da lista de itens relacionados à categoria " + categoria.getNomCategoria() + ": " + itensRelacionados.size());
             }
-        } catch (Exception ex) {
+        } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
-            //
-            //
             //
         }
         return itensRelacionados;
