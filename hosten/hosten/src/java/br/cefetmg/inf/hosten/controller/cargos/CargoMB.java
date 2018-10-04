@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.controller.cargos;
 
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.controller.sessao.Sessao;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
-import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
 import br.cefetmg.inf.hosten.proxy.ManterCargoProxy;
@@ -55,32 +55,36 @@ public class CargoMB implements Serializable {
         this.cargo = cargo;
     }
 
-
     public void onRowInit(RowEditEvent event) {
         codCargoAlterar = (String) event.getComponent().getAttributes().get("cargoEditar");
     }
-    
+
     public void onRowEdit(RowEditEvent event) throws IOException {
         cargo = (Cargo) event.getObject();
 
-        List<Programa> listaProgramas = new ArrayList();
-        listaProgramas.addAll(Arrays.asList(programasSelecionados));
-        
-        List<String> listaProgramasString = new ArrayList();
-        for(Programa prog : listaProgramas) {
-            listaProgramasString.add(prog.getCodPrograma());
-        }
+        if (!codCargoAlterar.equals(Sessao.getInstance().getUsuarioLogado().getCodCargo())) {
+            List<Programa> listaProgramas = new ArrayList();
+            listaProgramas.addAll(Arrays.asList(programasSelecionados));
 
-        IManterCargo manterCargo = new ManterCargoProxy();
-        try {
-            boolean testeExclusao = manterCargo.alterar(codCargoAlterar, cargo, listaProgramasString);
-            if (testeExclusao) {
-                ContextUtils.mostrarMensagem("Alteração efetuada", "Registro alterado com sucesso!", true);
-            } else {
-                ContextUtils.mostrarMensagem("Falha na alteração", "Falha ao alterar o registro!", true);
+            List<String> listaProgramasString = new ArrayList();
+            for (Programa prog : listaProgramas) {
+                listaProgramasString.add(prog.getCodPrograma());
             }
-        } catch (NegocioException | SQLException ex) {
-            ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
+
+            IManterCargo manterCargo = new ManterCargoProxy();
+            try {
+                boolean testeExclusao = manterCargo.alterar(codCargoAlterar, cargo, listaProgramasString);
+                if (testeExclusao) {
+                    ContextUtils.mostrarMensagem("Alteração efetuada", "Registro alterado com sucesso!", true);
+                } else {
+                    ContextUtils.mostrarMensagem("Falha na alteração", "Falha ao alterar o registro!", true);
+                }
+            } catch (NegocioException | SQLException ex) {
+                ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
+                ContextUtils.redireciona(null);
+            }
+        } else {
+            ContextUtils.mostrarMensagem("Falha na alteração", "Você não pode alterar seu próprio cargo enquanto logado", true);
             ContextUtils.redireciona(null);
         }
     }
@@ -116,7 +120,7 @@ public class CargoMB implements Serializable {
         listaProgramas.addAll(Arrays.asList(programasSelecionados));
 
         List<String> listaProgramasString = new ArrayList();
-        for(Programa prog : listaProgramas) {
+        for (Programa prog : listaProgramas) {
             listaProgramasString.add(prog.getCodPrograma());
         }
 
@@ -152,7 +156,6 @@ public class CargoMB implements Serializable {
         this.programasRelacionados = programasRelacionados;
     }
 
-
     public List<Programa> getProgramasRelacionados(Cargo cargo) {
         IManterCargo manterCargo = new ManterCargoProxy();
 
@@ -161,11 +164,8 @@ public class CargoMB implements Serializable {
             if (programasRelacionados != null) {
                 System.out.println("tamanho da lista de programas relacionados ao cargo " + cargo.getNomCargo() + ": " + programasRelacionados.size());
             }
-        } catch (Exception ex) {
+        } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
-            //
-            //
-            //
         }
         return programasRelacionados;
     }

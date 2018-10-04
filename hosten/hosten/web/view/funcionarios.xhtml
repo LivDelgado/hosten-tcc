@@ -29,7 +29,15 @@
 
                         <p:column headerText="Código" sortBy="#{funcionario.codUsuario}" 
                                   filterBy="#{funcionario.codUsuario}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{funcionario.codUsuario}"/>
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{funcionario.codUsuario}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputText value="#{funcionario.codUsuario}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                            
                         </p:column>
 
                         <p:column headerText="Nome" sortBy="#{funcionario.nomUsuario}" 

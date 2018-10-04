@@ -29,7 +29,14 @@
 
                         <p:column headerText="Código" sortBy="#{cargo.codCargo}" 
                                   filterBy="#{cargo.codCargo}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{cargo.codCargo}"/>
+                            <p:cellEditor>
+                                <f:facet name="input">
+                                    <h:inputText value="#{cargo.codCargo}"/>
+                                </f:facet>
+                                <f:facet name="output">
+                                    <h:outputText value="#{cargo.codCargo}"/>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
 
                         <p:column headerText="Nome" sortBy="#{cargo.nomCargo}" 

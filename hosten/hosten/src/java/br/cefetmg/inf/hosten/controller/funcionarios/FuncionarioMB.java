@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.controller.funcionarios;
 
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.controller.sessao.Sessao;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
@@ -43,9 +44,8 @@ public class FuncionarioMB implements Serializable {
         IManterCargo manterCargo = new ManterCargoProxy();
         try {
             cargoFuncionario = manterCargo.listar(funcionario.getCodCargo(), "codCargo").get(0);
-        } catch (Exception ex) {
+        } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
-            //
             //
         }
         return cargoFuncionario;
@@ -71,27 +71,31 @@ public class FuncionarioMB implements Serializable {
         this.funcionario = funcionario;
     }
 
-
     public void onRowInit(RowEditEvent event) {
         codFuncionarioAlterar = (String) event.getComponent().getAttributes().get("funcionarioEditar");
     }
-    
+
     public void onRowEdit(RowEditEvent event) throws IOException {
         funcionario = (Usuario) event.getObject();
         funcionario.setCodCargo(cargoSelecionado.getCodCargo());
 
-        IManterUsuario manterFuncionario = new ManterUsuarioProxy();
-        try {
-            boolean testeExclusao = manterFuncionario.alterar(codFuncionarioAlterar, funcionario);
-            if (testeExclusao) {
-                ContextUtils.mostrarMensagem("Alteração efetuada", "Registro alterado com sucesso!", true);
-            } else {
-                ContextUtils.mostrarMensagem("Falha na alteração", "Falha ao alterar o registro!", true);
+        if (!codFuncionarioAlterar.equals(Sessao.getInstance().getUsuarioLogado().getCodUsuario())) {
+            IManterUsuario manterFuncionario = new ManterUsuarioProxy();
+            try {
+                boolean testeExclusao = manterFuncionario.alterar(codFuncionarioAlterar, funcionario);
+                if (testeExclusao) {
+                    ContextUtils.mostrarMensagem("Alteração efetuada", "Registro alterado com sucesso!", true);
+                } else {
+                    ContextUtils.mostrarMensagem("Falha na alteração", "Falha ao alterar o registro!", true);
+                }
+            } catch (NegocioException | SQLException ex) {
+                ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
             }
-        } catch (NegocioException | SQLException ex) {
-            ContextUtils.mostrarMensagem("Falha na alteração", ex.getMessage(), true);
-            ContextUtils.redireciona(null);
+            
+        } else {
+            ContextUtils.mostrarMensagem("Falha na alteração", "Você não pode alterar seu próprio usuário enquanto logado", true);
         }
+        ContextUtils.redireciona(null);
     }
 
     public void onRowCancel(RowEditEvent event) {
