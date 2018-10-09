@@ -30,17 +30,19 @@ public class ManterServico implements IManterServico {
             throw new NegocioException("O valor do serviço ultrapassou os R$9999999,99 máximos permitidos.");
         }
 
-        // confere se já existe um serviço com aquela descrição naquela área
         List<Servico> servicosPesquisados
                 = objetoDAO.buscaServico(
                         servico.getCodServicoArea(),
                         "codServicoArea");
+        
         if (!servicosPesquisados.isEmpty()) {
             for (Servico s : servicosPesquisados) {
-                if ((s.getDesServico()).equals(servico.getDesServico())) {
-                    throw new NegocioException(
-                            "Já existe um serviço na mesma "
-                            + "área com a mesma descrição!");
+                if (s.getSeqServico() != servico.getSeqServico()) {
+                    if ((s.getDesServico()).equals(servico.getDesServico())) {
+                        throw new NegocioException(
+                                "Já existe um serviço na mesma "
+                                + "área com a mesma descrição!");
+                    }
                 }
             }
         }
@@ -59,24 +61,31 @@ public class ManterServico implements IManterServico {
             throw new NegocioException("O valor do serviço ultrapassou os R$9999999,99 máximos permitidos.");
         }
 
-        List<Servico> buscaRegistroAntigo = listar(codRegistro, "seqServico");
+        List<Servico> buscaRegistroAntigo = listar(Integer.parseInt(codRegistro), "seqServico");
         Servico registroAntigo = buscaRegistroAntigo.get(0);
 
-        // confere se já existe um serviço com aquela descrição naquela área
-        List<Servico> servicosPesquisados = objetoDAO.buscaServico(
-                servico.getCodServicoArea(), "codServicoArea");
-        if (!servicosPesquisados.isEmpty()
-                || ((registroAntigo.getDesServico().equals(servico.getDesServico()))
-                && (registroAntigo.getCodServicoArea().equals(servico.getCodServicoArea())))) {
+        // lista de serviços na mesma área
+        List<Servico> servicosPesquisados = 
+                objetoDAO.buscaServico(
+                    servico.getCodServicoArea(), "codServicoArea"
+                );
+        
+        if (
+                !servicosPesquisados.isEmpty() || 
+                (
+                    (registroAntigo.getDesServico().equals(servico.getDesServico())) &&
+                    (registroAntigo.getCodServicoArea().equals(servico.getCodServicoArea()))
+                )
+            ) {
             for (Servico s : servicosPesquisados) {
-                if ((s.getDesServico()).equals(servico.getDesServico())) {
+                if ((s.getDesServico()).equals(servico.getDesServico()) && (s.getSeqServico() != servico.getSeqServico())) {
                     throw new NegocioException("Já existe um serviço na mesma "
                             + "área com a mesma descrição!");
                 }
             }
         }
 
-        return objetoDAO.atualizaServicoPorPk(codRegistro, servico);
+        return objetoDAO.atualizaServicoPorPk(Integer.parseInt(codRegistro), servico);
     }
 
     @Override
@@ -88,7 +97,7 @@ public class ManterServico implements IManterServico {
                 Integer.parseInt(codRegistro),
                 "seqServico");
         if (listaREL.isEmpty()) {
-            return objetoDAO.deletaServicoPorPk(codRegistro);
+            return objetoDAO.deletaServicoPorPk(Integer.parseInt(codRegistro));
         } else {
             throw new NegocioException(
                     "Não é possível excluir esse serviço. "

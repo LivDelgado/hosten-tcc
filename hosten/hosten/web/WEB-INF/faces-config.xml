@@ -208,7 +208,7 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-action>#{servicoMB.excluir(cargo)}</from-action>
+            <from-action>#{servicoMB.excluir(servico)}</from-action>
             <from-outcome>sucesso</from-outcome>
             <to-view-id>/view/servicos.jsf</to-view-id>
             <redirect/>
