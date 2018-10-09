@@ -1,15 +1,34 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "itemconforto")
 public class ItemConforto implements Serializable {
-    private String codItem; 
-    private String desItem; 
 
-    public ItemConforto(String codItem, String desItem) {
-        this.codItem = codItem;
-        this.desItem = desItem;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "coditem")
+    private String codItem;
+
+    @Column(name = "desitem")
+    private String desItem;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCodItem() {
@@ -27,26 +46,4 @@ public class ItemConforto implements Serializable {
     public void setDesItem(String desItem) {
         this.desItem = desItem;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ItemConforto other = (ItemConforto) obj;
-
-
-        if (!Objects.equals(this.codItem, other.codItem)) {
-            return false;
-        }
-        return true;
-    }
-
 }

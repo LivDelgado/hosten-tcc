@@ -2,27 +2,49 @@ package br.cefetmg.inf.hosten.model.domain.rel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import org.hibernate.annotations.Immutable;
 
+@Entity
+@Immutable
 public class QuartoEstado implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "idhospedagem")
     private int seqHospedagem;
+
+    @Column(name = "idquarto")
     private int nroQuarto;
+
+    @Column(name = "nroadultos")
     private int nroAdultos;
+
+    @Column(name = "nrocriancas")
     private int nroCriancas;
+
+    @Column(name = "vlrdiaria")
     private Double vlrDiaria;
+
+    @Column(name = "idtocupado")
     private boolean idtOcupado;
+
+    @Column(name = "datcheckout")
     private Timestamp datCheckOut;
 
-    public QuartoEstado() {
+    public int getId() {
+        return id;
     }
 
-    public QuartoEstado(int seqHospedagem, int nroQuarto, int nroAdultos, int nroCriancas, Double vlrDiaria, boolean idtOcupado, Timestamp datCheckOut) {
-        this.seqHospedagem = seqHospedagem;
-        this.nroQuarto = nroQuarto;
-        this.nroAdultos = nroAdultos;
-        this.nroCriancas = nroCriancas;
-        this.vlrDiaria = vlrDiaria;
-        this.idtOcupado = idtOcupado;
-        this.datCheckOut = datCheckOut;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getSeqHospedagem() {

@@ -44,16 +44,6 @@ public class RelatorioDespesasDAO implements IRelatorioDespesasDAO {
         List<Despesa> despesaEncontradas = new ArrayList<>();
 
         int i = 0;
-        /* 
-        int seqHospedagem, int nroQuarto, int nroAdultos, int nroCriancas, 
-        Double vlrDiaria, 
-        Timestamp datCheckIn, Timestamp datCheckOut, 
-        Double vlrPago, 
-        String nomeHospede, 
-        int seqServico, int qtdConsumo, 
-        String desServico, 
-        Double vlrUnit
-        */
         while (rs.next()) {
             despesaEncontradas
                     .add(new Despesa(

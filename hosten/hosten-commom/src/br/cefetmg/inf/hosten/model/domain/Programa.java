@@ -1,16 +1,34 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="programa")
 public class Programa implements Serializable {
 
-    private String codPrograma;
-    private String desPrograma;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    
+    @Column(name="codprograma")
+	private String codPrograma;
 
-    public Programa(String codPrograma, String desPrograma) {
-        this.codPrograma = codPrograma;
-        this.desPrograma = desPrograma;
+    @Column(name="desprograma")
+	private String desPrograma;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCodPrograma() {
@@ -27,25 +45,5 @@ public class Programa implements Serializable {
 
     public void setDesPrograma(String desPrograma) {
         this.desPrograma = desPrograma;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Programa other = (Programa) obj;
-        if (!Objects.equals(this.codPrograma, other.codPrograma)) {
-            return false;
-        }
-        return true;
-    }
-    
-    
+    }    
 }

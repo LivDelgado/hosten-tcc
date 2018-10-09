@@ -1,29 +1,49 @@
 package br.cefetmg.inf.hosten.model.domain.rel;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "cargoprograma")
 public class CargoPrograma implements Serializable {
-    private String codPrograma;
-    private String codCargo;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    
+    @Column(name="idprograma")
+	private String idPrograma;
 
-    public CargoPrograma(String codPrograma, String codCargo) {
-        this.codPrograma = codPrograma;
-        this.codCargo = codCargo;
+    @Column(name="idcargo")
+	private String idCargo;
+
+    public int getId() {
+        return id;
     }
 
-    public String getCodPrograma() {
-        return codPrograma;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setCodPrograma(String codPrograma) {
-        this.codPrograma = codPrograma;
+    public String getIdPrograma() {
+        return idPrograma;
     }
 
-    public String getCodCargo() {
-        return codCargo;
+    public void setIdPrograma(String idPrograma) {
+        this.idPrograma = idPrograma;
     }
 
-    public void setCodCargo(String codCargo) {
-        this.codCargo = codCargo;
+    public String getIdCargo() {
+        return idCargo;
+    }
+
+    public void setIdCargo(String idCargo) {
+        this.idCargo = idCargo;
     }
 }

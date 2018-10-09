@@ -2,52 +2,83 @@ package br.cefetmg.inf.hosten.model.domain.rel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import org.hibernate.annotations.Immutable;
 
+@Entity
+@Immutable
 public class Despesa implements Serializable {
-    private int seqHospedagem;
-    private int nroQuarto;
-    private int nroAdultos;
-    private int nroCriancas;
-    private Double vlrDiaria;
-    private Timestamp datCheckIn;
-    private Timestamp datCheckOut;
-    private Double vlrPago;
-    private String nomeHospede;
-    private int seqServico;
-    private int qtdConsumo;
-    private String desServico;
-    private Double vlrUnit;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+	private int id;
 
-    public Despesa(int seqHospedagem, int nroQuarto, int nroAdultos, int nroCriancas, Double vlrDiaria, Timestamp datCheckIn, Timestamp datCheckOut, Double vlrPago, String nomeHospede, int seqServico, int qtdConsumo, String desServico, Double vlrUnit) {
-        this.seqHospedagem = seqHospedagem;
-        this.nroQuarto = nroQuarto;
-        this.nroAdultos = nroAdultos;
-        this.nroCriancas = nroCriancas;
-        this.vlrDiaria = vlrDiaria;
-        this.datCheckIn = datCheckIn;
-        this.datCheckOut = datCheckOut;
-        this.vlrPago = vlrPago;
-        this.nomeHospede = nomeHospede;
-        this.seqServico = seqServico;
-        this.qtdConsumo = qtdConsumo;
-        this.desServico = desServico;
-        this.vlrUnit = vlrUnit;
+    @Column(name="idospedagem")
+	private int idHospedagem;
+
+    @Column(name="idquarto")
+	private int idQuarto;
+
+    @Column(name="nroAdultos")
+	private int nroAdultos;
+
+    @Column(name="nroCriancas")
+	private int nroCriancas;
+
+    @Column(name="vlrDiaria")
+	private Double vlrDiaria;
+
+    @Column(name="datCheckIn")
+	private Timestamp datCheckIn;
+
+    @Column(name="datCheckOut")
+	private Timestamp datCheckOut;
+
+    @Column(name="vlrPago")
+	private Double vlrPago;
+
+    @Column(name="nomeHospede")
+	private String nomeHospede;
+
+    @Column(name="idservico")
+	private int idServico;
+
+    @Column(name="qtdConsumo")
+	private int qtdConsumo;
+
+    @Column(name="desServico")
+	private String desServico;
+
+    @Column(name="vlrUnit")
+	private Double vlrUnit;
+
+    public int getId() {
+        return id;
     }
 
-    public int getSeqHospedagem() {
-        return seqHospedagem;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setSeqHospedagem(int seqHospedagem) {
-        this.seqHospedagem = seqHospedagem;
+    public int getIdHospedagem() {
+        return idHospedagem;
     }
 
-    public int getNroQuarto() {
-        return nroQuarto;
+    public void setIdHospedagem(int idHospedagem) {
+        this.idHospedagem = idHospedagem;
     }
 
-    public void setNroQuarto(int nroQuarto) {
-        this.nroQuarto = nroQuarto;
+    public int getIdQuarto() {
+        return idQuarto;
+    }
+
+    public void setIdQuarto(int idQuarto) {
+        this.idQuarto = idQuarto;
     }
 
     public int getNroAdultos() {
@@ -106,12 +137,12 @@ public class Despesa implements Serializable {
         this.nomeHospede = nomeHospede;
     }
 
-    public int getSeqServico() {
-        return seqServico;
+    public int getIdServico() {
+        return idServico;
     }
 
-    public void setSeqServico(int seqServico) {
-        this.seqServico = seqServico;
+    public void setIdServico(int idServico) {
+        this.idServico = idServico;
     }
 
     public int getQtdConsumo() {

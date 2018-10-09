@@ -2,23 +2,46 @@ package br.cefetmg.inf.hosten.model.domain.rel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "quartoconsumo")
 public class QuartoConsumo implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "seqHospedagem")
     private int seqHospedagem;
+
+    @Column(name = "nroQuarto")
     private int nroQuarto;
+
+    @Column(name = "datConsumo")
     private Timestamp datConsumo;
+
+    @Column(name = "qtdConsumo")
     private int qtdConsumo;
+
+    @Column(name = "seqServico")
     private int seqServico;
+
+    @Column(name = "codUsuarioRegistro")
     private String codUsuarioRegistro;
 
-    public QuartoConsumo(int seqHospedagem, int nroQuarto, Timestamp datConsumo, 
-            int qtdConsumo, int seqServico, String codUsuarioRegistro) {
-        this.seqHospedagem = seqHospedagem;
-        this.nroQuarto = nroQuarto;
-        this.datConsumo = datConsumo;
-        this.qtdConsumo = qtdConsumo;
-        this.seqServico = seqServico;
-        this.codUsuarioRegistro = codUsuarioRegistro;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getSeqHospedagem() {

@@ -1,59 +1,30 @@
 package br.cefetmg.inf.hosten.model.domain.rel;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "quartohospedagem")
 public class QuartoHospedagem implements Serializable {
-    private int seqHospedagem;
-    private int nroQuarto;
-    private int nroAdultos;
-    private int nroCriancas;
-    private Double vlrDiaria;
+    @Column(name="id")
+	private int id;
 
-    public QuartoHospedagem(int seqHospedagem, int nroQuarto, int nroAdultos, int nroCriancas, Double vlrDiaria) {
-        this.seqHospedagem = seqHospedagem;
-        this.nroQuarto = nroQuarto;
-        this.nroAdultos = nroAdultos;
-        this.nroCriancas = nroCriancas;
-        this.vlrDiaria = vlrDiaria;
-    }
+    @Column(name="idHospedagem")
+	private int idHospedagem;
 
-    public int getSeqHospedagem() {
-        return seqHospedagem;
-    }
+    @Column(name="idQuarto")
+	private int idQuarto;
 
-    public void setSeqHospedagem(int seqHospedagem) {
-        this.seqHospedagem = seqHospedagem;
-    }
+    @Column(name="nroAdultos")
+	private int nroAdultos;
 
-    public int getNroQuarto() {
-        return nroQuarto;
-    }
+    @Column(name="nroCriancas")
+	private int nroCriancas;
 
-    public void setNroQuarto(int nroQuarto) {
-        this.nroQuarto = nroQuarto;
-    }
+    @Column(name="vlrDiaria")
+	private Double vlrDiaria;
 
-    public int getNroAdultos() {
-        return nroAdultos;
-    }
-
-    public void setNroAdultos(int nroAdultos) {
-        this.nroAdultos = nroAdultos;
-    }
-
-    public int getNroCriancas() {
-        return nroCriancas;
-    }
-
-    public void setNroCriancas(int nroCriancas) {
-        this.nroCriancas = nroCriancas;
-    }
-
-    public Double getVlrDiaria() {
-        return vlrDiaria;
-    }
-
-    public void setVlrDiaria(Double vlrDiaria) {
-        this.vlrDiaria = vlrDiaria;
-    }
 }

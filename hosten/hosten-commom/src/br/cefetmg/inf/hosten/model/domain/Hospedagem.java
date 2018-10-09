@@ -2,35 +2,40 @@ package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "hospedagem")
 public class Hospedagem implements Serializable {
-    private int seqHospedagem; 
-    private Timestamp datCheckIn; 
-    private Timestamp datCheckOut; 
-    private Double vlrPago; 
-    private String codCPF; 
 
-    public Hospedagem(int seqHospedagem, Timestamp datCheckIn, Timestamp datCheckOut, Double vlrPago, String codCPF) {
-        this.seqHospedagem = seqHospedagem;
-        this.datCheckIn = datCheckIn;
-        this.datCheckOut = datCheckOut;
-        this.vlrPago = vlrPago;
-        this.codCPF = codCPF;
-    }
-    
-    public Hospedagem(Timestamp datCheckIn, Timestamp datCheckOut, Double vlrPago, String codCPF) {
-        this.datCheckIn = datCheckIn;
-        this.datCheckOut = datCheckOut;
-        this.vlrPago = vlrPago;
-        this.codCPF = codCPF;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    public int getSeqHospedagem() {
-        return seqHospedagem;
+    @Column(name = "datcheckin")
+    private Timestamp datCheckIn;
+
+    @Column(name = "datcheckout")
+    private Timestamp datCheckOut;
+
+    @Column(name = "vlrpago")
+    private Double vlrPago;
+
+    @Column(name = "codcpf")
+    private String codCPF;
+
+    public int getId() {
+        return id;
     }
 
-    public void setSeqHospedagem(int seqHospedagem) {
-        this.seqHospedagem = seqHospedagem;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Timestamp getDatCheckIn() {
@@ -64,6 +69,4 @@ public class Hospedagem implements Serializable {
     public void setCodCPF(String codCPF) {
         this.codCPF = codCPF;
     }
-    
-    
 }

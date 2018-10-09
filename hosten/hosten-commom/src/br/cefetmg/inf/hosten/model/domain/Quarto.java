@@ -1,16 +1,37 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="quarto")
 public class Quarto implements Serializable {
-    private int nroQuarto; 
-    private String codCategoria; 
-    private boolean idtOcupado; 
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    
+    @Column(name="nroQuarto")
+	private int nroQuarto;
+ 
+    @Column(name="codCategoria")
+	private String codCategoria;
+ 
+    @Column(name="idtOcupado")
+	private boolean idtOcupado;
 
-    public Quarto(int nroQuarto, String codCategoria, boolean idtOcupado) {
-        this.nroQuarto = nroQuarto;
-        this.codCategoria = codCategoria;
-        this.idtOcupado = idtOcupado;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNroQuarto() {
@@ -36,6 +57,5 @@ public class Quarto implements Serializable {
     public void setIdtOcupado(boolean idtOcupado) {
         this.idtOcupado = idtOcupado;
     }
-    
     
 }

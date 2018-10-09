@@ -1,25 +1,55 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="usuario")
 public class Usuario implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+    
+    @Column(name = "codusuario")
     private String codUsuario;
+    
+    @Column(name = "nomusuario")
     private String nomUsuario;
+    
+    @Column(name = "codcargo")
     private String codCargo;
+    
+    @Column(name = "dessenha")
     private String desSenha;
+    
+    @Column(name = "desemail")
     private String desEmail;
 
     public Usuario() {
     }
 
-    public Usuario(String codUsuario, String nomUsuario, String codCargo,
-            String desSenha, String desEmail) {
+    public Usuario(int id, String codUsuario, String nomUsuario, String codCargo, String desSenha, String desEmail) {
+        this.id = id;
         this.codUsuario = codUsuario;
         this.nomUsuario = nomUsuario;
         this.codCargo = codCargo;
         this.desSenha = desSenha;
         this.desEmail = desEmail;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCodUsuario() {

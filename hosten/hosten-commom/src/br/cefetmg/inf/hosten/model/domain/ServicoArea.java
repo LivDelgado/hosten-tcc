@@ -1,16 +1,44 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name="servicoarea")
 public class ServicoArea implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-    private String codServicoArea;
-    private String nomServicoArea;
+    @Column(name="codservicoarea")
+	private String codServicoArea;
 
-    public ServicoArea(String codServicoArea, String nomServicoArea) {
+    @Column(name="nomservicoarea")
+	private String nomServicoArea;
+
+    public ServicoArea() {
+    }
+
+    public ServicoArea(int id, String codServicoArea, String nomServicoArea) {
+        this.id = id;
         this.codServicoArea = codServicoArea;
         this.nomServicoArea = nomServicoArea;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCodServicoArea() {

@@ -1,290 +1,300 @@
--- Create tables section -------------------------------------------------
+-- Query on database 'Hosten'
+
+-- Create tables section ----------------------------------------------------------------
+--
 
 -- Table Programa
-
-CREATE TABLE Programa(
+CREATE TABLE IF NOT EXISTS Programa(
+ id Serial NOT NULL,
  codPrograma Character(3) NOT NULL,
- desPrograma Character varying(200) NOT NULL
-)
-;
-
--- Add keys for table Programa
-
-ALTER TABLE Programa ADD CONSTRAINT Key1 PRIMARY KEY (codPrograma) 
-;
+ desPrograma Character varying(200) NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table Cargo
-
-CREATE TABLE Cargo(
+CREATE TABLE IF NOT EXISTS Cargo(
+ id Serial NOT NULL,
  codCargo Character(3) NOT NULL,
  nomCargo Character varying(40) NOT NULL,
- idtMaster Boolean NOT NULL
-)
-;
-
--- Add keys for table Cargo
-
-ALTER TABLE Cargo ADD CONSTRAINT Key2 PRIMARY KEY (codCargo) 
-;
+ idtMaster Boolean NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table CargoPrograma
-
-CREATE TABLE CargoPrograma(
- codPrograma Character(3) NOT NULL,
- codCargo Character(3) NOT NULL
-)
-;
-
--- Add keys for table CargoPrograma
-
-ALTER TABLE CargoPrograma ADD CONSTRAINT Key3 PRIMARY KEY (codPrograma,codCargo) 
-;
+CREATE TABLE IF NOT EXISTS CargoPrograma(
+ id Serial NOT NULL,
+ idPrograma Integer NOT NULL,
+ idCargo Integer NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table Usuario
-
-CREATE TABLE Usuario(
+CREATE TABLE IF NOT EXISTS Usuario(
+ id Serial NOT NULL,
  codUsuario Character(4) NOT NULL,
  nomUsuario Character varying(90) NOT NULL,
- codCargo Character(3) NOT NULL,
+ idCargo Integer NOT NULL,
  desSenha Character(64),
- desEmail Character varying(60)
-)
-;
-
--- Create indexes for table Usuario
-
-CREATE INDEX IX_Relationship6 ON Usuario (codCargo)
-;
-
--- Add keys for table Usuario
-
-ALTER TABLE Usuario ADD CONSTRAINT Key5 PRIMARY KEY (codUsuario) 
-;
+ desEmail Character varying(60),
+ PRIMARY KEY(id)
+);
 
 -- Table Quarto
-
-CREATE TABLE Quarto(
+CREATE TABLE IF NOT EXISTS Quarto(
+ id Serial NOT NULL,
  nroQuarto Smallint NOT NULL,
- codCategoria Character(3) NOT NULL,
- idtOcupado Boolean
-)
-;
-
+ idCategoria Integer NOT NULL,
+ idtOcupado Boolean,
+ PRIMARY KEY(id)
+);
 -- Create indexes for table Quarto
+CREATE INDEX IX_Relationship1 ON Quarto (idCategoria);
 
-CREATE INDEX IX_Relationship9 ON Quarto (codCategoria)
-;
-
--- Add keys for table Quarto
-
-ALTER TABLE Quarto ADD CONSTRAINT Key7 PRIMARY KEY (nroQuarto) 
-;
 
 -- Table Categoria
-
-CREATE TABLE Categoria(
+CREATE TABLE IF NOT EXISTS Categoria(
+ id Serial NOT NULL,
  codCategoria Character(3) NOT NULL,
  nomCategoria Character varying(40) NOT NULL,
- vlrDiaria Numeric(7,2) NOT NULL
-)
-;
-
--- Add keys for table Categoria
-
-ALTER TABLE Categoria ADD CONSTRAINT Key8 PRIMARY KEY (codCategoria) 
-;
+ vlrDiaria Numeric(7,2) NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table ItemConforto
-
-CREATE TABLE ItemConforto(
+CREATE TABLE IF NOT EXISTS ItemConforto(
+ id Serial NOT NULL,
  codItem Character(3) NOT NULL,
- desItem Character varying(40) NOT NULL
-)
-;
-
--- Add keys for table ItemConforto
-
-ALTER TABLE ItemConforto ADD CONSTRAINT Key9 PRIMARY KEY (codItem) 
-;
+ desItem Character varying(40) NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table CategoriaItemConforto
-
-CREATE TABLE CategoriaItemConforto(
- codCategoria Character(3) NOT NULL,
- codItem Character(3) NOT NULL
-)
-;
-
--- Add keys for table CategoriaItemConforto
-
-ALTER TABLE CategoriaItemConforto ADD CONSTRAINT Key10 PRIMARY KEY (codCategoria,codItem) 
-;
+CREATE TABLE IF NOT EXISTS CategoriaItemConforto(
+ id Serial NOT NULL,
+ idCategoria Integer NOT NULL,
+ idItem Integer NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table Hospede
-
-CREATE TABLE Hospede(
+CREATE TABLE IF NOT EXISTS Hospede(
+ id Serial NOT NULL,
  codCPF Character(14) NOT NULL,
  nomHospede Character varying(90) NOT NULL,
  desTelefone Character varying(14) NOT NULL,
- desEmail Character varying(90) NOT NULL
-)
-;
-
--- Add keys for table Hospede
-
-ALTER TABLE Hospede ADD CONSTRAINT Key11 PRIMARY KEY (codCPF) 
-;
+ desEmail Character varying(90) NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table Hospedagem
-
-CREATE TABLE Hospedagem(
- seqHospedagem Serial NOT NULL,
+CREATE TABLE IF NOT EXISTS Hospedagem(
+ id Serial NOT NULL,
  datCheckIn Timestamp NOT NULL,
  datCheckOut Timestamp,
  vlrPago Numeric(7,2),
- codCPF Character(11)
-)
-;
-
+ idHospede Integer,
+ PRIMARY KEY(id)
+);
 -- Create indexes for table Hospedagem
-
-CREATE INDEX IX_Relationship26 ON Hospedagem (codCPF)
-;
-
--- Add keys for table Hospedagem
-
-ALTER TABLE Hospedagem ADD CONSTRAINT Key14 PRIMARY KEY (seqHospedagem) 
-;
+CREATE INDEX IX_Relationship2 ON Hospedagem (idHospede);
 
 -- Table Servico
-
-CREATE TABLE Servico(
- seqServico Smallserial NOT NULL,
+CREATE TABLE IF NOT EXISTS Servico(
+ id Serial NOT NULL,
  desServico Character varying(40) NOT NULL,
  vlrUnit Numeric(7,2) NOT NULL,
- codServicoArea Character(3) NOT NULL
-)
-;
-
+ idServicoArea Integer NOT NULL,
+ PRIMARY KEY(id)
+);
 -- Create indexes for table Servico
+CREATE INDEX IX_Relationship3 ON Servico (idServicoArea);
 
-CREATE INDEX IX_Relationship20 ON Servico (codServicoArea)
-;
-
--- Add keys for table Servico
-
-ALTER TABLE Servico ADD CONSTRAINT Key15 PRIMARY KEY (seqServico) 
-;
 
 -- Table ServicoArea
-
-CREATE TABLE ServicoArea(
+CREATE TABLE IF NOT EXISTS ServicoArea(
+ id Serial NOT NULL,
  codServicoArea Character(3) NOT NULL,
- nomServicoArea Character varying(40) NOT NULL
-)
-;
-
--- Add keys for table ServicoArea
-
-ALTER TABLE ServicoArea ADD CONSTRAINT Key16 PRIMARY KEY (codServicoArea)  
-;
+ nomServicoArea Character varying(40) NOT NULL,
+ PRIMARY KEY(id)
+);
 
 -- Table QuartoConsumo
-
-CREATE TABLE QuartoConsumo(
- seqHospedagem Integer NOT NULL,
- nroQuarto Smallint NOT NULL,
+CREATE TABLE IF NOT EXISTS QuartoConsumo(
+ id Serial NOT NULL,
+ idQuartoHospedagem Integer NOT NULL,
  datConsumo Timestamp NOT NULL,
  qtdConsumo Smallint NOT NULL,
- seqServico Smallint NOT NULL,
- codUsuarioRegistro Character(4)
-)
-;
-
+ idServico Integer NOT NULL,
+ idUsuarioRegistro Integer,
+ PRIMARY KEY(id)
+);
 -- Create indexes for table QuartoConsumo
-
-CREATE INDEX IX_Relationship16 ON QuartoConsumo (seqServico)
-;
-
-CREATE INDEX IX_Relationship17 ON QuartoConsumo (codUsuarioRegistro)
-;
-
--- Add keys for table QuartoConsumo
-
-ALTER TABLE QuartoConsumo ADD CONSTRAINT Key17 PRIMARY KEY (datConsumo,seqHospedagem,nroQuarto) 
-;
+CREATE INDEX IX_Relationship4 ON QuartoConsumo (idServico);
+CREATE INDEX IX_Relationship5 ON QuartoConsumo (idUsuarioRegistro);
 
 -- Table QuartoHospedagem
-
-CREATE TABLE QuartoHospedagem(
- seqHospedagem Integer NOT NULL,
- nroQuarto Smallint NOT NULL,
+CREATE TABLE IF NOT EXISTS QuartoHospedagem(
+ id Serial NOT NULL,
+ idHospedagem Integer NOT NULL,
+ idQuarto Integer NOT NULL,
  nroAdultos Smallint NOT NULL,
  nroCriancas Smallint NOT NULL,
- vlrDiaria Numeric(7,2) NOT NULL
-)
-;
+ vlrDiaria Numeric(7,2) NOT NULL,
+ PRIMARY KEY(id)
+);
 
--- Add keys for table QuartoHospedagem
+--
+-- Create tables section ----------------------------------------------------------------
 
-ALTER TABLE QuartoHospedagem ADD CONSTRAINT Key18 PRIMARY KEY (seqHospedagem,nroQuarto) 
-;
+-- Create foreign keys (relationships) section ----------------------------------------------------------------
+--
 
--- Create foreign keys (relationships) section -------------------------------------------------
+-- Cargo Programa
+ALTER TABLE CargoPrograma ADD CONSTRAINT Relationship1 
+    FOREIGN KEY (idPrograma) 
+    REFERENCES Programa (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE CargoPrograma ADD CONSTRAINT Relationship2 FOREIGN KEY (codPrograma) REFERENCES Programa (codPrograma) ON DELETE NO ACTION ON UPDATE CASCADE
-;
-ALTER TABLE CargoPrograma ADD CONSTRAINT Relationship3 FOREIGN KEY (codCargo) REFERENCES Cargo (codCargo) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+ALTER TABLE CargoPrograma ADD CONSTRAINT Relationship2 
+    FOREIGN KEY (idCargo) 
+    REFERENCES Cargo (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE Usuario ADD CONSTRAINT Relationship6 FOREIGN KEY (codCargo) REFERENCES Cargo (codCargo) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+-- Usuario
+ALTER TABLE Usuario ADD CONSTRAINT Relationship3 
+    FOREIGN KEY (idCargo) 
+    REFERENCES Cargo (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE CategoriaItemConforto ADD CONSTRAINT Relationship7 FOREIGN KEY (codCategoria) REFERENCES Categoria (codCategoria) ON DELETE NO ACTION ON UPDATE CASCADE
-;
-ALTER TABLE CategoriaItemConforto ADD CONSTRAINT Relationship8 FOREIGN KEY (codItem) REFERENCES ItemConforto (codItem) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+-- Categoria Item Conforto
+ALTER TABLE CategoriaItemConforto ADD CONSTRAINT Relationship4 
+    FOREIGN KEY (idCategoria) 
+    REFERENCES Categoria (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE Quarto ADD CONSTRAINT Relationship9 FOREIGN KEY (codCategoria) REFERENCES Categoria (codCategoria) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+ALTER TABLE CategoriaItemConforto ADD CONSTRAINT Relationship5 
+    FOREIGN KEY (idItem) 
+    REFERENCES ItemConforto (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE QuartoConsumo ADD CONSTRAINT Relationship16 FOREIGN KEY (seqServico) REFERENCES Servico (seqServico) ON DELETE NO ACTION ON UPDATE CASCADE
-;
-ALTER TABLE QuartoConsumo ADD CONSTRAINT Relationship17 FOREIGN KEY (codUsuarioRegistro) REFERENCES Usuario (codUsuario) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+-- Quarto
+ALTER TABLE Quarto ADD CONSTRAINT Relationship6 
+    FOREIGN KEY (idCategoria) 
+    REFERENCES Categoria (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE Servico ADD CONSTRAINT Relationship20 FOREIGN KEY (codServicoArea) REFERENCES ServicoArea (codServicoArea) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+-- Quarto Consumo
+ALTER TABLE QuartoConsumo ADD CONSTRAINT Relationship7 
+    FOREIGN KEY (idServico)    
+    REFERENCES Servico (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE QuartoHospedagem ADD CONSTRAINT Relationship21 FOREIGN KEY (seqHospedagem) REFERENCES Hospedagem (seqHospedagem) ON DELETE NO ACTION ON UPDATE CASCADE
-;
-ALTER TABLE QuartoHospedagem ADD CONSTRAINT Relationship22 FOREIGN KEY (nroQuarto) REFERENCES Quarto (nroQuarto) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+ALTER TABLE QuartoConsumo ADD CONSTRAINT Relationship8 
+    FOREIGN KEY (idUsuarioRegistro) 
+    REFERENCES Usuario (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE QuartoConsumo ADD CONSTRAINT Relationship24 FOREIGN KEY (seqHospedagem, nroQuarto) REFERENCES QuartoHospedagem (seqHospedagem, nroQuarto) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+ALTER TABLE QuartoConsumo ADD CONSTRAINT Relationship9 
+    FOREIGN KEY (idQuartoHospedagem) 
+    REFERENCES QuartoHospedagem (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-ALTER TABLE Hospedagem ADD CONSTRAINT Relationship26 FOREIGN KEY (codCPF) REFERENCES Hospede (codCPF) ON DELETE NO ACTION ON UPDATE CASCADE
-;
+-- Servico
+ALTER TABLE Servico ADD CONSTRAINT Relationship10 
+    FOREIGN KEY (idServicoArea) 
+    REFERENCES ServicoArea (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
--- CREATE VIEW RELATORIO DESPESAS --
+-- Quarto Hospedagem
+ALTER TABLE QuartoHospedagem ADD CONSTRAINT Relationship11 
+    FOREIGN KEY (idHospedagem) 
+    REFERENCES Hospedagem (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
 
-CREATE VIEW relatorioDespesas AS
-SELECT A.seqHospedagem, A.nroQuarto, A.nroAdultos, A.nroCriancas, A.vlrDiaria,
-       B.datCheckIn, B.datCheckOut, B.vlrPago,
-       C.nomHospede,
-       D.seqServico, D.qtdConsumo,
-       E.desServico, E.vlrUnit
+ALTER TABLE QuartoHospedagem ADD CONSTRAINT Relationship12 
+    FOREIGN KEY (idQuarto) 
+    REFERENCES Quarto (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- Hospedagem
+ALTER TABLE Hospedagem ADD CONSTRAINT Relationship13 
+    FOREIGN KEY (idHospede) 
+    REFERENCES Hospede (id) 
+    
+    ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Create foreign keys (relationships) section ----------------------------------------------------------------
+
+-- Create views section ----------------------------------------------------------------
+--
+
+-- View RelatorioDespesas 
+CREATE OR REPLACE VIEW RelatorioDespesas AS
+SELECT 
+    Row_number() OVER (ORDER BY 1 ASC) AS id, 
+    A.idHospedagem, 
+    A.idQuarto, 
+    A.nroAdultos, 
+    A.nroCriancas, 
+    A.vlrDiaria,
+    B.datCheckIn, 
+    B.datCheckOut, 
+    B.vlrPago,
+    C.nomHospede,
+    D.idServico, 
+    D.qtdConsumo,
+    E.desServico, 
+    E.vlrUnit
 FROM
 	QuartoHospedagem A
-	JOIN Hospedagem B ON A.seqHospedagem = B.seqHospedagem
-	JOIN Hospede C ON B.codCPF = C.codCPF
-	JOIN QuartoConsumo D ON A.seqHospedagem = D.seqHospedagem AND A.nroQuarto = D.nroQuarto
-	JOIN Servico E ON D.seqServico = E.seqServico;
+	JOIN Hospedagem B 
+        ON A.idHospedagem = B.id
+	JOIN Hospede C 
+        ON B.idHospede = C.id
+	JOIN QuartoConsumo D 
+        ON A.id = D.idQuartoHospedagem
+	JOIN Servico E 
+        ON D.idServico = E.id;
 
+-- View Quarto Estado
+CREATE OR REPLACE VIEW QuartoEstado AS
+SELECT 
+    Row_number() OVER (ORDER BY 1 ASC) AS id,
+    A.idQuarto,
+    A.nroAdultos,
+    A.nroCriancas,
+    D.vlrDiaria,
+    C.idtOcupado,
+    B.datCheckOut
+FROM
+    QuartoHospedagem A
+    JOIN Hospedagem B
+        ON A.idHospedagem = B.id
+    JOIN Quarto C
+        ON A.idQuarto = C.id
+    JOIN Categoria D
+        ON C.idCategoria = D.id;
 
--- INSERT ON PROGRAMA --
+--
+-- Create views section ----------------------------------------------------------------
 
+-- Insert section ----------------------------------------------------------------
+--
+
+-- Insert on Programa
 INSERT INTO public.programa(codprograma, desprograma)
     VALUES ('001', 'cargos'),
         ('002', 'check-in'),
@@ -300,20 +310,20 @@ INSERT INTO public.programa(codprograma, desprograma)
         ('012', 'servicos'),
         ('013', 'estado-quarto');
 
--- INSERT ON CARGO --
-
+-- Insert on Cargo
 INSERT INTO public.cargo(codcargo, nomcargo, idtmaster)
     VALUES('001', 'Administrador', true),
         ('002', 'Zé ninguém', false);
 
--- INSERT ON CARGO PROGRAMA -- 
-
-INSERT INTO public.cargoprograma(codprograma, codcargo)
+-- Insert on CargoPrograma 
+INSERT INTO public.cargoprograma(idprograma, idcargo)
     VALUES ('008', '002'),
         ('009', '002');
 
--- INSERT ON USUARIO --
-
-INSERT INTO public.usuario(codusuario, nomusuario, codcargo, dessenha, desemail)
+-- Insert on Usuario
+INSERT INTO public.usuario(codusuario, nomusuario, idcargo, dessenha, desemail)
     VALUES('0001', 'O Cara', '001','B7E94BE513E96E8C45CD23D162275E5A12EBDE9100A425C4EBCDD7FA4DCD897C', 'adm@email.com'),
         ('0002', 'Zé', '002','B7E94BE513E96E8C45CD23D162275E5A12EBDE9100A425C4EBCDD7FA4DCD897C', 'ze@email.com');
+
+--
+-- Insert section ----------------------------------------------------------------

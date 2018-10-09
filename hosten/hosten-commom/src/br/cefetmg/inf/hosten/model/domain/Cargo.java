@@ -1,17 +1,37 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "cargo")
 public class Cargo implements Serializable {
-    private String codCargo; 
-    private String nomCargo; 
-    private boolean idtMaster; 
 
-    public Cargo(String codCargo, String nomCargo, boolean idtMaster) {
-        this.codCargo = codCargo;
-        this.nomCargo = nomCargo;
-        this.idtMaster = idtMaster;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "codcargo")
+    private String codCargo;
+
+    @Column(name = "nomcargo")
+    private String nomCargo;
+
+    @Column(name = "idtmaster")
+    private boolean idtMaster;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCodCargo() {
@@ -37,24 +57,4 @@ public class Cargo implements Serializable {
     public void setIdtMaster(boolean idtMaster) {
         this.idtMaster = idtMaster;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Cargo other = (Cargo) obj;
-        if (!Objects.equals(this.codCargo, other.codCargo)) {
-            return false;
-        }
-        return true;
-    }
-    
-    
 }

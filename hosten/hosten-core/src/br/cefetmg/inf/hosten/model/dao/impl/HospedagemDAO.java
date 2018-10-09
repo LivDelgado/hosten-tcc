@@ -268,6 +268,7 @@ public final class HospedagemDAO implements IHospedagemDAO{
         return false;
     }
     
+    @Override
     public List<Hospedagem> busca(Hospedagem hospedagem) throws SQLException {
         String qry = "SELECT * FROM Hospedagem WHERE "
                 + "datCheckIn=? AND datCheckOut=? AND vlrPago=? AND codCPF=?";

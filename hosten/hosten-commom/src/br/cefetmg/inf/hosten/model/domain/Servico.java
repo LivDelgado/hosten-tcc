@@ -1,32 +1,37 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "servico")
 public class Servico implements Serializable {
-    private int seqServico; 
-    private String desServico; 
-    private Double vlrUnit; 
-    private String codServicoArea; 
 
-    public Servico(int seqServico, String desServico, Double vlrUnit, String codServicoArea) {
-        this.seqServico = seqServico;
-        this.desServico = desServico;
-        this.vlrUnit = vlrUnit;
-        this.codServicoArea = codServicoArea;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "desservico")
+    private String desServico;
+
+    @Column(name = "vlrunit")
+    private Double vlrUnit;
+
+    @Column(name = "codservicoarea")
+    private String codServicoArea;
+
+    public int getId() {
+        return id;
     }
 
-    public Servico(String desServico, Double vlrUnit, String codServicoArea) {
-        this.desServico = desServico;
-        this.vlrUnit = vlrUnit;
-        this.codServicoArea = codServicoArea;
-    }
-
-    public int getSeqServico() {
-        return seqServico;
-    }
-
-    public void setSeqServico(int seqServico) {
-        this.seqServico = seqServico;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDesServico() {
@@ -52,6 +57,4 @@ public class Servico implements Serializable {
     public void setCodServicoArea(String codServicoArea) {
         this.codServicoArea = codServicoArea;
     }
-    
-    
 }
