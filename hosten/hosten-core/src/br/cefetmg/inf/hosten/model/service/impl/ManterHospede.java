@@ -137,17 +137,7 @@ public class ManterHospede implements IManterHospede {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            if (coluna.equals("codCPF")
-                    || coluna.equals("desEmail")
-                    || coluna.equals("desTelefone")
-                    || coluna.equals("nomHospede")) {
-                return objetoDAO.buscaHospede(dadoBusca, coluna);
-            } else {
-                throw new NegocioException(
-                        "Não existe essa informação sobre o hóspede! "
-                        + "Busque pelo CPF, pelo nome, "
-                                + "pelo email ou pelo telefone");
-            }
+            return objetoDAO.buscaHospede(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum hóspede buscado!");
         }

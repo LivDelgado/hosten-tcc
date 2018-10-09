@@ -3,7 +3,6 @@ package br.cefetmg.inf.hosten.controller.funcionarios;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.controller.sessao.Sessao;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
-import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
 import br.cefetmg.inf.hosten.model.service.IManterUsuario;
@@ -24,8 +23,8 @@ public class FuncionarioMB implements Serializable {
 
     private Usuario funcionario;
     private List<Usuario> listaFuncionarios;
+    
     private Cargo cargoFuncionario;
-
     private Cargo cargoSelecionado;
 
     private String codFuncionarioAlterar;

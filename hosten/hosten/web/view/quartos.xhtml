@@ -49,15 +49,16 @@
                                   filterBy="#{quarto.codCategoria}" filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{quarto.codCategoria}"/>
+                                    <h:outputText value="#{quartoMB.getCategoriaQuarto(quarto)}" converter="categoriaConverter"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:selectOneMenu id="categorias" value="#{quarto.codCategoria}" 
+                                    <p:selectOneMenu id="categorias" value="#{quartoMB.categoriaSelecionada}" 
                                                      panelStyle="width:180px" style="width:160px" 
                                                      filter="true" filterMatchMode="startsWith"
+                                                     converter="categoriaConverter"
                                                      required="true" requiredMessage="Campo obrigatório">
                                         <f:selectItems value="#{categoriaMB.listaCategorias}" var="categoria" 
-                                                       itemLabel="#{categoria.codCategoria}, #{categoria.nomCategoria}" itemValue="#{categoria.codCategoria}" />
+                                                       itemLabel="#{categoria.nomCategoria}" itemValue="#{categoria}" />
                                     </p:selectOneMenu>
                                 </f:facet>
                             </p:cellEditor>
@@ -104,12 +105,13 @@
                             <p:message for="nroQuarto"/>
 
                             <h:outputLabel for="categorias" value="Categoria do Quarto" />
-                            <p:selectOneMenu id="categorias" value="#{quartoMB.quarto.codCategoria}" 
+                            <p:selectOneMenu id="categorias" value="#{quartoMB.categoriaSelecionada}" 
                                              panelStyle="width:180px" style="width:160px" 
                                              filter="true" filterMatchMode="startsWith"
+                                             converter="categoriaConverter"
                                              required="true" requiredMessage="Campo obrigatório">
                                 <f:selectItems value="#{categoriaMB.listaCategorias}" var="categoria" 
-                                               itemLabel="#{categoria.nomCategoria}" itemValue="#{categoria.codCategoria}" />
+                                               itemLabel="#{categoria.nomCategoria}" itemValue="#{categoria}" />
                             </p:selectOneMenu>
                             <p:tooltip id="categoriasTip" for="categorias" showEvent="focus" hideEvent="blur" />
                             <p:message for="categorias"/>

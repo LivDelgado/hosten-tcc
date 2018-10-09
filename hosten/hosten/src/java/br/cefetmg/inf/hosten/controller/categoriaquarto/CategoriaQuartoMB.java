@@ -137,9 +137,6 @@ public class CategoriaQuartoMB implements Serializable {
 
         try {
             itensRelacionados = manterCategoria.listarItensRelacionados(categoria.getCodCategoria());
-            if (itensRelacionados != null) {
-                System.out.println("tamanho da lista de itens relacionados à categoria " + categoria.getNomCategoria() + ": " + itensRelacionados.size());
-            }
         } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
             //

@@ -70,19 +70,19 @@ public class ManterItemConforto implements IManterItemConforto {
 
         List<ItemConforto> buscaRegistroAntigo = listar(codRegistro, "codItem");
         ItemConforto registroAntigo = buscaRegistroAntigo.get(0);
-        
+
         // pesquisa para saber se há algum item já inserido que possui o mesmo código
         List<ItemConforto> itensPesquisados
                 = listar(itemConforto.getCodItem(), "codItem");
 
-        if (itensPesquisados.isEmpty() || (codRegistro.equals(itemConforto.getCodItem())) ) {
+        if (itensPesquisados.isEmpty() || (codRegistro.equals(itemConforto.getCodItem()))) {
             // não tem item com o mesmo código
 
             // busca se tem item com a mesma descrição
             List<ItemConforto> itensPesquisados1
                     = listar(itemConforto.getDesItem(), "desItem");
             if (itensPesquisados1.isEmpty()
-                    || (registroAntigo.getDesItem().equals(itemConforto.getDesItem())) ) {
+                    || (registroAntigo.getDesItem().equals(itemConforto.getDesItem()))) {
                 // não tem item com a mesma descrição
                 // pode alterar
                 boolean testeRegistro
@@ -123,13 +123,7 @@ public class ManterItemConforto implements IManterItemConforto {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            if (coluna.equals("codItem") || coluna.equals("desItem")) {
-                return objetoDAO.buscaItemConforto(dadoBusca, coluna);
-            } else {
-                throw new NegocioException(
-                        "Não existe essa informação em item de conforto! "
-                        + "Busque pelo código ou pela descrição");
-            }
+            return objetoDAO.buscaItemConforto(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum item buscado!");
         }

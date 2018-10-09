@@ -61,14 +61,13 @@ public class ManterServico implements IManterServico {
 
         List<Servico> buscaRegistroAntigo = listar(codRegistro, "seqServico");
         Servico registroAntigo = buscaRegistroAntigo.get(0);
-        
+
         // confere se já existe um serviço com aquela descrição naquela área
         List<Servico> servicosPesquisados = objetoDAO.buscaServico(
                 servico.getCodServicoArea(), "codServicoArea");
-        if (!servicosPesquisados.isEmpty() || 
-                ((registroAntigo.getDesServico().equals(servico.getDesServico())) 
-                && (registroAntigo.getCodServicoArea().equals(servico.getCodServicoArea()))) 
-            ) {
+        if (!servicosPesquisados.isEmpty()
+                || ((registroAntigo.getDesServico().equals(servico.getDesServico()))
+                && (registroAntigo.getCodServicoArea().equals(servico.getCodServicoArea())))) {
             for (Servico s : servicosPesquisados) {
                 if ((s.getDesServico()).equals(servico.getDesServico())) {
                     throw new NegocioException("Já existe um serviço na mesma "
@@ -104,16 +103,7 @@ public class ManterServico implements IManterServico {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            if (coluna.equals("desServico")
-                    || coluna.equals("vlrUnit")
-                    || coluna.equals("codServicoArea")) {
-                return objetoDAO.buscaServico(dadoBusca, coluna);
-            } else {
-                throw new NegocioException(
-                        "Não existe essa informação em serviço! "
-                        + "Busque pela descrição, "
-                        + "pelo valor ou pela área de serviço!");
-            }
+            return objetoDAO.buscaServico(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum serviço buscado!");
         }

@@ -43,7 +43,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             List<Quarto> listaQuarto;
             
             listaQuarto = quartoDAO.buscaQuarto(Integer.parseInt(nroQuarto), "nroQuarto");
-            System.out.println("buscou o quarto");
+
             String codCategoria = listaQuarto.get(0).getCodCategoria();
             
             ICategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();

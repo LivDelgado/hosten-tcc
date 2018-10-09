@@ -13,11 +13,11 @@ import br.cefetmg.inf.hosten.model.service.IManterServicoArea;
 public class ManterServicoArea implements IManterServicoArea {
 
     IServicoAreaDAO objetoDAO;
-    
+
     public ManterServicoArea() {
         objetoDAO = ServicoAreaDAO.getInstance();
     }
-    
+
     @Override
     public boolean inserir(ServicoArea servicoArea)
             throws NegocioException, SQLException {
@@ -43,7 +43,7 @@ public class ManterServicoArea implements IManterServicoArea {
             if (servicoAreasPesquisadas1.isEmpty()) {
                 // não tem área com o mesmo nome
                 // pode inserir
-                
+
                 // adiciona a área
                 boolean testeRegistro = objetoDAO
                         .adicionaServicoArea(servicoArea);
@@ -71,7 +71,7 @@ public class ManterServicoArea implements IManterServicoArea {
 
         List<ServicoArea> buscaRegistroAntigo = listar(codRegistro, "codServicoArea");
         ServicoArea registroAntigo = buscaRegistroAntigo.get(0);
-        
+
         // pesquisa para saber se há alguma área já 
         // inserida que possui o mesmo código
         List<ServicoArea> servicoAreasPesquisadas
@@ -83,8 +83,8 @@ public class ManterServicoArea implements IManterServicoArea {
             // busca se tem área com o mesmo nome
             List<ServicoArea> servicoAreasPesquisadas1
                     = listar(servicoArea.getNomServicoArea(), "nomServicoArea");
-            if (servicoAreasPesquisadas1.isEmpty() || 
-                    (registroAntigo.getNomServicoArea().equals(servicoArea.getNomServicoArea()))) {
+            if (servicoAreasPesquisadas1.isEmpty()
+                    || (registroAntigo.getNomServicoArea().equals(servicoArea.getNomServicoArea()))) {
                 // não tem área com o mesmo nome
                 // pode alterar
                 boolean testeRegistro = objetoDAO
@@ -105,17 +105,18 @@ public class ManterServicoArea implements IManterServicoArea {
             throws NegocioException, SQLException {
         List<ServicoArea> servicoAreasPesquisadas
                 = listar(codRegistro, "codServicoArea");
-        if (servicoAreasPesquisadas.isEmpty())
+        if (servicoAreasPesquisadas.isEmpty()) {
             throw new NegocioException("Essa área de serviço não existe!");
-        
+        }
+
         // confere se há algum serviço naquela área
         ServicoDAO servicoDAO = ServicoDAO.getInstance();
         List<Servico> listaServicos = servicoDAO
                 .buscaServico(codRegistro, "codServicoArea");
         if (!listaServicos.isEmpty()) {
             throw new NegocioException(
-                    "Não é possível excluir essa área de serviço. Há " 
-                            + listaServicos.size() + " serviços nela.");
+                    "Não é possível excluir essa área de serviço. Há "
+                    + listaServicos.size() + " serviços nela.");
         }
 
         // deleta a categoria
@@ -129,11 +130,7 @@ public class ManterServicoArea implements IManterServicoArea {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            if (coluna.equals("codServicoArea") || coluna.equals("nomServicoArea"))
-                return objetoDAO.buscaServicoArea(dadoBusca, coluna);
-            else {
-                throw new NegocioException("Não existe essa informação em área de serviço! Busque pelo código ou pelo nome");
-            }
+            return objetoDAO.buscaServicoArea(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhuma área de serviço buscada!");
         }

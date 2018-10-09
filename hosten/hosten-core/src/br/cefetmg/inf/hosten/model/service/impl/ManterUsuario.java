@@ -82,7 +82,7 @@ public class ManterUsuario implements IManterUsuario {
 
         List<Usuario> buscaRegistroAntigo = listar(codRegistro, "codUsuario");
         Usuario registroAntigo = buscaRegistroAntigo.get(0);
-        
+
         // pesquisa para saber se há algum usuário já 
         // inserido que possui o mesmo código
         List<Usuario> usuariosPesquisados
@@ -94,8 +94,8 @@ public class ManterUsuario implements IManterUsuario {
             // busca se tem usuario com o mesmo email
             List<Usuario> usuariosPesquisados1
                     = listar(usuario.getDesEmail(), "desEmail");
-            if (usuariosPesquisados1.isEmpty() ||
-                    (registroAntigo.getDesEmail().equals(usuario.getDesEmail())) ) {
+            if (usuariosPesquisados1.isEmpty()
+                    || (registroAntigo.getDesEmail().equals(usuario.getDesEmail()))) {
                 // não tem usuário com o mesmo email
                 // pode alterar
                 boolean testeRegistro;
@@ -121,7 +121,7 @@ public class ManterUsuario implements IManterUsuario {
         // testa se o codUsuario é usado em QuartoConsumo
         IQuartoConsumoDAO dao = QuartoConsumoDAO.getInstance();
         List<QuartoConsumo> listaQuartoConsumo = dao.busca(codRegistro, "codUsuarioRegistro");
-        
+
         if (listaQuartoConsumo.isEmpty()) {
             // não é usado em quarto consumo
             // pode excluir
@@ -141,21 +141,11 @@ public class ManterUsuario implements IManterUsuario {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            if (coluna.equals("codUsuario")
-                    || coluna.equals("nomUsuario")
-                    || coluna.equals("desEmail")
-                    || coluna.equals("codCargo")) {
-                try {
-                    return objetoDAO.buscaUsuario(dadoBusca, coluna);
-                } catch (NoSuchAlgorithmException
-                        | UnsupportedEncodingException ex) {
-                    throw new NegocioException("Busca mal sucedida");
-                }
-            } else {
-                throw new NegocioException(
-                        "Não existe essa informação sobre o usuário! "
-                        + "Busque pelo código, pelo nome, "
-                        + "pelo email ou pelo cargo.");
+            try {
+                return objetoDAO.buscaUsuario(dadoBusca, coluna);
+            } catch (NoSuchAlgorithmException
+                    | UnsupportedEncodingException ex) {
+                throw new NegocioException("Busca mal sucedida");
             }
         } else {
             throw new NegocioException("Nenhum usuário buscado!");
@@ -173,12 +163,12 @@ public class ManterUsuario implements IManterUsuario {
     }
 
     @Override
-    public Usuario usuarioLogin(String email, String senha) 
+    public Usuario usuarioLogin(String email, String senha)
             throws NegocioException, SQLException {
-        if(email != null && senha != null) {
+        if (email != null && senha != null) {
             try {
                 return objetoDAO.usuarioLogin(email, senha);
-            } catch (NoSuchAlgorithmException 
+            } catch (NoSuchAlgorithmException
                     | UnsupportedEncodingException ex) {
                 throw new NegocioException("Ocorreu um erro inesperado "
                         + "ao conferir a senha");

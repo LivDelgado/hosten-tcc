@@ -193,15 +193,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
         * confere se foi digitado um dado busca e se a coluna é válida
         */
         if (dadoBusca != null) {
-            if (coluna.equals("codCategoria")
-                    || coluna.equals("nomCategoria")
-                    || coluna.equals("vlrDiaria")) {
-                return objetoDAO.buscaCategoriaQuarto(dadoBusca, coluna);
-            } else {
-                throw new NegocioException(
-                        "Não existe essa informação em categoria de quarto! "
-                        + "Busque pelo código, pelo nome ou pelo valor");
-            }
+            return objetoDAO.buscaCategoriaQuarto(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhuma categoria buscada!");
         }

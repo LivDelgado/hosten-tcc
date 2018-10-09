@@ -177,11 +177,7 @@ public class ManterCargo implements IManterCargo {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            if (coluna.equals("codCargo") || coluna.equals("nomCargo")) {
-                return objetoDAO.buscaCargo(dadoBusca, coluna);
-            } else {
-                throw new NegocioException("Não existe essa informação em cargo! Busque pelo código ou pelo nome");
-            }
+            return objetoDAO.buscaCargo(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum cargo buscado!");
         }

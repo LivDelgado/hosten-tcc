@@ -49,9 +49,9 @@ public class ManterQuarto implements IManterQuarto {
             throw new NegocioException("Número do quarto inválido.");
         }
 
-            boolean testeRegistro = objetoDAO.atualizaQuarto(codRegistro, quarto);
+        boolean testeRegistro = objetoDAO.atualizaQuarto(codRegistro, quarto);
 
-            return testeRegistro;
+        return testeRegistro;
     }
 
     @Override
@@ -95,13 +95,7 @@ public class ManterQuarto implements IManterQuarto {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            if (coluna.equals("nroQuarto") || coluna.equals("codCategoria")) {
-                return objetoDAO.buscaQuarto(dadoBusca, coluna);
-            } else {
-                throw new NegocioException(
-                        "Não existe essa informação em quarto! "
-                        + "Busque pelo número do quarto ou pela categoria");
-            }
+            return objetoDAO.buscaQuarto(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum quarto buscado!");
         }

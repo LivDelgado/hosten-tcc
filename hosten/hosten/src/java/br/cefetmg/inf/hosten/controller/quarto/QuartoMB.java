@@ -1,8 +1,11 @@
-package br.cefetmg.inf.hosten.controller.quarto;
+ package br.cefetmg.inf.hosten.controller.quarto;
 
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
+import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.model.service.IManterQuarto;
+import br.cefetmg.inf.hosten.proxy.ManterCategoriaQuartoProxy;
 import br.cefetmg.inf.hosten.proxy.ManterQuartoProxy;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
@@ -19,8 +22,11 @@ public class QuartoMB implements Serializable{
     
     private IManterQuarto manterQuarto;
 
-    private List<Quarto> listaQuartos;
     private Quarto quarto;
+    private List<Quarto> listaQuartos;
+    
+    private CategoriaQuarto categoriaQuarto;
+    private CategoriaQuarto categoriaSelecionada;
     
     private int nroQuartoAlterar;
 
@@ -32,6 +38,21 @@ public class QuartoMB implements Serializable{
         } catch (NegocioException | SQLException e) {
             //
         }
+    }
+
+    public CategoriaQuarto getCategoriaQuarto(Quarto quarto) {
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        try {
+            categoriaQuarto = manterCategoria.listar(quarto.getCodCategoria(), "codCategoria").get(0);
+        } catch (NegocioException | SQLException ex) {
+            ex.printStackTrace();
+            //
+        }
+        return categoriaQuarto;
+    }
+
+    public void setCategoriaQuarto(CategoriaQuarto categoriaQuarto) {
+        this.categoriaQuarto = categoriaQuarto;
     }
 
     public List<Quarto> getListaQuartos() {
@@ -57,6 +78,7 @@ public class QuartoMB implements Serializable{
     public void onRowEdit(RowEditEvent event) throws IOException {
         try {
             quarto = (Quarto) event.getObject();
+            quarto.setCodCategoria(categoriaSelecionada.getCodCategoria());
             
             boolean testeExclusao = manterQuarto.alterar(String.valueOf(nroQuartoAlterar), quarto);
             if (testeExclusao) {
@@ -95,8 +117,9 @@ public class QuartoMB implements Serializable{
 
     public String inserir() {
         try {
+            quarto.setCodCategoria(categoriaSelecionada.getCodCategoria());
+            
             boolean testeInsercao = manterQuarto.inserir(quarto);
-
             if (testeInsercao) {
                 ContextUtils.mostrarMensagem("Inserção efetuada", "Registro inserido com sucesso!", true);
                 return "sucesso";
@@ -109,4 +132,14 @@ public class QuartoMB implements Serializable{
             return "falha";
         }
     }
+
+    public CategoriaQuarto getCategoriaSelecionada() {
+        return categoriaSelecionada;
+    }
+
+    public void setCategoriaSelecionada(CategoriaQuarto categoriaSelecionada) {
+        this.categoriaSelecionada = categoriaSelecionada;
+    }
+    
+    
 }

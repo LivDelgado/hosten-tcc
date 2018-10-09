@@ -160,9 +160,6 @@ public class CargoMB implements Serializable {
 
         try {
             programasRelacionados = manterCargo.listarProgramasRelacionados(cargo.getCodCargo());
-            if (programasRelacionados != null) {
-                System.out.println("tamanho da lista de programas relacionados ao cargo " + cargo.getNomCargo() + ": " + programasRelacionados.size());
-            }
         } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
         }

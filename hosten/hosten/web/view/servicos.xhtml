@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets" >
+    <h:head>
+        <title>Hosten - Serviços</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="../template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="formRegistro"> 
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <p:dataTable id="registros" var="servico" value="#{servicoMB.listaServicos}" editable="true">
+                        <f:facet name="header">
+                            <h:outputText value="Serviços" style="font-size: 25px"/>
+                        </f:facet>
+
+                        <f:attribute name="servicoEditar" value="#{servico.seqServico}" />
+                        <p:ajax event="rowEditInit" listener="#{servicoMB.onRowInit}" />
+                        <p:ajax event="rowEdit" listener="#{servicoMB.onRowEdit}" update=":formRegistro:msgs" />
+                        <p:ajax event="rowEditCancel" listener="#{servicoMB.onRowCancel}" update=":formRegistro:msgs" />
+
+                        <p:column headerText="Descrição" sortBy="#{servico.desServico}" 
+                                  filterBy="#{servico.desServico}" filterStyle="width: 80%" style="text-align: center">                            
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{servico.desServico}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText id="desServico" value="#{servico.desServico}" required="true" 
+                                                 requiredMessage="Campo obrigatório" validatorMessage="Descrição inválida" 
+                                                 title="Descrição do serviço com máximo de 40 caracteres">
+                                        <f:validateLength minimum="1" maximum="40"/>
+                                    </p:inputText>
+                                    <p:tooltip id="desServicoTip" for="desServico" showEvent="focus" hideEvent="blur" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Valor" sortBy="#{servico.vlrUnit}" 
+                                  filterBy="#{servico.vlrUnit}" filterStyle="width: 80%" style="text-align: center">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{servico.vlrUnit}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputNumber id="vlrUnit" value="#{servico.vlrUnit}" required="true" style="width: 77%"
+                                                   requiredMessage="Campo obrigatório" validatorMessage="Valor do serviço inválido" 
+                                                   title="Quantia de no máximo R$99.999,99">
+                                        <f:validateDoubleRange minimum="0.00" maximum="99999.99" />
+                                    </p:inputNumber>
+                                    <p:tooltip id="vlrUnitTip" for="vlrUnit" showEvent="focus" hideEvent="blur" />
+                                </f:facet>
+
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Área" style="text-align: center">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{servicoMB.getAreaServico(servico)}" converter="servicoAreaConverter"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu id="codServicoArea" value="#{servicoMB.areaSelecionada}" label="Áreas" 
+                                                     filter="true" filterMatchMode="startsWith" panelStyle="width:250px" 
+                                                     converter="servicoAreaConverter">
+                                        <f:selectItems value="#{servicoAreaMB.listaServicoAreas}" var="area" itemLabel="#{area.nomServicoArea}" itemValue="#{area}"/>
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+
+                        <p:column headerText="Editar" style="width: 55px">
+                            <p:rowEditor />
+                        </p:column>
+
+                        <p:column headerText="Excluir" style="text-align: center; width: 55px">
+
+                            <p:commandButton title="Excluir" icon="ui-icon-trash" 
+                                             action="#{servicoMB.excluir(servico)}" update=":formRegistro:msgs">
+                                <p:confirm header="Confirmação" message="Deseja realmente excluir o registro?" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Excluir" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+
+                        </p:column>
+
+
+                    </p:dataTable>
+                </h:form>
+
+                <h:form>
+                    <h:panelGrid columns="1" cellpadding="5">
+                        <p:commandButton title="Novo Serviço" icon="ui-icon-circle-plus" type="button" onclick="PF('modalInsercao').show();" />
+                    </h:panelGrid>
+                </h:form>
+
+                <p:dialog header="Inserir" widgetVar="modalInsercao" minHeight="40">
+                    <h:form>
+                        <p:growl id="msgi" showDetail="true"/>
+
+                        <p:panelGrid columns="2">
+
+                            <h:outputLabel for="desServico" value="Descrição" />
+                            <p:inputText id="desServico" value="#{servicoMB.servico.desServico}" required="true" 
+                                         requiredMessage="Campo obrigatório" validatorMessage="Descrição inválida" 
+                                         title="Descrição do serviço com máximo de 40 caracteres">
+                                <f:validateLength minimum="1" maximum="40"/>
+                            </p:inputText>
+                            <p:tooltip id="desServicoTip" for="desServico" showEvent="focus" hideEvent="blur" />
+                            <p:message for="desServico"/>
+
+                            <h:outputLabel for="vlrUnit" value="Valor" />
+                            <p:inputNumber id="vlrUnit" value="#{servicoMB.servico.vlrUnit}" required="true" style="width: 77%"
+                                           requiredMessage="Campo obrigatório" validatorMessage="Valor do serviço inválido" 
+                                           title="Quantia de no máximo R$99.999,99">
+                                <f:validateDoubleRange minimum="0.00" maximum="99999.99" />
+                            </p:inputNumber>
+                            <p:tooltip id="vlrUnitTip" for="vlrUnit" showEvent="focus" hideEvent="blur" />
+                            <p:message for="vlrUnit"/>
+
+                            <h:outputLabel for="codServicoArea" value="Área" />
+                            <p:selectOneMenu id="cargo" value="#{servicoMB.areaSelecionada}" label="Áreas" 
+                                             filter="true" filterMatchMode="startsWith" panelStyle="width:250px" converter="servicoAreaConverter">
+                                <f:selectItems value="#{servicoAreaMB.listaServicoAreas}" var="area" itemLabel="#{area.nomServicoArea}" itemValue="#{area}"/>
+                            </p:selectOneMenu>
+
+                            <p:commandButton value="Inserir" action="#{servicoMB.inserir}" onclick="PF('modalInsercao').hide();" update="msgi"/>
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
