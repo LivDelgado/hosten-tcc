@@ -1,44 +1,48 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
-@Table(name="servicoarea")
+@Table(name = "servicoarea", catalog = "hosten", schema = "public")
+@NamedQueries({
+    @NamedQuery(name = "ServicoArea.findAll", query = "SELECT s FROM ServicoArea s")
+    , @NamedQuery(name = "ServicoArea.findByCodservicoarea", query = "SELECT s FROM ServicoArea s WHERE s.codServicoArea = :codServicoArea")
+    , @NamedQuery(name = "ServicoArea.findByNomservicoarea", query = "SELECT s FROM ServicoArea s WHERE s.nomServicoArea = :nomServicoArea")})
 public class ServicoArea implements Serializable {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Basic(optional = false)
+    @Column(name = "codservicoarea", nullable = false, length = 3)
+    private String codServicoArea;
 
-    @Column(name="codservicoarea")
-	private String codServicoArea;
+    @Basic(optional = false)
+    @Column(name = "nomservicoarea", nullable = false, length = 40)
+    private String nomServicoArea;
 
-    @Column(name="nomservicoarea")
-	private String nomServicoArea;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codservicoarea", orphanRemoval = true)
+    private List<Servico> servicos = new ArrayList<>();
 
     public ServicoArea() {
     }
 
-    public ServicoArea(int id, String codServicoArea, String nomServicoArea) {
-        this.id = id;
+    public ServicoArea(String codservicoarea) {
+        this.codServicoArea = codservicoarea;
+    }
+
+    public ServicoArea(String codServicoArea, String nomServicoArea) {
         this.codServicoArea = codServicoArea;
         this.nomServicoArea = nomServicoArea;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getCodServicoArea() {
@@ -57,23 +61,42 @@ public class ServicoArea implements Serializable {
         this.nomServicoArea = nomServicoArea;
     }
 
+    public List<Servico> getServicos() {
+        return servicos;
+    }
+
+    public void setServicos(List<Servico> servicos) {
+        this.servicos = servicos;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public int hashCode() {
+        int hash = 0;
+        hash += (codServicoArea != null ? codServicoArea.hashCode() : 0);
+        return hash;
+    }
+    
+    public void addServico(Servico servico) {
+        this.servicos.add(servico);
+        servico.setCodServicoArea(this);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ServicoArea)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ServicoArea other = (ServicoArea) obj;
-        if (!Objects.equals(this.codServicoArea, other.codServicoArea)) {
+        ServicoArea other = (ServicoArea) object;
+        if ((this.codServicoArea == null && other.codServicoArea != null) || (this.codServicoArea != null && !this.codServicoArea.equals(other.codServicoArea))) {
             return false;
         }
         return true;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "br.cefetmg.inf.hosten.model.domain.Servicoarea[ codservicoarea=" + codServicoArea + " ]";
+    }
+
 }

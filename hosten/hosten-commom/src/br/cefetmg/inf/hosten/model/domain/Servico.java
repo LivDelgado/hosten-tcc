@@ -1,37 +1,74 @@
 package br.cefetmg.inf.hosten.model.domain;
 
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "servico")
+@Table(name = "servico", catalog = "hosten", schema = "public")
+@NamedQueries({
+    @NamedQuery(name = "Servico.findAll", query = "SELECT s FROM Servico s")
+    , @NamedQuery(name = "Servico.findBySeqservico", query = "SELECT s FROM Servico s WHERE s.seqServico = :seqServico")
+    , @NamedQuery(name = "Servico.findByDesservico", query = "SELECT s FROM Servico s WHERE s.desServico = :desServico")
+    , @NamedQuery(name = "Servico.findByVlrunit", query = "SELECT s FROM Servico s WHERE s.vlrunit = :vlrUnit")})
 public class Servico implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Basic(optional = false)
+    @Column(name = "seqservico", nullable = false)
+    private Short seqServico;
 
-    @Column(name = "desservico")
+    @Basic(optional = false)
+    @Column(name = "desservico", nullable = false, length = 40)
     private String desServico;
 
-    @Column(name = "vlrunit")
-    private Double vlrUnit;
+    @Basic(optional = false)
+    @Column(name = "vlrunit", nullable = false, precision = 7, scale = 2)
+    private BigDecimal vlrUnit;
 
-    @Column(name = "codservicoarea")
-    private String codServicoArea;
+    @OneToMany(mappedBy = "seqservico", cascade = CascadeType.ALL)
+    private List<QuartoConsumo> quartoConsumos = new ArrayList<>();
 
-    public int getId() {
-        return id;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "codservicoarea", referencedColumnName = "codservicoarea", nullable = false)
+    private ServicoArea codServicoArea;
+
+    public Servico() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Servico(Short seqservico) {
+        this.seqServico = seqservico;
+    }
+
+    public Servico(Short seqServico, String desServico, BigDecimal vlrUnit) {
+        this.seqServico = seqServico;
+        this.desServico = desServico;
+        this.vlrUnit = vlrUnit;
+    }
+
+    public Short getSeqServico() {
+        return seqServico;
+    }
+
+    public void setSeqServico(Short seqServico) {
+        this.seqServico = seqServico;
     }
 
     public String getDesServico() {
@@ -42,19 +79,53 @@ public class Servico implements Serializable {
         this.desServico = desServico;
     }
 
-    public Double getVlrUnit() {
+    public BigDecimal getVlrUnit() {
         return vlrUnit;
     }
 
-    public void setVlrUnit(Double vlrUnit) {
+    public void setVlrUnit(BigDecimal vlrUnit) {
         this.vlrUnit = vlrUnit;
     }
 
-    public String getCodServicoArea() {
+    public List<QuartoConsumo> getQuartoConsumos() {
+        return quartoConsumos;
+    }
+
+    public void setQuartoConsumos(List<QuartoConsumo> quartoConsumos) {
+        this.quartoConsumos = quartoConsumos;
+    }
+
+    public ServicoArea getCodServicoArea() {
         return codServicoArea;
     }
 
-    public void setCodServicoArea(String codServicoArea) {
+    public void setCodServicoArea(ServicoArea codServicoArea) {
         this.codServicoArea = codServicoArea;
     }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (seqServico != null ? seqServico.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Servico)) {
+            return false;
+        }
+        Servico other = (Servico) object;
+        if ((this.seqServico == null && other.seqServico != null) || (this.seqServico != null && !this.seqServico.equals(other.seqServico))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.cefetmg.inf.hosten.model.domain.Servico[ seqservico=" + seqServico + " ]";
+    }
+
 }

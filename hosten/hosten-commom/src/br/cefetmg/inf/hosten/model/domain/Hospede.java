@@ -1,48 +1,67 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "hospede")
+@Table(name = "hospede", catalog = "hosten", schema = "public")
+@NamedQueries({
+    @NamedQuery(name = "Hospede.findAll", query = "SELECT h FROM Hospede h")
+    , @NamedQuery(name = "Hospede.findByCodcpf", query = "SELECT h FROM Hospede h WHERE h.codCpf = :codcpf")
+    , @NamedQuery(name = "Hospede.findByNomhospede", query = "SELECT h FROM Hospede h WHERE h.nomHospede = :nomHospede")
+    , @NamedQuery(name = "Hospede.findByDestelefone", query = "SELECT h FROM Hospede h WHERE h.desTelefone = :desTelefone")
+    , @NamedQuery(name = "Hospede.findByDesemail", query = "SELECT h FROM Hospede h WHERE h.desEmail = :desEmail")})
 public class Hospede implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Basic(optional = false)
+    @Column(name = "codcpf", nullable = false, length = 14)
+    private String codCpf;
 
-    @Column(name = "codcpf")
-    private String codCPF;
-
-    @Column(name = "nomhospede")
+    @Basic(optional = false)
+    @Column(name = "nomhospede", nullable = false, length = 90)
     private String nomHospede;
 
-    @Column(name = "destelefone")
+    @Basic(optional = false)
+    @Column(name = "destelefone", nullable = false, length = 14)
     private String desTelefone;
 
-    @Column(name = "desemail")
+    @Basic(optional = false)
+    @Column(name = "desemail", nullable = false, length = 90)
     private String desEmail;
 
-    public int getId() {
-        return id;
+    @OneToMany(mappedBy = "codcpf")
+    private List<Hospedagem> hospedagens = new ArrayList<>();
+
+    public Hospede() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Hospede(String codcpf) {
+        this.codCpf = codcpf;
     }
 
-    public String getCodCPF() {
-        return codCPF;
+    public Hospede(String codCpf, String nomHospede, String desTelefone, String desEmail) {
+        this.codCpf = codCpf;
+        this.nomHospede = nomHospede;
+        this.desTelefone = desTelefone;
+        this.desEmail = desEmail;
     }
 
-    public void setCodCPF(String codCPF) {
-        this.codCPF = codCPF;
+    public String getCodCpf() {
+        return codCpf;
+    }
+
+    public void setCodCpf(String codCpf) {
+        this.codCpf = codCpf;
     }
 
     public String getNomHospede() {
@@ -68,4 +87,43 @@ public class Hospede implements Serializable {
     public void setDesEmail(String desEmail) {
         this.desEmail = desEmail;
     }
+
+    public List<Hospedagem> getHospedagens() {
+        return hospedagens;
+    }
+
+    public void setHospedagens(List<Hospedagem> hospedagens) {
+        this.hospedagens = hospedagens;
+    }
+    
+    public void addHospedagem(Hospedagem hospedagem) {
+        this.hospedagens.add(hospedagem);
+        hospedagem.setCodCpf(this);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (codCpf != null ? codCpf.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Hospede)) {
+            return false;
+        }
+        Hospede other = (Hospede) object;
+        if ((this.codCpf == null && other.codCpf != null) || (this.codCpf != null && !this.codCpf.equals(other.codCpf))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.cefetmg.inf.hosten.model.domain.Hospede[ codcpf=" + codCpf + " ]";
+    }
+
 }

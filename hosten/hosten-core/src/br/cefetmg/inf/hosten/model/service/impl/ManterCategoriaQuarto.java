@@ -4,7 +4,7 @@ import br.cefetmg.inf.hosten.model.dao.ICategoriaQuartoDAO;
 import br.cefetmg.inf.hosten.model.dao.impl.CategoriaQuartoDAO;
 import br.cefetmg.inf.hosten.model.dao.impl.QuartoDAO;
 import br.cefetmg.inf.hosten.model.dao.rel.impl.CategoriaItemConfortoDAO;
-import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.domain.Categoria;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.domain.rel.CategoriaItemConforto;
@@ -24,7 +24,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
 
     @Override
     public boolean inserir(
-            CategoriaQuarto categoriaQuarto,
+            Categoria categoriaQuarto,
             List<ItemConforto> itensCategoria)
             throws NegocioException, SQLException {
         // testa tamanho dos campos
@@ -40,14 +40,14 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
 
         // pesquisa para saber se há alguma categoria já 
         // inserida que possui o mesmo código
-        List<CategoriaQuarto> categoriasPesquisadas
+        List<Categoria> categoriasPesquisadas
                 = listar(categoriaQuarto.getCodCategoria(), "codCategoria");
 
         if (categoriasPesquisadas.isEmpty()) {
             // não tem categoria com o mesmo código
 
             // busca se tem categoria com oo mesmo nome
-            List<CategoriaQuarto> categoriasPesquisadas1
+            List<Categoria> categoriasPesquisadas1
                     = listar(categoriaQuarto.getNomCategoria(), "nomCategoria");
             if (categoriasPesquisadas1.isEmpty()) {
                 // não tem categoria com o mesmo nome
@@ -86,7 +86,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
     }
 
     @Override
-    public boolean alterar(String codRegistro, CategoriaQuarto categoriaQuarto, List<ItemConforto> itensCategoria)
+    public boolean alterar(String codRegistro, Categoria categoriaQuarto, List<ItemConforto> itensCategoria)
             throws NegocioException, SQLException {
         // testa tamanho dos campos
         if (categoriaQuarto.getCodCategoria().length() != 3) {
@@ -99,19 +99,19 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
             throw new NegocioException("O valor da diária ultrapassou valor máximo de R$ 9999999,99.");
         }
 
-        List<CategoriaQuarto> buscaRegistroAntigo = listar(codRegistro, "codCategoria");
-        CategoriaQuarto registroAntigo = buscaRegistroAntigo.get(0);
+        List<Categoria> buscaRegistroAntigo = listar(codRegistro, "codCategoria");
+        Categoria registroAntigo = buscaRegistroAntigo.get(0);
 
         // pesquisa para saber se há alguma categoria já 
         // inserida que possui o mesmo código
-        List<CategoriaQuarto> categoriasPesquisadas
+        List<Categoria> categoriasPesquisadas
                 = listar(categoriaQuarto.getCodCategoria(), "codCategoria");
 
         if (categoriasPesquisadas.isEmpty() || (codRegistro.equals(categoriaQuarto.getCodCategoria()))) {
             // não tem categoria com o mesmo código
 
             // busca se tem categoria com oo mesmo nome
-            List<CategoriaQuarto> categoriasPesquisadas1
+            List<Categoria> categoriasPesquisadas1
                     = listar(categoriaQuarto.getNomCategoria(), "nomCategoria");
             if (categoriasPesquisadas1.isEmpty()
                     || (registroAntigo.getNomCategoria().equals(categoriaQuarto.getNomCategoria()))) {
@@ -155,7 +155,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
     @Override
     public boolean excluir(String codRegistro)
             throws NegocioException, SQLException {
-        List<CategoriaQuarto> categoriasPesquisadas
+        List<Categoria> categoriasPesquisadas
                 = listar(codRegistro, "codCategoria");
         if (categoriasPesquisadas.isEmpty()) {
             throw new NegocioException("Essa categoria não existe!");
@@ -187,7 +187,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
     }
 
     @Override
-    public List<CategoriaQuarto> listar(Object dadoBusca, String coluna)
+    public List<Categoria> listar(Object dadoBusca, String coluna)
             throws NegocioException, SQLException {
         /*
         * confere se foi digitado um dado busca e se a coluna é válida
@@ -200,7 +200,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
     }
 
     @Override
-    public List<CategoriaQuarto> listarTodos()
+    public List<Categoria> listarTodos()
             throws NegocioException, SQLException {
         return objetoDAO.buscaTodosCategoriaQuartos();
     }

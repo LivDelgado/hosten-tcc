@@ -1,94 +1,134 @@
 package br.cefetmg.inf.hosten.model.domain.rel;
 
+import br.cefetmg.inf.hosten.model.domain.embeddable.QuartoConsumoId;
+import br.cefetmg.inf.hosten.model.domain.Servico;
+import br.cefetmg.inf.hosten.model.domain.Usuario;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "quartoconsumo")
+@Table(name = "quartoconsumo", catalog = "hosten", schema = "public")
+@NamedQueries({
+    @NamedQuery(name = "QuartoConsumo.findAll", query = "SELECT q FROM QuartoConsumo q")
+    , @NamedQuery(name = "QuartoConsumo.findBySeqhospedagem", query = "SELECT q FROM QuartoConsumo q WHERE q.id.seqHospedagem = :seqHospedagem")
+    , @NamedQuery(name = "QuartoConsumo.findByNroquarto", query = "SELECT q FROM QuartoConsumo q WHERE q.id.nroQuarto = :nroQuarto")
+    , @NamedQuery(name = "QuartoConsumo.findByDatconsumo", query = "SELECT q FROM QuartoConsumo q WHERE q.id.datConsumo = :datConsumo")
+    , @NamedQuery(name = "QuartoConsumo.findByQtdconsumo", query = "SELECT q FROM QuartoConsumo q WHERE q.qtdConsumo = :qtdconsumo")})
 public class QuartoConsumo implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @EmbeddedId
+    protected QuartoConsumoId id;
 
-    @Column(name = "seqHospedagem")
-    private int seqHospedagem;
+    @Basic(optional = false)
+    @Column(name = "qtdconsumo", nullable = false)
+    private short qtdConsumo;
 
-    @Column(name = "nroQuarto")
-    private int nroQuarto;
+    @ManyToOne(optional = false)
+    @JoinColumns({
+        @JoinColumn(name = "seqhospedagem", referencedColumnName = "seqhospedagem", nullable = false, insertable = false, updatable = false)
+        , @JoinColumn(name = "nroquarto", referencedColumnName = "nroquarto", nullable = false, insertable = false, updatable = false)})
+    private QuartoHospedagem quartoHospedagem;
 
-    @Column(name = "datConsumo")
-    private Timestamp datConsumo;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "seqservico", referencedColumnName = "seqservico", nullable = false)
+    private Servico seqServico;
 
-    @Column(name = "qtdConsumo")
-    private int qtdConsumo;
+    @ManyToOne
+    @JoinColumn(name = "codusuarioregistro", referencedColumnName = "codusuario")
+    private Usuario codUsuarioRegistro;
 
-    @Column(name = "seqServico")
-    private int seqServico;
-
-    @Column(name = "codUsuarioRegistro")
-    private String codUsuarioRegistro;
-
-    public int getId() {
-        return id;
+    public QuartoConsumo() {
     }
 
-    public void setId(int id) {
+    public QuartoConsumo(QuartoConsumoId id) {
         this.id = id;
     }
 
-    public int getSeqHospedagem() {
-        return seqHospedagem;
+    public QuartoConsumo(QuartoHospedagem quartoHospedagem, Date datconsumo) {
+        this.id = new QuartoConsumoId(quartoHospedagem.getId().getSeqHospedagem(), quartoHospedagem.getId().getNroQuarto(), datconsumo);
     }
 
-    public void setSeqHospedagem(int seqHospedagem) {
-        this.seqHospedagem = seqHospedagem;
+    public QuartoConsumo(QuartoConsumoId id, short qtdConsumo, QuartoHospedagem quartoHospedagem, Servico seqServico, Usuario codUsuarioRegistro) {
+        this.id = id;
+        this.qtdConsumo = qtdConsumo;
+        this.quartoHospedagem = quartoHospedagem;
+        this.seqServico = seqServico;
+        this.codUsuarioRegistro = codUsuarioRegistro;
     }
 
-    public int getNroQuarto() {
-        return nroQuarto;
+    public QuartoConsumoId getId() {
+        return id;
     }
 
-    public void setNroQuarto(int nroQuarto) {
-        this.nroQuarto = nroQuarto;
+    public void setId(QuartoConsumoId id) {
+        this.id = id;
     }
 
-    public Timestamp getDatConsumo() {
-        return datConsumo;
-    }
-
-    public void setDatConsumo(Timestamp datConsumo) {
-        this.datConsumo = datConsumo;
-    }
-
-    public int getQtdConsumo() {
+    public short getQtdConsumo() {
         return qtdConsumo;
     }
 
-    public void setQtdConsumo(int qtdConsumo) {
+    public void setQtdConsumo(short qtdConsumo) {
         this.qtdConsumo = qtdConsumo;
     }
 
-    public int getSeqServico() {
+    public QuartoHospedagem getQuartoHospedagem() {
+        return quartoHospedagem;
+    }
+
+    public void setQuartoHospedagem(QuartoHospedagem quartoHospedagem) {
+        this.quartoHospedagem = quartoHospedagem;
+    }
+
+    public Servico getSeqServico() {
         return seqServico;
     }
 
-    public void setSeqServico(int seqServico) {
+    public void setSeqServico(Servico seqServico) {
         this.seqServico = seqServico;
     }
 
-    public String getCodUsuarioRegistro() {
+    public Usuario getCodUsuarioRegistro() {
         return codUsuarioRegistro;
     }
 
-    public void setCodUsuarioRegistro(String codUsuarioRegistro) {
+    public void setCodUsuarioRegistro(Usuario codUsuarioRegistro) {
         this.codUsuarioRegistro = codUsuarioRegistro;
     }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof QuartoConsumo)) {
+            return false;
+        }
+        QuartoConsumo other = (QuartoConsumo) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.cefetmg.inf.hosten.model.domain.Quartoconsumo[ quartoconsumoPK=" + id + " ]";
+    }
+
 }

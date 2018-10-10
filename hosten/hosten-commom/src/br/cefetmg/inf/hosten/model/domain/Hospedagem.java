@@ -1,72 +1,155 @@
 package br.cefetmg.inf.hosten.model.domain;
 
+import br.cefetmg.inf.hosten.model.domain.embeddable.QuartoHospedagemId;
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "hospedagem")
+@Table(name = "hospedagem", catalog = "hosten", schema = "public")
+@NamedQueries({
+    @NamedQuery(name = "Hospedagem.findAll", query = "SELECT h FROM Hospedagem h")
+    , @NamedQuery(name = "Hospedagem.findBySeqhospedagem", query = "SELECT h FROM Hospedagem h WHERE h.seqHospedagem = :seqHospedagem")
+    , @NamedQuery(name = "Hospedagem.findByDatcheckin", query = "SELECT h FROM Hospedagem h WHERE h.datCheckin = :datCheckin")
+    , @NamedQuery(name = "Hospedagem.findByDatcheckout", query = "SELECT h FROM Hospedagem h WHERE h.datCheckout = :datCheckout")
+    , @NamedQuery(name = "Hospedagem.findByVlrpago", query = "SELECT h FROM Hospedagem h WHERE h.vlrPago = :vlrPago")})
 public class Hospedagem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Basic(optional = false)
+    @Column(name = "seqhospedagem", nullable = false)
+    private Integer seqHospedagem;
 
-    @Column(name = "datcheckin")
-    private Timestamp datCheckIn;
+    @Basic(optional = false)
+    @Column(name = "datcheckin", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datCheckin;
 
     @Column(name = "datcheckout")
-    private Timestamp datCheckOut;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datCheckout;
 
-    @Column(name = "vlrpago")
-    private Double vlrPago;
+    @Column(name = "vlrpago", precision = 7, scale = 2)
+    private BigDecimal vlrPago;
 
-    @Column(name = "codcpf")
-    private String codCPF;
+    @OneToMany(mappedBy = "hospedagem", cascade = CascadeType.ALL)
+    private Set<QuartoHospedagem> quartoHospedagens;
 
-    public int getId() {
-        return id;
+    @ManyToOne
+    @JoinColumn(name = "codcpf", referencedColumnName = "codcpf")
+    private Hospede codCpf;
+
+    public Hospedagem() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Hospedagem(Integer seqhospedagem) {
+        this.seqHospedagem = seqhospedagem;
     }
 
-    public Timestamp getDatCheckIn() {
-        return datCheckIn;
-    }
-
-    public void setDatCheckIn(Timestamp datCheckIn) {
-        this.datCheckIn = datCheckIn;
-    }
-
-    public Timestamp getDatCheckOut() {
-        return datCheckOut;
-    }
-
-    public void setDatCheckOut(Timestamp datCheckOut) {
-        this.datCheckOut = datCheckOut;
-    }
-
-    public Double getVlrPago() {
-        return vlrPago;
-    }
-
-    public void setVlrPago(Double vlrPago) {
+    public Hospedagem(Integer seqHospedagem, Date datCheckin, Date datCheckout, BigDecimal vlrPago) {
+        this.seqHospedagem = seqHospedagem;
+        this.datCheckin = datCheckin;
+        this.datCheckout = datCheckout;
         this.vlrPago = vlrPago;
     }
 
-    public String getCodCPF() {
-        return codCPF;
+    public Integer getSeqHospedagem() {
+        return seqHospedagem;
     }
 
-    public void setCodCPF(String codCPF) {
-        this.codCPF = codCPF;
+    public void setSeqHospedagem(Integer seqHospedagem) {
+        this.seqHospedagem = seqHospedagem;
     }
+
+    public Date getDatCheckin() {
+        return datCheckin;
+    }
+
+    public void setDatCheckin(Date datCheckin) {
+        this.datCheckin = datCheckin;
+    }
+
+    public Date getDatCheckout() {
+        return datCheckout;
+    }
+
+    public void setDatCheckout(Date datCheckout) {
+        this.datCheckout = datCheckout;
+    }
+
+    public BigDecimal getVlrPago() {
+        return vlrPago;
+    }
+
+    public void setVlrPago(BigDecimal vlrPago) {
+        this.vlrPago = vlrPago;
+    }
+
+    public Set<QuartoHospedagem> getQuartoHospedagens() {
+        return quartoHospedagens;
+    }
+
+    public void setQuartoHospedagens(Set<QuartoHospedagem> quartoHospedagens) {
+        this.quartoHospedagens = quartoHospedagens;
+    }
+
+    public Hospede getCodCpf() {
+        return codCpf;
+    }
+
+    public void setCodCpf(Hospede codCpf) {
+        this.codCpf = codCpf;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (seqHospedagem != null ? seqHospedagem.hashCode() : 0);
+        return hash;
+    }
+    
+    public void addQuarto(Quarto quarto, short nroadultos, short nrocriancas, BigDecimal vlrdiaria) {
+        QuartoHospedagemId qhid = new QuartoHospedagemId(this.getSeqHospedagem(), quarto.getNroQuarto());
+        QuartoHospedagem qh = new QuartoHospedagem(qhid, nroadultos, nrocriancas, vlrdiaria);
+        
+        this.quartoHospedagens.add(qh);
+        quarto.getQuartoHospedagens().add(qh);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Hospedagem)) {
+            return false;
+        }
+        Hospedagem other = (Hospedagem) object;
+        if ((this.seqHospedagem == null && other.seqHospedagem != null) || (this.seqHospedagem != null && !this.seqHospedagem.equals(other.seqHospedagem))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.cefetmg.inf.hosten.model.domain.Hospedagem[ seqhospedagem=" + seqHospedagem + " ]";
+    }
+
 }

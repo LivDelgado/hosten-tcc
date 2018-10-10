@@ -1,7 +1,7 @@
 package br.cefetmg.inf.hosten.controller.categoriaquarto;
 
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
-import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.domain.Categoria;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.proxy.ManterCategoriaQuartoProxy;
@@ -20,8 +20,8 @@ import org.primefaces.event.RowEditEvent;
 @Named("categoriaMB")
 public class CategoriaQuartoMB implements Serializable {
 
-    private List<CategoriaQuarto> listaCategorias;
-    private CategoriaQuarto categoria;
+    private List<Categoria> listaCategorias;
+    private Categoria categoria;
 
     private ItemConforto[] itensSelecionados;
 
@@ -29,7 +29,7 @@ public class CategoriaQuartoMB implements Serializable {
     private String codCategoriaAlterar;
 
     public CategoriaQuartoMB() {
-        categoria = new CategoriaQuarto(null, null, null);
+        categoria = new Categoria(null, null, null);
         IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
         try {
             listaCategorias = manterCategoria.listarTodos();
@@ -38,19 +38,19 @@ public class CategoriaQuartoMB implements Serializable {
         }
     }
 
-    public List<CategoriaQuarto> getListaCategorias() {
+    public List<Categoria> getListaCategorias() {
         return listaCategorias;
     }
 
-    public void setListaCategorias(List<CategoriaQuarto> listaCategorias) {
+    public void setListaCategorias(List<Categoria> listaCategorias) {
         this.listaCategorias = listaCategorias;
     }
 
-    public CategoriaQuarto getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(CategoriaQuarto categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
@@ -59,7 +59,7 @@ public class CategoriaQuartoMB implements Serializable {
     }
     
     public void onRowEdit(RowEditEvent event) throws IOException {
-        categoria = (CategoriaQuarto) event.getObject();
+        categoria = (Categoria) event.getObject();
 
         List<ItemConforto> listaItens = new ArrayList();
         listaItens.addAll(Arrays.asList(itensSelecionados));
@@ -79,10 +79,10 @@ public class CategoriaQuartoMB implements Serializable {
     }
 
     public void onRowCancel(RowEditEvent event) {
-        ContextUtils.mostrarMensagem("Edição Cancelada", ((CategoriaQuarto) event.getObject()).getCodCategoria(), false);
+        ContextUtils.mostrarMensagem("Edição Cancelada", ((Categoria) event.getObject()).getCodCategoria(), false);
     }
 
-    public String excluir(CategoriaQuarto categoria) {
+    public String excluir(Categoria categoria) {
         this.categoria = categoria;
 
         IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
@@ -132,7 +132,7 @@ public class CategoriaQuartoMB implements Serializable {
         this.itensSelecionados = itensSelecionadosArray;
     }
 
-    public List<ItemConforto> getItensRelacionados(CategoriaQuarto categoria) {
+    public List<ItemConforto> getItensRelacionados(Categoria categoria) {
         IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
 
         try {

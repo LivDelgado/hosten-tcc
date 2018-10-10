@@ -1,7 +1,7 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
 import br.cefetmg.inf.hosten.model.dao.ICategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.domain.Categoria;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +29,7 @@ public final class CategoriaQuartoDAO implements ICategoriaQuartoDAO{
     }
 
     @Override
-    public boolean adicionaCategoriaQuarto(CategoriaQuarto categoriaQuarto)
+    public boolean adicionaCategoriaQuarto(Categoria categoriaQuarto)
             throws SQLException {
         String qry = "INSERT INTO Categoria"
                 + "(codCategoria, nomCategoria, vlrDiaria)"
@@ -44,7 +44,7 @@ public final class CategoriaQuartoDAO implements ICategoriaQuartoDAO{
     }
 
     @Override
-    public List<CategoriaQuarto> buscaCategoriaQuarto(
+    public List<Categoria> buscaCategoriaQuarto(
             Object dadoBusca, 
             String coluna) throws SQLException {
         String qry = "SELECT * FROM Categoria "
@@ -60,12 +60,12 @@ public final class CategoriaQuartoDAO implements ICategoriaQuartoDAO{
 
         ResultSet rs = pStmt.executeQuery();
 
-        List<CategoriaQuarto> categoriaQuartosEncontrados = new ArrayList<>();
+        List<Categoria> categoriaQuartosEncontrados = new ArrayList<>();
         
         int i = 0;
         while (rs.next()) {
             categoriaQuartosEncontrados
-                    .add(new CategoriaQuarto(
+                    .add(new Categoria(
                             rs.getString(1),
                             rs.getString(2),
                             rs.getDouble(3)));
@@ -76,19 +76,19 @@ public final class CategoriaQuartoDAO implements ICategoriaQuartoDAO{
     }
 
     @Override
-    public List<CategoriaQuarto> buscaTodosCategoriaQuartos() 
+    public List<Categoria> buscaTodosCategoriaQuartos() 
             throws SQLException {
         Statement stmt = con.createStatement();
 
         String qry = "SELECT * FROM Categoria";
         ResultSet rs = stmt.executeQuery(qry);
 
-        List<CategoriaQuarto> categoriaQuartosEncontrados = new ArrayList<>();
+        List<Categoria> categoriaQuartosEncontrados = new ArrayList<>();
 
         int i = 0;
         while (rs.next()) {
             categoriaQuartosEncontrados
-                    .add(new CategoriaQuarto(
+                    .add(new Categoria(
                             rs.getString(1), 
                             rs.getString(2),
                             rs.getDouble(3)));
@@ -101,7 +101,7 @@ public final class CategoriaQuartoDAO implements ICategoriaQuartoDAO{
     @Override
     public boolean atualizaCategoriaQuarto(
             Object pK, 
-            CategoriaQuarto categoriaQuartoAtualizado) throws SQLException {
+            Categoria categoriaQuartoAtualizado) throws SQLException {
         String qry = "UPDATE Categoria "
                 + "SET codCategoria = ?, nomCategoria = ?, vlrDiaria = ? "
                 + "WHERE codCategoria = ?";

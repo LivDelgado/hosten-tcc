@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.model.dao.rel.impl;
 
-import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
+import br.cefetmg.inf.hosten.model.domain.rel.view.Despesa;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

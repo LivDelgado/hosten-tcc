@@ -1,7 +1,7 @@
  package br.cefetmg.inf.hosten.controller.quarto;
 
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
-import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.domain.Categoria;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.model.service.IManterQuarto;
@@ -25,8 +25,8 @@ public class QuartoMB implements Serializable{
     private Quarto quarto;
     private List<Quarto> listaQuartos;
     
-    private CategoriaQuarto categoriaQuarto;
-    private CategoriaQuarto categoriaSelecionada;
+    private Categoria categoriaQuarto;
+    private Categoria categoriaSelecionada;
     
     private int nroQuartoAlterar;
 
@@ -40,7 +40,7 @@ public class QuartoMB implements Serializable{
         }
     }
 
-    public CategoriaQuarto getCategoriaQuarto(Quarto quarto) {
+    public Categoria getCategoriaQuarto(Quarto quarto) {
         IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
         try {
             categoriaQuarto = manterCategoria.listar(quarto.getCodCategoria(), "codCategoria").get(0);
@@ -51,7 +51,7 @@ public class QuartoMB implements Serializable{
         return categoriaQuarto;
     }
 
-    public void setCategoriaQuarto(CategoriaQuarto categoriaQuarto) {
+    public void setCategoriaQuarto(Categoria categoriaQuarto) {
         this.categoriaQuarto = categoriaQuarto;
     }
 
@@ -133,11 +133,11 @@ public class QuartoMB implements Serializable{
         }
     }
 
-    public CategoriaQuarto getCategoriaSelecionada() {
+    public Categoria getCategoriaSelecionada() {
         return categoriaSelecionada;
     }
 
-    public void setCategoriaSelecionada(CategoriaQuarto categoriaSelecionada) {
+    public void setCategoriaSelecionada(Categoria categoriaSelecionada) {
         this.categoriaSelecionada = categoriaSelecionada;
     }
     

@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.proxy;
 
-import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.domain.Categoria;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.proxy.util.CallableClient;
@@ -17,7 +17,7 @@ public class ManterCategoriaQuartoProxy implements IManterCategoriaQuarto {
     }
 
     @Override
-    public boolean inserir(CategoriaQuarto categoriaQuarto, 
+    public boolean inserir(Categoria categoriaQuarto, 
             List<ItemConforto> itensCategoria) 
             throws NegocioException, SQLException {
         ArrayList lista = new ArrayList();
@@ -34,7 +34,7 @@ public class ManterCategoriaQuartoProxy implements IManterCategoriaQuarto {
     }
 
     @Override
-    public List<CategoriaQuarto> listar(Object dadoBusca, String coluna) throws NegocioException, SQLException {
+    public List<Categoria> listar(Object dadoBusca, String coluna) throws NegocioException, SQLException {
         ArrayList lista = new ArrayList();
         lista.add("CategoriaQuarto");
         lista.add("Listar");
@@ -42,20 +42,20 @@ public class ManterCategoriaQuartoProxy implements IManterCategoriaQuarto {
         lista.add(coluna);
         
         try {
-            return (List<CategoriaQuarto>)operacaoRegistro(lista);
+            return (List<Categoria>)operacaoRegistro(lista);
         } catch (Exception ex) {
             throw new NegocioException(ex.getMessage());
         }
     }
 
     @Override
-    public List<CategoriaQuarto> listarTodos() throws NegocioException, SQLException {
+    public List<Categoria> listarTodos() throws NegocioException, SQLException {
         ArrayList lista = new ArrayList();
         lista.add("CategoriaQuarto");
         lista.add("ListarTodos");
         
         try {
-            return (List<CategoriaQuarto>)operacaoRegistro(lista);
+            return (List<Categoria>)operacaoRegistro(lista);
         } catch (Exception ex) {
             throw new NegocioException(ex.getMessage());
         }
@@ -78,7 +78,7 @@ public class ManterCategoriaQuartoProxy implements IManterCategoriaQuarto {
 
     @Override
     public boolean alterar(String codRegistro, 
-            CategoriaQuarto categoriaQuarto,
+            Categoria categoriaQuarto,
             List<ItemConforto> itensCategoria) 
             throws NegocioException, SQLException {
         ArrayList lista = new ArrayList();
@@ -122,7 +122,7 @@ public class ManterCategoriaQuartoProxy implements IManterCategoriaQuarto {
                 case "Boolean":
                     return (boolean)listaRecebida.get(1);
                 case "List<CategoriaQuarto>":
-                    return (List<CategoriaQuarto>)listaRecebida.get(1);
+                    return (List<Categoria>)listaRecebida.get(1);
                 case "List<ItemConforto>":
                     return (List<ItemConforto>)listaRecebida.get(1);
                 case "Exception":

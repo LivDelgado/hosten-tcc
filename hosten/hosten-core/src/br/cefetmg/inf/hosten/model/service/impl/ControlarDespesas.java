@@ -4,7 +4,7 @@ import br.cefetmg.inf.hosten.model.dao.rel.IQuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.dao.rel.IRelatorioDespesasDAO;
 import br.cefetmg.inf.hosten.model.dao.rel.impl.QuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.dao.rel.impl.RelatorioDespesasDAO;
-import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
+import br.cefetmg.inf.hosten.model.domain.rel.view.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.util.exception.NegocioException;
