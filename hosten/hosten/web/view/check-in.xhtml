@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Hosten - Estados dos Quartos</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="../template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="formRegistro"> 
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <p:dataTable id="registros" var="hospede" value="#{hospedeMB.listaHospedes}">
+                        <f:facet name="header">
+                            <h:outputText value="Hóspedes" style="font-size: 25px"/>
+                        </f:facet>
+
+                        <p:column headerText="CPF" sortBy="#{hospede.codCPF}" filterBy="#{hospede.codCPF}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{hospede.codCPF}"/>
+                        </p:column>
+
+                        <p:column headerText="Nome" sortBy="#{hospede.nomHospede}" filterBy="#{hospede.nomHospede}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{hospede.nomHospede}"/>
+                        </p:column>
+
+                        <p:column headerText="Email" sortBy="#{hospede.desEmail}" filterBy="#{hospede.desEmail}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{hospede.desEmail}"/>
+                        </p:column>
+
+                        <p:column headerText="Telefone" sortBy="#{hospede.desTelefone}" filterBy="#{hospede.desTelefone}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{hospede.desTelefone}"/>
+                        </p:column>
+
+                        <p:column style="width:32px;text-align: center">
+                            <p:commandButton  icon="ui-icon-circle-check" title="Selecionar">
+                                <f:setPropertyActionListener 
+                                    value="#{hospede}" 
+                                    target="#{checkInMB.hospedeSelecionado}"
+                                    />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:panelGrid columns="2" style="width: 100%">
+                        <h:outputLabel for="diasDeEstadia" value="Dias de Estadia"/>
+                        <p:inputNumber id="diasDeEstadia" value="#{checkInMB.diasDeEstadia}" 
+                                       required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de dias inválido"
+                                       title="Número de 1 até 32.768" minValue="0" maxValue="+32767" thousandSeparator=".">
+                            <f:validateLength minimum="1" maximum="5"/>
+                        </p:inputNumber>
+
+                        <h:outputLabel for="nroAdultos" value="Número de adultos" />
+                        <p:inputNumber id="nroAdultos" value="#{checkInMB.nroAdultos}" 
+                                       required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de adultos inválido"
+                                       title="Número de 1 até 32.768" minValue="1" maxValue="+32767" thousandSeparator=".">
+                            <f:validateLength minimum="1" maximum="5"/>
+                        </p:inputNumber>
+
+                        <h:outputLabel for="nroCriancas" value="Número de crianças" />
+                        <p:inputNumber id="nroCriancas" value="#{checkInMB.nroCriancas}" 
+                                       required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de crianças inválido"
+                                       title="Número de 0 até 32.768" minValue="0" maxValue="+32767" thousandSeparator=".">
+                            <f:validateLength minimum="1" maximum="5"/>
+                        </p:inputNumber>
+
+                        <p:commandButton  icon="ui-icon-suitcase" title="Check-in"
+                                          action="#{checkInMB.checkIn()}"
+                        />
+                    
+                    </p:panelGrid>
+                
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

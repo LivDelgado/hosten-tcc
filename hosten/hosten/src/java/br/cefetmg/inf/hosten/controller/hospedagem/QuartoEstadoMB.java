@@ -25,9 +25,6 @@ public class QuartoEstadoMB implements Serializable{
     }
 
     public List<QuartoEstado> getListaQuartosEstados() {
-        for(QuartoEstado q : listaQuartosEstados)
-            System.out.println("data: " + q.getDatCheckOut());
-        
         return listaQuartosEstados;
     }
 

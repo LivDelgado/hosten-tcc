@@ -10,7 +10,7 @@
     </h:head>
     <h:body>
 
-        <ui:composition template="template.xhtml">
+        <ui:composition template="../template.xhtml">
 
             <ui:define name="content">
 
@@ -41,13 +41,14 @@
 
                         <p:column headerText="Ações" style="text-align: center">
                             <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
-                                             value="Detalhes" 
+                                             value="Detalhes"
                                              />
                             <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
                                              value="Check-out" 
                                              />
                             <h:commandButton rendered="#{!quartoEstado.idtOcupado}" 
                                              value="Check-in" 
+                                             action="#{checkInMB.iniciaCheckIn(quartoEstado.nroQuarto)}"
                                              />
                         </p:column>
 
