@@ -42,7 +42,7 @@
                             <p:commandButton  icon="ui-icon-circle-check" title="Selecionar">
                                 <f:setPropertyActionListener 
                                     value="#{hospede}" 
-                                    target="#{checkInMB.hospedeSelecionado}"
+                                    target="#{checkMB.hospedeSelecionado}"
                                     />
                             </p:commandButton>
                         </p:column>
@@ -50,28 +50,28 @@
 
                     <p:panelGrid columns="2" style="width: 100%">
                         <h:outputLabel for="diasDeEstadia" value="Dias de Estadia"/>
-                        <p:inputNumber id="diasDeEstadia" value="#{checkInMB.diasDeEstadia}" 
+                        <p:inputNumber id="diasDeEstadia" value="#{checkMB.diasDeEstadia}" 
                                        required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de dias inválido"
                                        title="Número de 1 até 32.768" minValue="0" maxValue="+32767" thousandSeparator=".">
                             <f:validateLength minimum="1" maximum="5"/>
                         </p:inputNumber>
 
                         <h:outputLabel for="nroAdultos" value="Número de adultos" />
-                        <p:inputNumber id="nroAdultos" value="#{checkInMB.nroAdultos}" 
+                        <p:inputNumber id="nroAdultos" value="#{checkMB.nroAdultos}" 
                                        required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de adultos inválido"
                                        title="Número de 1 até 32.768" minValue="1" maxValue="+32767" thousandSeparator=".">
                             <f:validateLength minimum="1" maximum="5"/>
                         </p:inputNumber>
 
                         <h:outputLabel for="nroCriancas" value="Número de crianças" />
-                        <p:inputNumber id="nroCriancas" value="#{checkInMB.nroCriancas}" 
+                        <p:inputNumber id="nroCriancas" value="#{checkMB.nroCriancas}" 
                                        required="true" requiredMessage="Campo obrigatório" validatorMessage="Número de crianças inválido"
                                        title="Número de 0 até 32.768" minValue="0" maxValue="+32767" thousandSeparator=".">
                             <f:validateLength minimum="1" maximum="5"/>
                         </p:inputNumber>
 
                         <p:commandButton  icon="ui-icon-suitcase" title="Check-in"
-                                          action="#{checkInMB.checkIn()}"
+                                          action="#{checkMB.checkIn()}"
                         />
                     
                     </p:panelGrid>

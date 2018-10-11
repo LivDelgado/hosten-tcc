@@ -29,6 +29,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
         // data check-in
         Date dataAtual = new Date();
         Timestamp dataCheckIn = new Timestamp(dataAtual.getTime());
+        
         // data check-out
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         sdf.format(dataAtual);

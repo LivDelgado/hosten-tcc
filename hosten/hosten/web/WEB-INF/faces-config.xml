@@ -228,13 +228,13 @@
         
         <!-- Hospedagem -->
         <navigation-case>
-            <from-action>#{checkInMB.checkIn()}</from-action>
+            <from-action>#{checkMB.checkIn()}</from-action>
             <from-outcome>sucesso</from-outcome>
             <to-view-id>/view/quartos-estados.jsf</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-action>#{checkInMB.checkIn()}</from-action>
+            <from-action>#{checkMB.checkIn()}</from-action>
             <from-outcome>falha</from-outcome>
             <to-view-id>/view/check-in.jsf</to-view-id>
             <redirect/>

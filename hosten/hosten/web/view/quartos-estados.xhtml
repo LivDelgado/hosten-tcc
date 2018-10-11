@@ -42,13 +42,15 @@
                         <p:column headerText="Ações" style="text-align: center">
                             <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
                                              value="Detalhes"
+                                             action="#{despesaMB.exibeDespesas(quartoEstado.nroQuarto, 1)}"
                                              />
                             <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
                                              value="Check-out" 
+                                             action="#{checkMB.iniciaCheck(quartoEstado.nroQuarto, 'out')}"
                                              />
                             <h:commandButton rendered="#{!quartoEstado.idtOcupado}" 
                                              value="Check-in" 
-                                             action="#{checkInMB.iniciaCheckIn(quartoEstado.nroQuarto)}"
+                                             action="#{checkMB.iniciaCheck(quartoEstado.nroQuarto, 'in')}"
                                              />
                         </p:column>
 
