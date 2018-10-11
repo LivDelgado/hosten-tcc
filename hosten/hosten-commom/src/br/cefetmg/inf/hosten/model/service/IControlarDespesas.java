@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.model.service;
 
-import br.cefetmg.inf.hosten.model.domain.rel.view.Despesa;
+import br.cefetmg.inf.hosten.model.domain.rel.views.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;

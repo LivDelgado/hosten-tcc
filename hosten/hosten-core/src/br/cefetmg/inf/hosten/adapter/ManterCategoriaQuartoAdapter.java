@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.adapter;
 
-import br.cefetmg.inf.hosten.model.domain.Categoria;
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.model.service.impl.ManterCategoriaQuarto;
@@ -47,7 +47,7 @@ public class ManterCategoriaQuartoAdapter implements Runnable {
             switch (operacao) {
                 case "Inserir": {
                     tipoRetorno = "Boolean";
-                    Categoria itemInserir = (Categoria) listaRecebida.get(2);
+                    CategoriaQuarto itemInserir = (CategoriaQuarto) listaRecebida.get(2);
                     List<ItemConforto> itensCategoria 
                             = (List<ItemConforto>) listaRecebida.get(3);
                     
@@ -80,7 +80,7 @@ public class ManterCategoriaQuartoAdapter implements Runnable {
                 case "Alterar": {
                     tipoRetorno = "Boolean";
                     String codRegistro = (String) listaRecebida.get(2);
-                    Categoria itemAlterar = (Categoria) listaRecebida.get(3);
+                    CategoriaQuarto itemAlterar = (CategoriaQuarto) listaRecebida.get(3);
                     List<ItemConforto> itensCategoria 
                             = (List<ItemConforto>) listaRecebida.get(4);
                     

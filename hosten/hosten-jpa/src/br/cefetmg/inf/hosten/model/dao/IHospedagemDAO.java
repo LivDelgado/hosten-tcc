@@ -1,0 +1,20 @@
+package br.cefetmg.inf.hosten.model.dao;
+
+import br.cefetmg.inf.hosten.model.domain.Hospedagem;
+import java.sql.SQLException;
+import java.util.List;
+
+public interface IHospedagemDAO {
+
+    boolean adiciona(Hospedagem hospedagem) throws SQLException;
+
+    Hospedagem buscaPorPk(String id) throws SQLException;
+
+    List<Hospedagem> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
+
+    List<Hospedagem> buscaTodos() throws SQLException;
+
+    boolean atualiza(String id, Hospedagem hospedagemAtualizado) throws SQLException;
+
+    boolean deleta(Hospedagem hospedagem) throws SQLException;
+}

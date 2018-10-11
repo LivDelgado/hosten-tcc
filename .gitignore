@@ -10,3 +10,6 @@ hosten/hosten-core/nbproject/private/private\.properties
 hosten/hosten-core/build
 hosten/hosten-core/nbproject/private/private\.xml
 /hosten/hosten-core/nbproject/private/
+/hosten/hosten-jpa/nbproject/private/
+/hosten/hosten-jpa/build/
+/hosten/hosten-jpa/dist/

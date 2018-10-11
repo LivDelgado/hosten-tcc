@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.proxy;
 
-import br.cefetmg.inf.hosten.model.domain.rel.view.Despesa;
+import br.cefetmg.inf.hosten.model.domain.rel.views.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.proxy.util.CallableClient;

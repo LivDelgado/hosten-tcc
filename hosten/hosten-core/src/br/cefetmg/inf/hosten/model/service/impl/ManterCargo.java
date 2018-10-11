@@ -45,7 +45,7 @@ public class ManterCargo implements IManterCargo {
         if (cargosPesquisados.isEmpty()) {
             // não tem cargo com o mesmo código
 
-            // busca se tem cargo com o mesmo nome
+            // buscaPorColuna se tem cargo com o mesmo nome
             List<Cargo> cargosPesquisados1
                     = listar(cargo.getNomCargo(), "nomCargo");
             if (cargosPesquisados1.isEmpty()) {
@@ -56,7 +56,7 @@ public class ManterCargo implements IManterCargo {
                 }
 
                 // adiciona o cargo
-                boolean testeRegistro = objetoDAO.adicionaCargo(cargo);
+                boolean testeRegistro = objetoDAO.adiciona(cargo);
                 // cria os relacionamentos
                 ICargoProgramaDAO relDAO = CargoProgramaDAO.getInstance();
                 for (String codPrograma : listaProgramas) {
@@ -98,7 +98,7 @@ public class ManterCargo implements IManterCargo {
         if (cargosPesquisados.isEmpty() || (codRegistro.equals(cargo.getCodCargo()))) {
             // não tem cargo com o mesmo código
 
-            // busca se tem cargo com o mesmo nome
+            // buscaPorColuna se tem cargo com o mesmo nome
             List<Cargo> cargosPesquisados1
                     = listar(cargo.getNomCargo(), "nomCargo");
             if (cargosPesquisados1.isEmpty() 
@@ -112,7 +112,7 @@ public class ManterCargo implements IManterCargo {
                 }
 
                 // atualiza o cargo
-                boolean testeRegistro = objetoDAO.atualizaCargo(codRegistro, cargo);
+                boolean testeRegistro = objetoDAO.atualiza(codRegistro, cargo);
                 if (testeRegistro) {
                     // atualiza os relacionamentos
                     ICargoProgramaDAO relDAO = CargoProgramaDAO.getInstance();
@@ -162,7 +162,7 @@ public class ManterCargo implements IManterCargo {
             if (!listaREL.isEmpty()) {
                 relDAO.deletaPorColuna(codRegistro, "codCargo");
             }
-            return objetoDAO.deletaCargo(codRegistro);
+            return objetoDAO.deletaPorPk(codRegistro);
         } else {
             throw new NegocioException(
                     "Não é possível excluir o cargo"
@@ -174,10 +174,10 @@ public class ManterCargo implements IManterCargo {
     public List<Cargo> listar(Object dadoBusca, String coluna)
             throws NegocioException, SQLException {
         //
-        // confere se foi digitado um dado busca e se a coluna é válida
+        // confere se foi digitado um dado buscaPorColuna e se a coluna é válida
         //
         if (dadoBusca != null) {
-            return objetoDAO.buscaCargo(dadoBusca, coluna);
+            return objetoDAO.buscaPorColuna(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum cargo buscado!");
         }
@@ -186,7 +186,7 @@ public class ManterCargo implements IManterCargo {
     @Override
     public List<Cargo> listarTodos()
             throws NegocioException, SQLException {
-        return objetoDAO.buscaTodosCargos();
+        return objetoDAO.buscaTodos();
     }
 
     @Override

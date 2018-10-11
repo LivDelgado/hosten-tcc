@@ -8,7 +8,7 @@ import br.cefetmg.inf.hosten.model.dao.impl.HospedagemDAO;
 import br.cefetmg.inf.hosten.model.dao.impl.QuartoDAO;
 import br.cefetmg.inf.hosten.model.dao.rel.IQuartoHospedagemDAO;
 import br.cefetmg.inf.hosten.model.dao.rel.impl.QuartoHospedagemDAO;
-import br.cefetmg.inf.hosten.model.domain.Categoria;
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
@@ -47,7 +47,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             String codCategoria = listaQuarto.get(0).getCodCategoria();
             
             ICategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
-            List<Categoria> categorias = categoriaDAO.buscaCategoriaQuarto(codCategoria, "codCategoria");
+            List<CategoriaQuarto> categorias = categoriaDAO.buscaCategoriaQuarto(codCategoria, "codCategoria");
             Double valorDiaria = categorias.get(0).getVlrDiaria();
 
             double valorTotal = valorDiaria * diasEstadia;
