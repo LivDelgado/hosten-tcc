@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.IQuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.QuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.QuartoHospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoHospedagemDAO;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.dao.rel.IQuartoHospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoHospedagemDAO;
 import br.cefetmg.inf.hosten.model.service.IManterQuarto;
 
 public class ManterQuarto implements IManterQuarto {

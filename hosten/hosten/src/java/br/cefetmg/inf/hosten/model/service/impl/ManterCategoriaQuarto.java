@@ -1,9 +1,9 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.ICategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.CategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.QuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.CategoriaItemConfortoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICategoriaQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.CategoriaQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.CategoriaItemConfortoDAO;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
@@ -11,7 +11,7 @@ import br.cefetmg.inf.hosten.model.domain.rel.CategoriaItemConforto;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.dao.rel.ICategoriaItemConfortoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICategoriaItemConfortoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
 
 public class ManterCategoriaQuarto implements IManterCategoriaQuarto {

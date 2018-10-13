@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.IServicoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.ServicoDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.QuartoConsumoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IServicoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.ServicoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.dao.rel.IQuartoConsumoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterServico;
 
 public class ManterServico implements IManterServico {

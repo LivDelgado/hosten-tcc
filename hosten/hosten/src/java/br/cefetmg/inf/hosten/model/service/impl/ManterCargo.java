@@ -1,11 +1,11 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.ICargoDAO;
-import br.cefetmg.inf.hosten.model.dao.IProgramaDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.CargoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.ProgramaDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.UsuarioDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.CargoProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICargoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.CargoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.ProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.UsuarioDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.CargoProgramaDAO;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.rel.CargoPrograma;
@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.dao.rel.ICargoProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICargoProgramaDAO;
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
 

@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.IServicoAreaDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.ServicoAreaDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.ServicoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IServicoAreaDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.ServicoAreaDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.ServicoDAO;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.exception.NegocioException;

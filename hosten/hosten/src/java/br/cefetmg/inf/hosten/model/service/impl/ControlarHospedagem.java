@@ -1,13 +1,13 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.ICategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.IHospedagemDAO;
-import br.cefetmg.inf.hosten.model.dao.IQuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.CategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.HospedagemDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.QuartoDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.IQuartoHospedagemDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.QuartoHospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICategoriaQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IHospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.CategoriaQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.HospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoHospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoHospedagemDAO;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Quarto;

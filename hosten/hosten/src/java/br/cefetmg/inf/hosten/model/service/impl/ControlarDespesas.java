@@ -1,9 +1,9 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.rel.IQuartoConsumoDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.IRelatorioDespesasDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.QuartoConsumoDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.RelatorioDespesasDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoConsumoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IRelatorioDespesasDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoConsumoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.RelatorioDespesasDAO;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;

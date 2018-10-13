@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.IUsuarioDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.UsuarioDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.QuartoConsumoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IUsuarioDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.UsuarioDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.util.exception.NegocioException;
@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.dao.rel.IQuartoConsumoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterUsuario;
 
 public class ManterUsuario implements IManterUsuario {

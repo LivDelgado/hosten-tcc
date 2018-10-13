@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.dao.IItemConfortoDAO;
-import br.cefetmg.inf.hosten.model.dao.impl.ItemConfortoDAO;
-import br.cefetmg.inf.hosten.model.dao.rel.impl.CategoriaItemConfortoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IItemConfortoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.ItemConfortoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.jdbc.CategoriaItemConfortoDAO;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.domain.rel.CategoriaItemConforto;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.dao.rel.ICategoriaItemConfortoDAO;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICategoriaItemConfortoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterItemConforto;
 
 public class ManterItemConforto implements IManterItemConforto {
