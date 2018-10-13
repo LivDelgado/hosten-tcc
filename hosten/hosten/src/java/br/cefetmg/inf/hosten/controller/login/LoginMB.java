@@ -4,7 +4,7 @@ import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.controller.sessao.Sessao;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.service.IManterUsuario;
-import br.cefetmg.inf.hosten.proxy.ManterUsuarioProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import javax.enterprise.context.SessionScoped;
@@ -38,7 +38,7 @@ public class LoginMB implements Serializable {
     public boolean validaLogin () {
         boolean retorno = false;
         
-        IManterUsuario manterUsuario = new ManterUsuarioProxy();
+        IManterUsuario manterUsuario = new ManterUsuario();
         try {
             Usuario usuarioAtual = manterUsuario.usuarioLogin(email, senha);
             if (usuarioAtual != null) {

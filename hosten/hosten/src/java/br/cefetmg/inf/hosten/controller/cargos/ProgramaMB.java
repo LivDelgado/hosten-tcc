@@ -2,7 +2,7 @@ package br.cefetmg.inf.hosten.controller.cargos;
 
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
-import br.cefetmg.inf.hosten.proxy.ManterCargoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ public class ProgramaMB implements Serializable {
 
     public ProgramaMB() {
         programa = new Programa(null, null);
-        IManterCargo manterCargo = new ManterCargoProxy();
+        IManterCargo manterCargo = new ManterCargo();
         try {
             listaProgramas = manterCargo.listarTodosProgramas();
         } catch (NegocioException | SQLException ex) {

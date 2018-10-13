@@ -3,7 +3,7 @@ package br.cefetmg.inf.hosten.controller.itemconforto;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.service.IManterItemConforto;
-import br.cefetmg.inf.hosten.proxy.ManterItemConfortoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public class ItemConfortoMB implements Serializable {
 
     public ItemConfortoMB() {
         item = new ItemConforto(null, null);
-        IManterItemConforto manterItem = new ManterItemConfortoProxy();
+        IManterItemConforto manterItem = new ManterItemConforto();
         try {
             listaItens = manterItem.listarTodos();
         } catch (NegocioException | SQLException ex) {
@@ -50,7 +50,7 @@ public class ItemConfortoMB implements Serializable {
     public void onRowEdit(RowEditEvent event) throws IOException {
         item = (ItemConforto) event.getObject();
         
-        IManterItemConforto manterItem = new ManterItemConfortoProxy();
+        IManterItemConforto manterItem = new ManterItemConforto();
         try {
             boolean testeAlteracao = manterItem.alterar(codItemAlterar, item);
             if (testeAlteracao) {
@@ -71,7 +71,7 @@ public class ItemConfortoMB implements Serializable {
     public String excluir (ItemConforto item) {
         this.item = item;
         
-        IManterItemConforto manterItem = new ManterItemConfortoProxy();
+        IManterItemConforto manterItem = new ManterItemConforto();
         
         try {
             boolean testeExclusao = manterItem.excluir(item.getCodItem());
@@ -89,7 +89,7 @@ public class ItemConfortoMB implements Serializable {
     }
             
     public String inserir () {
-        IManterItemConforto manterItem = new ManterItemConfortoProxy();
+        IManterItemConforto manterItem = new ManterItemConforto();
         
         try {
             boolean testeInsercao = manterItem.inserir(item);

@@ -3,7 +3,7 @@ package br.cefetmg.inf.hosten.controller.servicoarea;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.hosten.model.service.IManterServicoArea;
-import br.cefetmg.inf.hosten.proxy.ManterServicoAreaProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public class ServicoAreaMB implements Serializable {
 
     public ServicoAreaMB() {
         servicoArea = new ServicoArea(null, null);
-        IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
+        IManterServicoArea manterServicoArea = new ManterServicoArea();
         try {
             listaServicoAreas = manterServicoArea.listarTodos();
         } catch (NegocioException | SQLException ex) {
@@ -50,7 +50,7 @@ public class ServicoAreaMB implements Serializable {
     public void onRowEdit(RowEditEvent event) throws IOException {
         servicoArea = (ServicoArea) event.getObject();
 
-        IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
+        IManterServicoArea manterServicoArea = new ManterServicoArea();
         try {
             boolean testeAlteracao = manterServicoArea.alterar(codServicoAreaAlterar, servicoArea);
             
@@ -72,7 +72,7 @@ public class ServicoAreaMB implements Serializable {
     public String excluir(ServicoArea servicoArea) {
         this.servicoArea = servicoArea;
 
-        IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
+        IManterServicoArea manterServicoArea = new ManterServicoArea();
         try {
             boolean testeExclusao = manterServicoArea.excluir(servicoArea.getCodServicoArea());
             if (testeExclusao) {
@@ -89,7 +89,7 @@ public class ServicoAreaMB implements Serializable {
     }
 
     public String inserir() {
-        IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
+        IManterServicoArea manterServicoArea = new ManterServicoArea();
         try {
             boolean testeInsercao = manterServicoArea.inserir(servicoArea);
             if (testeInsercao) {

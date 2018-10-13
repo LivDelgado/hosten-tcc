@@ -5,8 +5,7 @@ import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IControlarHospedagem;
-import br.cefetmg.inf.hosten.proxy.ControlarDespesasProxy;
-import br.cefetmg.inf.hosten.proxy.ControlarHospedagemProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -98,7 +97,7 @@ public class CheckMB implements Serializable {
     }
 
     public String checkIn() {
-        IControlarHospedagem controlarHosp = new ControlarHospedagemProxy();
+        IControlarHospedagem controlarHosp = new ControlarHospedagem();
 
         boolean testeRegistro = controlarHosp.efetuarCheckIn(String.valueOf(nroQuarto), hospedeSelecionado.getCodCPF(), diasDeEstadia, nroAdultos, nroCriancas);
         if (testeRegistro) {
@@ -121,7 +120,7 @@ public class CheckMB implements Serializable {
     }
 
     public void checkOut() {
-        IControlarHospedagem controlarHosp = new ControlarHospedagemProxy();
+        IControlarHospedagem controlarHosp = new ControlarHospedagem();
 
         int seqHospedagem = controlarHosp.efetuarCheckOut(String.valueOf(nroQuarto));
 
@@ -168,7 +167,7 @@ public class CheckMB implements Serializable {
     }
 
     private void montaArquivo(int seqHospedagem) throws NegocioException, SQLException, DocumentException {
-        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
+        IControlarDespesas controlarDespesas = new ControlarDespesas();
         List<Despesa> listaDespesas = controlarDespesas.listar(
                 seqHospedagem, nroQuarto
         );

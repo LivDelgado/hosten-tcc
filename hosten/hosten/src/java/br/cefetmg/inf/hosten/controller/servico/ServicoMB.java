@@ -5,8 +5,7 @@ import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.hosten.model.service.IManterServico;
 import br.cefetmg.inf.hosten.model.service.IManterServicoArea;
-import br.cefetmg.inf.hosten.proxy.ManterServicoAreaProxy;
-import br.cefetmg.inf.hosten.proxy.ManterServicoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -32,7 +31,7 @@ public class ServicoMB implements Serializable{
 
     public ServicoMB() {
         servico = new Servico(null, null, null);
-        manterServico = new ManterServicoProxy();
+        manterServico = new ManterServico();
         try {
             listaServicos = manterServico.listarTodos();
         } catch (NegocioException | SQLException e) {
@@ -41,7 +40,7 @@ public class ServicoMB implements Serializable{
     }
 
     public ServicoArea getAreaServico(Servico servico) {
-        IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
+        IManterServicoArea manterServicoArea = new ManterServicoArea();
         try {
             areaServico = manterServicoArea.listar(servico.getCodServicoArea(), "codServicoArea").get(0);
         } catch (NegocioException | SQLException ex) {

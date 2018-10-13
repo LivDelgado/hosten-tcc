@@ -2,7 +2,7 @@ package br.cefetmg.inf.hosten.controller.cargos;
 
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
-import br.cefetmg.inf.hosten.proxy.ManterCargoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import javax.faces.component.UIComponent;
@@ -14,7 +14,7 @@ import javax.faces.convert.FacesConverter;
 public class CargoConverter implements Converter  {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        IManterCargo manterCargo = new ManterCargoProxy();
+        IManterCargo manterCargo = new ManterCargo();
         Cargo cargo = null;
         try {
             cargo = manterCargo.listar(value, "nomCargo").get(0);

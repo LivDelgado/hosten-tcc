@@ -7,8 +7,7 @@ import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IManterQuarto;
-import br.cefetmg.inf.hosten.proxy.ControlarDespesasProxy;
-import br.cefetmg.inf.hosten.proxy.ManterQuartoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -32,7 +31,7 @@ public class DespesaMB implements Serializable {
     private String codUsuarioRegistro;
 
     public List<Despesa> getListaDespesas() {
-        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
+        IControlarDespesas controlarDespesas = new ControlarDespesas();
         try {
             listaDespesas = controlarDespesas.listar(seqHospedagem, nroQuarto);
         } catch (NegocioException | SQLException ex) {
@@ -70,7 +69,7 @@ public class DespesaMB implements Serializable {
     public void exibeDespesas(int nroQuarto, int operacao) {
         try {
             setNroQuarto(nroQuarto);
-            IManterQuarto manterQuarto = new ManterQuartoProxy();
+            IManterQuarto manterQuarto = new ManterQuarto();
             setSeqHospedagem(manterQuarto.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto));
 
             if (operacao == 1) {
@@ -86,7 +85,7 @@ public class DespesaMB implements Serializable {
 
     public String inserir() {
         codUsuarioRegistro = Sessao.getInstance().getUsuarioLogado().getCodUsuario();
-        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
+        IControlarDespesas controlarDespesas = new ControlarDespesas();
         Date dataAtual = new Date();
         Timestamp datConsumo = new Timestamp(dataAtual.getTime());
 
@@ -112,7 +111,7 @@ public class DespesaMB implements Serializable {
     }
 
     public String excluir(Despesa despesa) {
-        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
+        IControlarDespesas controlarDespesas = new ControlarDespesas();
         
         //
         //

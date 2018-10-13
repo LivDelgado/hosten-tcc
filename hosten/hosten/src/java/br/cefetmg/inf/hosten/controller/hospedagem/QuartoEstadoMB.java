@@ -2,7 +2,7 @@
 
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
 import br.cefetmg.inf.hosten.model.service.IControlarHospedagem;
-import br.cefetmg.inf.hosten.proxy.ControlarHospedagemProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.Serializable;
 import java.util.List;
@@ -16,7 +16,7 @@ public class QuartoEstadoMB implements Serializable{
     private List<QuartoEstado> listaQuartosEstados;
     
     public QuartoEstadoMB() {
-        IControlarHospedagem controlarHospedagem = new ControlarHospedagemProxy();
+        IControlarHospedagem controlarHospedagem = new ControlarHospedagem();
         try {
             listaQuartosEstados = controlarHospedagem.listarTodos();
         } catch (NegocioException e) {

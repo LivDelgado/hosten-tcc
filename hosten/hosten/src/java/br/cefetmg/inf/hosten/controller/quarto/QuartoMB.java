@@ -5,8 +5,7 @@ import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.model.service.IManterQuarto;
-import br.cefetmg.inf.hosten.proxy.ManterCategoriaQuartoProxy;
-import br.cefetmg.inf.hosten.proxy.ManterQuartoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -32,7 +31,7 @@ public class QuartoMB implements Serializable{
 
     public QuartoMB() {
         quarto = new Quarto(0, null, false);
-        manterQuarto = new ManterQuartoProxy();
+        manterQuarto = new ManterQuarto();
         try {
             listaQuartos = manterQuarto.listarTodos();
         } catch (NegocioException | SQLException e) {
@@ -41,7 +40,7 @@ public class QuartoMB implements Serializable{
     }
 
     public CategoriaQuarto getCategoriaQuarto(Quarto quarto) {
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
         try {
             categoriaQuarto = manterCategoria.listar(quarto.getCodCategoria(), "codCategoria").get(0);
         } catch (NegocioException | SQLException ex) {

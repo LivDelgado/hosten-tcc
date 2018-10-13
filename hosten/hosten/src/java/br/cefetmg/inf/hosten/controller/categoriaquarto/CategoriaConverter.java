@@ -2,7 +2,7 @@ package br.cefetmg.inf.hosten.controller.categoriaquarto;
 
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
-import br.cefetmg.inf.hosten.proxy.ManterCategoriaQuartoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import javax.faces.component.UIComponent;
@@ -17,7 +17,7 @@ import javax.faces.convert.FacesConverter;
 public class CategoriaConverter implements Converter  {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
         CategoriaQuarto categoria = null;
         try {
             categoria = manterCategoria.listar(value, "nomCategoria").get(0);

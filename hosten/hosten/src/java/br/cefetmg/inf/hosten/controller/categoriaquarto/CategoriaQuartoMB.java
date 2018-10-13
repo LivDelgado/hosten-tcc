@@ -4,7 +4,7 @@ import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
-import br.cefetmg.inf.hosten.proxy.ManterCategoriaQuartoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public class CategoriaQuartoMB implements Serializable {
 
     public CategoriaQuartoMB() {
         categoria = new CategoriaQuarto(null, null, null);
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
         try {
             listaCategorias = manterCategoria.listarTodos();
         } catch (NegocioException | SQLException e) {
@@ -64,7 +64,7 @@ public class CategoriaQuartoMB implements Serializable {
         List<ItemConforto> listaItens = new ArrayList();
         listaItens.addAll(Arrays.asList(itensSelecionados));
 
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
         try {
             boolean testeExclusao = manterCategoria.alterar(codCategoriaAlterar, categoria, listaItens);
             if (testeExclusao) {
@@ -85,7 +85,7 @@ public class CategoriaQuartoMB implements Serializable {
     public String excluir(CategoriaQuarto categoria) {
         this.categoria = categoria;
 
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
         try {
             boolean testeExclusao = manterCategoria.excluir(categoria.getCodCategoria());
             if (testeExclusao) {
@@ -103,7 +103,7 @@ public class CategoriaQuartoMB implements Serializable {
     }
 
     public String inserir() {
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
 
         List<ItemConforto> listaItens = new ArrayList();
         listaItens.addAll(Arrays.asList(itensSelecionados));
@@ -133,7 +133,7 @@ public class CategoriaQuartoMB implements Serializable {
     }
 
     public List<ItemConforto> getItensRelacionados(CategoriaQuarto categoria) {
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
 
         try {
             itensRelacionados = manterCategoria.listarItensRelacionados(categoria.getCodCategoria());

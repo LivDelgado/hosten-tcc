@@ -5,7 +5,7 @@ import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
-import br.cefetmg.inf.hosten.proxy.ManterCargoProxy;
+import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -55,7 +55,7 @@ public class FiltroAcesso implements Filter {
             // Caso o atributo usuário seja null, manda o usuário do Hosten para a página de login
             ((HttpServletResponse) response).sendRedirect(contextPath + URL_LOGIN);
         } else {
-            IManterCargo mCargo = new ManterCargoProxy();
+            IManterCargo mCargo = new ManterCargo();
             try {
                 // Obtém o cargo do Usuário
                 Cargo cargoUsuario = mCargo.listar(usuario.getCodCargo(), "codCargo").get(0);
