@@ -31,7 +31,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletResponse;
 
 @SessionScoped
 @Named(value = "checkMB")
@@ -174,6 +173,9 @@ public class CheckMB implements Serializable {
                 seqHospedagem, nroQuarto
         );
 
+        //Hospedagem hosp;
+        //QuartoHospedagem quartoHosp;
+
         // monta o arquivo
         DottedLineSeparator separator = new DottedLineSeparator();
         Font fonteUltraViolet = new Font(HELVETICA, 20, 1, new BaseColor(95, 75, 139));
@@ -193,7 +195,13 @@ public class CheckMB implements Serializable {
         p.clear();
 
         // subtítulo com o nome do cliente
-        String nomeHospede = listaDespesas.get(0).getNomeHospede();
+        String nomeHospede;
+        //
+        //
+        	nomeHospede = listaDespesas.get(0).getNomeHospede();
+                // buscar o nome do hospede pelo codigo do cpf que ta em hospedagem
+        //
+        //
 
         p.setFont(fonteRedViolet);
         p.setSpacingBefore(20);
@@ -202,88 +210,90 @@ public class CheckMB implements Serializable {
         document.add(p);
         p.clear();
 
-        Double vlrTotal = 0.0;
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-
-        for (Despesa despesa : listaDespesas) {
-            // um parágrafo para cada item/servico consumido
-            int qtdServico = despesa.getQtdConsumo();
-            String desServico = despesa.getDesServico();
-            Double vlrServico = despesa.getVlrUnit();
-
-            vlrTotal += vlrServico * qtdServico;
-
-            String strVlrServico = currencyFormatter.format(vlrServico);
-
-            p.setFont(fonteMulberry);
-            p.setSpacingAfter(2);
-            p.setSpacingBefore(0);
-            p.add(String.valueOf(qtdServico));
-            p.add(" ");
-            p.add(desServico);
-            p.add(c);
-            p.setFont(fonteSparklingGrape);
-            p.add(strVlrServico);
-            document.add(p);
-            p.clear();
-        }
-
-        // parágrafo com as informações da diária
-        int nroAdultos = listaDespesas.get(0).getNroAdultos();
-        int nroCriancas = listaDespesas.get(0).getNroCriancas();
-        Double vlrDiaria = listaDespesas.get(0).getVlrDiaria();
-
-        Timestamp datCheckIn = listaDespesas.get(0).getDatCheckIn();
-        Timestamp datCheckOut = listaDespesas.get(0).getDatCheckOut();
-        long msDiferenca = (datCheckOut.getTime()) - (datCheckIn.getTime());
-        long segundos = msDiferenca / 1000;
-        long minutos = segundos / 60;
-        long horas = minutos / 60;
-        long dias = horas / 24;
-
-        Double valorDiarias = dias * vlrDiaria;
-        vlrTotal += valorDiarias;
-
-        p.setFont(fonteChateauRose);
-        p.setSpacingAfter(2);
-        p.setSpacingBefore(0);
-
-        p.add("Número de adultos");
-        p.add(c);
-        p.add(String.valueOf(nroAdultos));
-        document.add(p);
-        p.clear();
-
-        p.add("Número de crianças");
-        p.add(c);
-        p.add(String.valueOf(nroCriancas));
-        document.add(p);
-        p.clear();
-
-        p.add("Dias de estadia");
-        p.add(c);
-        p.add(String.valueOf(dias));
-        document.add(p);
-        p.clear();
-
-        p.add("Valor total das diárias");
-        p.add(c);
-
-        String strValorDiarias = currencyFormatter.format(valorDiarias);
-        p.setFont(fonteChateauRoseNegrito);
-        p.add(strValorDiarias);
-        document.add(p);
-        p.clear();
-
-        // parágrafo com o valor total
-        String strValorTotal = currencyFormatter.format(vlrTotal);
-        p.setFont(fonteRedViolet);
-        p.setSpacingBefore(20);
-        p.add("Valor total");
-        p.add(c);
-        p.add(strValorTotal);
-        document.add(p);
+////        Double vlrTotal = 0.0;
+//        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+//
+//        if (listaDespesas != null) {
+//	        for (Despesa despesa : listaDespesas) {
+//	            // um parágrafo para cada item/servico consumido
+//	            int qtdServico = despesa.getQtdConsumo();
+//	            String desServico = despesa.getDesServico();
+//	            Double vlrServico = despesa.getVlrUnit();
+//
+////	            vlrTotal += vlrServico * qtdServico;
+//
+//	            String strVlrServico = currencyFormatter.format(vlrServico);
+//
+//	            p.setFont(fonteMulberry);
+//	            p.setSpacingAfter(2);
+//	            p.setSpacingBefore(0);
+//	            p.add(String.valueOf(qtdServico));
+//	            p.add(" ");
+//	            p.add(desServico);
+//	            p.add(c);
+//	            p.setFont(fonteSparklingGrape);
+//	            p.add(strVlrServico);
+//	            document.add(p);
+//	            p.clear();
+//	        }
+//	    }
+//
+//        // parágrafo com as informações da diária
+//        int nroAdultos = quartoHosp.getNroAdultos();
+//        int nroCriancas = quartoHosp.getNroCriancas();
+//        Double vlrDiaria = quartoHosp.getVlrDiaria();
+//
+//        Timestamp datCheckIn = hosp.getDatCheckIn();
+//        long msDiferenca = (datCheckOut.getTime()) - (datCheckIn.getTime());
+//        long segundos = msDiferenca / 1000;
+//        long minutos = segundos / 60;
+//        long horas = minutos / 60;
+//        long dias = horas / 24;
+//
+//        Double valorDiarias = dias * vlrDiaria;
+//
+//        // valor total pago pelo cliente
+//        vlrTotal = hosp.getVlrPago();
+//
+//        p.setFont(fonteChateauRose);
+//        p.setSpacingAfter(2);
+//        p.setSpacingBefore(0);
+//
+//        p.add("Número de adultos");
+//        p.add(c);
+//        p.add(String.valueOf(nroAdultos));
+//        document.add(p);
+//        p.clear();
+//
+//        p.add("Número de crianças");
+//        p.add(c);
+//        p.add(String.valueOf(nroCriancas));
+//        document.add(p);
+//        p.clear();
+//
+//        p.add("Dias de estadia");
+//        p.add(c);
+//        p.add(String.valueOf(dias));
+//        document.add(p);
+//        p.clear();
+//
+//        p.add("Valor total das diárias");
+//        p.add(c);
+//
+//        String strValorDiarias = currencyFormatter.format(valorDiarias);
+//        p.setFont(fonteChateauRoseNegrito);
+//        p.add(strValorDiarias);
+//        document.add(p);
+//        p.clear();
+//
+//        // parágrafo com o valor total
+//        String strValorTotal = currencyFormatter.format(vlrTotal);
+//        p.setFont(fonteRedViolet);
+//        p.setSpacingBefore(20);
+//        p.add("Valor total");
+//        p.add(c);
+//        p.add(strValorTotal);
+//        document.add(p);
     }
-
 
 }
