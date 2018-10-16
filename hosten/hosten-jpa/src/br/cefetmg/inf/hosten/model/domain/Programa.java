@@ -37,7 +37,7 @@ public class Programa implements Serializable {
                 @JoinColumn(name = "codprograma", referencedColumnName = "codprograma", nullable = false)},
             inverseJoinColumns = {
                 @JoinColumn(name = "codcargo", referencedColumnName = "codcargo", nullable = false)})
-    private Set<Cargo> cargos = new HashSet<>();
+    private final Set<Cargo> cargos = new HashSet<>();
 
     public Programa() {
     }

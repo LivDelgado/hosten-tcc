@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -29,7 +30,7 @@ public class ItemConforto implements Serializable {
     private String desItem;
 
     @ManyToMany(mappedBy = "itemConfortos")
-    private Set<CategoriaQuarto> categorias;
+    private final Set<CategoriaQuarto> categorias = new HashSet<>();
 
     public ItemConforto() {
     }
@@ -38,10 +39,9 @@ public class ItemConforto implements Serializable {
         this.codItem = coditem;
     }
 
-    public ItemConforto(String codItem, String desItem, Set<CategoriaQuarto> categorias) {
+    public ItemConforto(String codItem, String desItem) {
         this.codItem = codItem;
         this.desItem = desItem;
-        this.categorias = categorias;
     }
 
     public String getCodItem() {
@@ -62,10 +62,6 @@ public class ItemConforto implements Serializable {
 
     public Set<CategoriaQuarto> getCategorias() {
         return categorias;
-    }
-
-    public void setCategorias(Set<CategoriaQuarto> categorias) {
-        this.categorias = categorias;
     }
     
     @Override

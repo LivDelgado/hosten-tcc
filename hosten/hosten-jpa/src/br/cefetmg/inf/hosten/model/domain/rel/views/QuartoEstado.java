@@ -18,12 +18,12 @@ import org.hibernate.annotations.Immutable;
 @Immutable
 @NamedQueries({
     @NamedQuery(name = "QuartoEstado.findAll", query = "SELECT q FROM QuartoEstado q")
-    , @NamedQuery(name = "QuartoEstado.findByNroquarto", query = "SELECT q FROM QuartoEstado q WHERE q.nroQuarto = :nroQuarto")
-    , @NamedQuery(name = "QuartoEstado.findByNroadultos", query = "SELECT q FROM QuartoEstado q WHERE q.nroAdultos = :nroAdultos")
-    , @NamedQuery(name = "QuartoEstado.findByNrocriancas", query = "SELECT q FROM QuartoEstado q WHERE q.nroCriancas = :nroCriancas")
-    , @NamedQuery(name = "QuartoEstado.findByVlrdiaria", query = "SELECT q FROM QuartoEstado q WHERE q.vlrDiaria = :vlrDiaria")
-    , @NamedQuery(name = "QuartoEstado.findByIdtocupado", query = "SELECT q FROM QuartoEstado q WHERE q.idtOcupado = :idtOcupado")
-    , @NamedQuery(name = "QuartoEstado.findByDatcheckout", query = "SELECT q FROM QuartoEstado q WHERE q.datCheckout = :datCheckout")})
+    , @NamedQuery(name = "QuartoEstado.findByNroQuarto", query = "SELECT q FROM QuartoEstado q WHERE q.nroQuarto = :nroQuarto")
+    , @NamedQuery(name = "QuartoEstado.findByNroAdultos", query = "SELECT q FROM QuartoEstado q WHERE q.nroAdultos = :nroAdultos")
+    , @NamedQuery(name = "QuartoEstado.findByNroCriancas", query = "SELECT q FROM QuartoEstado q WHERE q.nroCriancas = :nroCriancas")
+    , @NamedQuery(name = "QuartoEstado.findByVlrDiaria", query = "SELECT q FROM QuartoEstado q WHERE q.vlrDiaria = :vlrDiaria")
+    , @NamedQuery(name = "QuartoEstado.findByIdtOcupado", query = "SELECT q FROM QuartoEstado q WHERE q.idtOcupado = :idtOcupado")
+    , @NamedQuery(name = "QuartoEstado.findByDatCheckout", query = "SELECT q FROM QuartoEstado q WHERE q.datCheckout = :datCheckout")})
 public class QuartoEstado implements Serializable {
 
     @Id

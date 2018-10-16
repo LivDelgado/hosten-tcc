@@ -80,6 +80,11 @@ public class ServicoArea implements Serializable {
         this.servicos.add(servico);
         servico.setCodServicoArea(this);
     }
+    
+    public void removeServico(Servico servico, ServicoArea servicoAreaNov) {
+        this.servicos.remove(servico);
+        servico.setCodServicoArea(servicoAreaNov);
+    }
 
     @Override
     public boolean equals(Object object) {

@@ -91,10 +91,10 @@ public class ProgramaDAO implements IProgramaDAO {
     public boolean atualiza(String id, Programa programaNov)
             throws SQLException {
         em.getTransaction().begin();
-        
+
         Programa programaAnt = em.find(Programa.class, id);
         programaAnt.setDesPrograma(programaNov.getDesPrograma());
-        
+
         em.getTransaction().commit();
 
         return true;
@@ -106,20 +106,6 @@ public class ProgramaDAO implements IProgramaDAO {
         em.remove(programa);
         em.getTransaction().commit();
 
-        return true;
-    }
-
-    @Override
-    public boolean relacionaProgramaCargo(Programa programa, Cargo cargo) throws SQLException {
-        programa.addCargo(cargo);
-        
-        return true;
-    }
-
-    @Override
-    public boolean apagaRelacaoProgramaCargo(Programa programa, Cargo cargo) throws SQLException {
-        programa.removeCargo(cargo);
-        
         return true;
     }
 }

@@ -3,7 +3,6 @@ package br.cefetmg.inf.hosten.model.dao.impl;
 import br.cefetmg.inf.hosten.model.dao.IHospedeDAO;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
-import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -100,12 +99,12 @@ public class HospedeDAO implements IHospedeDAO {
     public boolean atualiza(String id, Hospede hospedeNov)
             throws SQLException {
         em.getTransaction().begin();
-        
+
         Hospede hospedeAnt = em.find(Hospede.class, id);
         hospedeAnt.setNomHospede(hospedeNov.getNomHospede());
         hospedeAnt.setDesEmail(hospedeNov.getDesEmail());
         hospedeAnt.setDesTelefone(hospedeNov.getDesTelefone());
-        
+
         em.getTransaction().commit();
 
         return true;
@@ -117,13 +116,6 @@ public class HospedeDAO implements IHospedeDAO {
         em.remove(hospede);
         em.getTransaction().commit();
 
-        return true;
-    }
-
-    @Override
-    public boolean adicionaHospedagemAoHospede(Hospede hospede, Hospedagem hospedagem) throws SQLException {
-        hospede.addHospedagem(hospedagem);
-        
         return true;
     }
 }

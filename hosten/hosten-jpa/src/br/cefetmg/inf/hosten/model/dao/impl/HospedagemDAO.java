@@ -99,21 +99,20 @@ public class HospedagemDAO implements IHospedagemDAO {
     public boolean atualiza(String id, Hospedagem hospedagemNov)
             throws SQLException {
         em.getTransaction().begin();
-        
+
         Hospedagem hospedagemAnt = em.find(Hospedagem.class, id);
-        
+
         hospedagemAnt.setDatCheckin(hospedagemNov.getDatCheckin());
         hospedagemAnt.setDatCheckout(hospedagemNov.getDatCheckout());
         hospedagemAnt.setVlrPago(hospedagemNov.getVlrPago());
-        
+
         Hospede hospedeAnt = hospedagemAnt.getCodCpf();
         Hospede hospedeNov = hospedagemNov.getCodCpf();
-        if(!hospedagemAnt.equals(hospedagemNov)) {
+        if (!hospedagemAnt.equals(hospedagemNov)) {
             hospedeAnt.removeHospedagem(hospedeNov, hospedagemAnt);
         }
-        
+
         em.getTransaction().commit();
-        
 
         return true;
     }

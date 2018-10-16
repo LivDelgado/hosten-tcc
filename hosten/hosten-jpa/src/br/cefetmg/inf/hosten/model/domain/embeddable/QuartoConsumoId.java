@@ -1,9 +1,8 @@
 package br.cefetmg.inf.hosten.model.domain.embeddable;
 
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -11,75 +10,51 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class QuartoConsumoId implements Serializable {
 
-    @Basic(optional = false)
-    @Column(name = "seqhospedagem", nullable = false)
-    private int seqHospedagem;
+    private QuartoHospedagem quartoHospedagem;
 
-    @Basic(optional = false)
-    @Column(name = "nroquarto", nullable = false)
-    private short nroQuarto;
-
-    @Basic(optional = false)
-    @Column(name = "datconsumo", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date datConsumo;
 
     public QuartoConsumoId() {
     }
 
-    public QuartoConsumoId(int seqhospedagem, short nroquarto, Date datconsumo) {
-        this.seqHospedagem = seqhospedagem;
-        this.nroQuarto = nroquarto;
-        this.datConsumo = datconsumo;
+    public QuartoConsumoId(QuartoHospedagem quartoHospedagem, Date datConsumo) {
+        this.quartoHospedagem = quartoHospedagem;
+        this.datConsumo = datConsumo;
     }
 
-    public int getSeqHospedagem() {
-        return seqHospedagem;
-    }
-
-    public void setSeqHospedagem(int seqHospedagem) {
-        this.seqHospedagem = seqHospedagem;
-    }
-
-    public short getNroQuarto() {
-        return nroQuarto;
-    }
-
-    public void setNroQuarto(short nroQuarto) {
-        this.nroQuarto = nroQuarto;
+    public QuartoHospedagem getQuartoHospedagem() {
+        return quartoHospedagem;
     }
 
     public Date getDatConsumo() {
         return datConsumo;
     }
 
-    public void setDatConsumo(Date datConsumo) {
-        this.datConsumo = datConsumo;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) seqHospedagem;
-        hash += (int) nroQuarto;
+        hash += (int) quartoHospedagem.getId().getSeqHospedagem();
+        hash += (int) quartoHospedagem.getId().getNroQuarto();
         hash += (datConsumo != null ? datConsumo.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        // TODO: Warning - this method won't work in the case the id2 fields are not set
         if (!(object instanceof QuartoConsumoId)) {
             return false;
         }
         QuartoConsumoId other = (QuartoConsumoId) object;
-        if (this.seqHospedagem != other.seqHospedagem) {
+        if (this.quartoHospedagem.getId().getSeqHospedagem() != other.quartoHospedagem.getId().getSeqHospedagem()) {
             return false;
         }
-        if (this.nroQuarto != other.nroQuarto) {
+        if (this.quartoHospedagem.getId().getNroQuarto() != other.quartoHospedagem.getId().getNroQuarto()) {
             return false;
         }
-        if ((this.datConsumo == null && other.datConsumo != null) || (this.datConsumo != null && !this.datConsumo.equals(other.datConsumo))) {
+        if ((this.datConsumo == null && other.datConsumo != null)
+                || (this.datConsumo != null && !this.datConsumo.equals(other.datConsumo))) {
             return false;
         }
         return true;
@@ -87,7 +62,8 @@ public class QuartoConsumoId implements Serializable {
 
     @Override
     public String toString() {
-        return "br.cefetmg.inf.hosten.model.domain.QuartoconsumoPK[ seqhospedagem=" + seqHospedagem + ", nroquarto=" + nroQuarto + ", datconsumo=" + datConsumo + " ]";
+        return "br.cefetmg.inf.hosten.model.domain.QuartoconsumoPK[ seqhospedagem="
+                + this.quartoHospedagem.getId().getSeqHospedagem() + ", nroquarto="
+                + this.quartoHospedagem.getId().getNroQuarto() + ", datconsumo=" + datConsumo + " ]";
     }
-    
 }

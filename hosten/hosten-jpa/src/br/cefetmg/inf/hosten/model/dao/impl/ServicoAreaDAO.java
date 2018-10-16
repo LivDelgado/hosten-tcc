@@ -1,7 +1,6 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
 import br.cefetmg.inf.hosten.model.dao.IServicoAreaDAO;
-import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
@@ -91,10 +90,10 @@ public class ServicoAreaDAO implements IServicoAreaDAO {
     public boolean atualiza(String id, ServicoArea servicoAreaAtualizado)
             throws SQLException {
         em.getTransaction().begin();
-        
+
         ServicoArea servicoArea = em.find(ServicoArea.class, id);
         servicoArea.setNomServicoArea(servicoAreaAtualizado.getNomServicoArea());
-        
+
         em.getTransaction().commit();
 
         return true;
@@ -106,13 +105,6 @@ public class ServicoAreaDAO implements IServicoAreaDAO {
         em.remove(servicoArea);
         em.getTransaction().commit();
 
-        return true;
-    }
-
-    @Override
-    public boolean adicionaServicoAoServicoArea(ServicoArea servicoArea, Servico servico) throws SQLException {
-        servicoArea.addServico(servico);
-        
         return true;
     }
 }

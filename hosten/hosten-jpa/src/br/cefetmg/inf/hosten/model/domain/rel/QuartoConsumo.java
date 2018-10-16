@@ -9,35 +9,51 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "quartoconsumo", catalog = "hosten", schema = "public")
+@IdClass(br.cefetmg.inf.hosten.model.domain.embeddable.QuartoConsumoId.class)
 @NamedQueries({
     @NamedQuery(name = "QuartoConsumo.findAll", query = "SELECT q FROM QuartoConsumo q")
-    , @NamedQuery(name = "QuartoConsumo.findBySeqhospedagem", query = "SELECT q FROM QuartoConsumo q WHERE q.id.seqHospedagem = :seqHospedagem")
-    , @NamedQuery(name = "QuartoConsumo.findByNroquarto", query = "SELECT q FROM QuartoConsumo q WHERE q.id.nroQuarto = :nroQuarto")
-    , @NamedQuery(name = "QuartoConsumo.findByDatconsumo", query = "SELECT q FROM QuartoConsumo q WHERE q.id.datConsumo = :datConsumo")
-    , @NamedQuery(name = "QuartoConsumo.findByQtdconsumo", query = "SELECT q FROM QuartoConsumo q WHERE q.qtdConsumo = :qtdconsumo")})
+    , @NamedQuery(name = "QuartoConsumo.findBySeqHospedagem",
+            query = "SELECT q FROM QuartoConsumo q WHERE q.quartoHospedagem.id.seqHospedagem = :seqHospedagem")
+    , @NamedQuery(name = "QuartoConsumo.findByNroQuarto",
+            query = "SELECT q FROM QuartoConsumo q WHERE q.quartoHospedagem.id.nroQuarto = :nroQuarto")
+    , @NamedQuery(name = "QuartoConsumo.findByDatConsumo",
+            query = "SELECT q FROM QuartoConsumo q WHERE q.datConsumo = :datConsumo")
+    , @NamedQuery(name = "QuartoConsumo.findByQtdConsumo",
+            query = "SELECT q FROM QuartoConsumo q WHERE q.qtdConsumo = :qtdconsumo")})
 public class QuartoConsumo implements Serializable {
 
-    @EmbeddedId
-    protected QuartoConsumoId id;
+    @Id
+    @ManyToOne(optional = false)
+    @JoinColumns({
+        @JoinColumn(name = "seqhospedagem", referencedColumnName = "seqhospedagem", 
+                nullable = false, insertable = false, updatable = false)
+        , @JoinColumn(name = "nroquarto", referencedColumnName = "nroquarto", 
+                nullable = false, insertable = false, updatable = false)})
+    private QuartoHospedagem quartoHospedagem;
+
+    @Id
+    @Basic(optional = false)
+    @Column(name = "datconsumo", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datConsumo;
 
     @Basic(optional = false)
     @Column(name = "qtdconsumo", nullable = false)
     private short qtdConsumo;
-
-    @ManyToOne(optional = false)
-    @JoinColumns({
-        @JoinColumn(name = "seqhospedagem", referencedColumnName = "seqhospedagem", nullable = false, insertable = false, updatable = false)
-        , @JoinColumn(name = "nroquarto", referencedColumnName = "nroquarto", nullable = false, insertable = false, updatable = false)})
-    private QuartoHospedagem quartoHospedagem;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "seqservico", referencedColumnName = "seqservico", nullable = false)
@@ -50,28 +66,20 @@ public class QuartoConsumo implements Serializable {
     public QuartoConsumo() {
     }
 
-    public QuartoConsumo(QuartoConsumoId id) {
-        this.id = id;
-    }
-
-    public QuartoConsumo(QuartoHospedagem quartoHospedagem, Date datconsumo) {
-        this.id = new QuartoConsumoId(quartoHospedagem.getId().getSeqHospedagem(), quartoHospedagem.getId().getNroQuarto(), datconsumo);
-    }
-
-    public QuartoConsumo(QuartoConsumoId id, short qtdConsumo, QuartoHospedagem quartoHospedagem, Servico seqServico, Usuario codUsuarioRegistro) {
-        this.id = id;
+    public QuartoConsumo(QuartoConsumoId id, short qtdConsumo, Servico seqServico, Usuario codUsuarioRegistro) {
+        quartoHospedagem = id.getQuartoHospedagem();
+        datConsumo = id.getDatConsumo();
         this.qtdConsumo = qtdConsumo;
-        this.quartoHospedagem = quartoHospedagem;
         this.seqServico = seqServico;
         this.codUsuarioRegistro = codUsuarioRegistro;
     }
 
-    public QuartoConsumoId getId() {
-        return id;
+    public QuartoHospedagem getQuartoHospedagem() {
+        return quartoHospedagem;
     }
 
-    public void setId(QuartoConsumoId id) {
-        this.id = id;
+    public Date getDatConsumo() {
+        return datConsumo;
     }
 
     public short getQtdConsumo() {
@@ -80,14 +88,6 @@ public class QuartoConsumo implements Serializable {
 
     public void setQtdConsumo(short qtdConsumo) {
         this.qtdConsumo = qtdConsumo;
-    }
-
-    public QuartoHospedagem getQuartoHospedagem() {
-        return quartoHospedagem;
-    }
-
-    public void setQuartoHospedagem(QuartoHospedagem quartoHospedagem) {
-        this.quartoHospedagem = quartoHospedagem;
     }
 
     public Servico getSeqServico() {
@@ -105,11 +105,12 @@ public class QuartoConsumo implements Serializable {
     public void setCodUsuarioRegistro(Usuario codUsuarioRegistro) {
         this.codUsuarioRegistro = codUsuarioRegistro;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (quartoHospedagem != null ? quartoHospedagem.hashCode() : 0);
+        hash += (datConsumo != null ? datConsumo.hashCode() : 0);
         return hash;
     }
 
@@ -120,7 +121,14 @@ public class QuartoConsumo implements Serializable {
             return false;
         }
         QuartoConsumo other = (QuartoConsumo) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if (this.quartoHospedagem.getId().getSeqHospedagem() != other.quartoHospedagem.getId().getSeqHospedagem()) {
+            return false;
+        }
+        if (this.quartoHospedagem.getId().getNroQuarto() != other.quartoHospedagem.getId().getNroQuarto()) {
+            return false;
+        }
+        if ((this.datConsumo == null && other.datConsumo != null)
+                || (this.datConsumo != null && !this.datConsumo.equals(other.datConsumo))) {
             return false;
         }
         return true;
@@ -128,7 +136,8 @@ public class QuartoConsumo implements Serializable {
 
     @Override
     public String toString() {
-        return "br.cefetmg.inf.hosten.model.domain.Quartoconsumo[ quartoconsumoPK=" + id + " ]";
+        return "QuartoConsumo = {quartoHospedagem.id.seqHospedagem=[" + this.quartoHospedagem.getId().getSeqHospedagem() + "], "
+                + "quartoHospedagem.id.nroQuarto=[" + this.quartoHospedagem.getId().getNroQuarto() + ", "
+                + "datConsumo=[" + this.datConsumo.toString() + "]}";
     }
-
 }

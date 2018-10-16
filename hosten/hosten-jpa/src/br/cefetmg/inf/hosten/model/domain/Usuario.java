@@ -1,11 +1,8 @@
 package br.cefetmg.inf.hosten.model.domain;
 
-import br.cefetmg.inf.hosten.model.domain.embeddable.QuartoConsumoId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
-import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -23,30 +20,34 @@ import javax.persistence.Table;
 @Table(name = "usuario", catalog = "hosten", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findByCodUsuario", query = "SELECT u FROM Usuario u WHERE u.codUsuario = :codUsuario")
-    , @NamedQuery(name = "Usuario.findByNomUsuario", query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario")
-    , @NamedQuery(name = "Usuario.findByDesSenha", query = "SELECT u FROM Usuario u WHERE u.desSenha = :desSenha")
-    , @NamedQuery(name = "Usuario.findByDesEmail", query = "SELECT u FROM Usuario u WHERE u.desEmail = :deEmail")})
+    , @NamedQuery(name = "Usuario.findByCodUsuario",
+            query = "SELECT u FROM Usuario u WHERE u.codUsuario = :codUsuario")
+    , @NamedQuery(name = "Usuario.findByNomUsuario",
+            query = "SELECT u FROM Usuario u WHERE u.nomUsuario = :nomUsuario")
+    , @NamedQuery(name = "Usuario.findByDesSenha",
+            query = "SELECT u FROM Usuario u WHERE u.desSenha = :desSenha")
+    , @NamedQuery(name = "Usuario.findByDesEmail",
+            query = "SELECT u FROM Usuario u WHERE u.desEmail = :deEmail")})
 public class Usuario implements Serializable {
 
     @Id
     @Basic(optional = false)
     @Column(name = "codusuario", nullable = false, length = 4)
     private String codUsuario;
-    
+
     @Basic(optional = false)
     @Column(name = "nomusuario", nullable = false, length = 90)
     private String nomUsuario;
-    
+
     @Column(name = "dessenha", length = 64)
     private String desSenha;
-    
+
     @Column(name = "desemail", length = 60, unique = true)
     private String desEmail;
-    
+
     @OneToMany(mappedBy = "codUsuarioRegistro", cascade = CascadeType.ALL)
     private List<QuartoConsumo> quartoConsumos = new ArrayList<>();
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "codcargo", referencedColumnName = "codcargo", nullable = false)
     private Cargo codCargo;
@@ -58,12 +59,16 @@ public class Usuario implements Serializable {
         this.codUsuario = codusuario;
     }
 
-    public String getCodUsuario() {
-        return codUsuario;
+    public Usuario(String codUsuario, String nomUsuario, String desSenha, String desEmail, Cargo codCargo) {
+        this.codUsuario = codUsuario;
+        this.nomUsuario = nomUsuario;
+        this.desSenha = desSenha;
+        this.desEmail = desEmail;
+        this.codCargo = codCargo;
     }
 
-    public void setCodUsuario(String codUsuario) {
-        this.codUsuario = codUsuario;
+    public String getCodUsuario() {
+        return codUsuario;
     }
 
     public String getNomUsuario() {
@@ -94,10 +99,6 @@ public class Usuario implements Serializable {
         return quartoConsumos;
     }
 
-    public void setQuartoConsumos(List<QuartoConsumo> quartoConsumos) {
-        this.quartoConsumos = quartoConsumos;
-    }
-
     public Cargo getCodCargo() {
         return codCargo;
     }
@@ -105,18 +106,7 @@ public class Usuario implements Serializable {
     public void setCodCargo(Cargo codCargo) {
         this.codCargo = codCargo;
     }
-    
-    public void addQuartoConsumo(QuartoHospedagem quartoHospedagem, Date datConsumo, short qtdConsumo, Servico servico) {
-        QuartoConsumoId qcid = new QuartoConsumoId(
-                quartoHospedagem.getId().getSeqHospedagem(), 
-                quartoHospedagem.getId().getNroQuarto(), datConsumo);
-        QuartoConsumo qc = new QuartoConsumo(qcid, qtdConsumo, quartoHospedagem, servico, this);
-        
-        this.quartoConsumos.add(qc);
-        quartoHospedagem.getQuartoConsumos().add(qc);
-        servico.getQuartoConsumos().add(qc);
-    }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,7 +121,8 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.codUsuario == null && other.codUsuario != null) || (this.codUsuario != null && !this.codUsuario.equals(other.codUsuario))) {
+        if ((this.codUsuario == null && other.codUsuario != null)
+                || (this.codUsuario != null && !this.codUsuario.equals(other.codUsuario))) {
             return false;
         }
         return true;
@@ -141,5 +132,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "br.cefetmg.inf.hosten.model.domain.Usuario[ codusuario=" + codUsuario + " ]";
     }
-    
+
 }

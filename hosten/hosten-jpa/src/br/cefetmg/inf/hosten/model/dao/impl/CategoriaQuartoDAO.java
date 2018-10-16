@@ -2,13 +2,9 @@ package br.cefetmg.inf.hosten.model.dao.impl;
 
 import br.cefetmg.inf.hosten.model.dao.ICategoriaQuartoDAO;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
-import br.cefetmg.inf.hosten.model.domain.ItemConforto;
-import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
@@ -72,10 +68,10 @@ public class CategoriaQuartoDAO implements ICategoriaQuartoDAO {
 
         em.getTransaction().begin();
 
-        TypedQuery<CategoriaQuarto> tq = em
+        List<CategoriaQuarto> categoriaQuartos = em
                 .createNamedQuery(qryBusca, CategoriaQuarto.class)
-                .setParameter(parametro, dadoBusca);
-        List<CategoriaQuarto> categoriaQuartos = tq.getResultList();
+                .setParameter(parametro, dadoBusca)
+                .getResultList();
 
         em.getTransaction().commit();
 
@@ -98,31 +94,13 @@ public class CategoriaQuartoDAO implements ICategoriaQuartoDAO {
     public boolean atualiza(String id, CategoriaQuarto cqNova)
             throws SQLException {
         em.getTransaction().begin();
-        
+
         CategoriaQuarto cqAnt = em.find(CategoriaQuarto.class, id);
         cqAnt.setNomCategoria(cqNova.getNomCategoria());
         cqAnt.setVlrDiaria(cqNova.getVlrDiaria());
-        
-        Set<ItemConforto> itensAnt = cqAnt.getItemConfortos();
-        Set<ItemConforto> itensNovos = cqNova.getItemConfortos();
-        
-        Iterator<ItemConforto> itItensNovos = itensNovos.iterator();
-        while(itItensNovos.hasNext()) {
-            ItemConforto itemNovo = itItensNovos.next();
-            
-            if(!itensAnt.contains(itemNovo)) {
-                cqAnt.addItemConforto(itemNovo);
-            }
-        }
-        Iterator<ItemConforto> itItensAnt = itensAnt.iterator();
-        while (itItensAnt.hasNext()) {
-            ItemConforto itemAnt = itItensNovos.next();
 
-            if (!itensNovos.contains(itemAnt)) {
-                cqAnt.removeItemConforto(itemAnt);
-            }
-        }
-        
+        cqAnt.transferItemConforto(cqNova);
+
         em.getTransaction().commit();
 
         return true;
@@ -134,20 +112,6 @@ public class CategoriaQuartoDAO implements ICategoriaQuartoDAO {
         em.remove(categoriaQuarto);
         em.getTransaction().commit();
 
-        return true;
-    }
-
-    @Override
-    public boolean adicionaQuartoACategoriaQuarto(CategoriaQuarto categoriaQuarto, Quarto quarto) throws SQLException {
-        categoriaQuarto.addQuarto(quarto);
-        
-        return true;
-    }
-
-    @Override
-    public boolean relacionaItemConfortoCategoriaQuarto(CategoriaQuarto categoriaQuarto, ItemConforto itemConforto) throws SQLException {
-        categoriaQuarto.addItemConforto(itemConforto);
-        
         return true;
     }
 }

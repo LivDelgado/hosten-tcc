@@ -52,12 +52,7 @@ public class Servico implements Serializable {
     public Servico() {
     }
 
-    public Servico(Short seqservico) {
-        this.seqServico = seqservico;
-    }
-
-    public Servico(Short seqServico, String desServico, BigDecimal vlrUnit) {
-        this.seqServico = seqServico;
+    public Servico(String desServico, BigDecimal vlrUnit) {
         this.desServico = desServico;
         this.vlrUnit = vlrUnit;
     }

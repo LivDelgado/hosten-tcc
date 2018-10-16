@@ -5,5 +5,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IQuartoEstadoDAO {
+
     List<QuartoEstado> buscaTodos() throws SQLException;
 }

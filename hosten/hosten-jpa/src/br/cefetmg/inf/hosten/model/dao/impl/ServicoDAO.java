@@ -94,11 +94,11 @@ public class ServicoDAO implements IServicoDAO {
     public boolean atualiza(String id, Servico servicoAtualizado)
             throws SQLException {
         em.getTransaction().begin();
-        
+
         Servico servico = em.find(Servico.class, id);
         servico.setDesServico(servicoAtualizado.getDesServico());
         servico.setVlrUnit(servicoAtualizado.getVlrUnit());
-        
+
         em.getTransaction().commit();
 
         return true;

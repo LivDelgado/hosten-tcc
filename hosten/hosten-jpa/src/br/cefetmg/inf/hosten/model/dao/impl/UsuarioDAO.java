@@ -64,6 +64,14 @@ public class UsuarioDAO implements IUsuarioDAO {
                 qryBusca += "NomUsuario";
                 parametro = "nomUsuario";
                 break;
+            case "dessenha":
+                qryBusca += "DesSenha";
+                parametro = "desSenha";
+                break;
+            case "desemail":
+                qryBusca += "DesEmail";
+                parametro = "desEmail";
+                break;
         }
 
         em.getTransaction().begin();

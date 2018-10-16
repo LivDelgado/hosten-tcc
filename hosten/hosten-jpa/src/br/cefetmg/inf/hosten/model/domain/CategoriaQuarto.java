@@ -3,6 +3,8 @@ package br.cefetmg.inf.hosten.model.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -40,17 +42,17 @@ public class CategoriaQuarto implements Serializable {
     @Column(name = "vlrdiaria", nullable = false, precision = 7, scale = 2)
     private BigDecimal vlrDiaria;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "categoriaitemconforto",
             joinColumns = {
                 @JoinColumn(name = "codcategoria", referencedColumnName = "codcategoria", nullable = false)},
             inverseJoinColumns = {
                 @JoinColumn(name = "coditem", referencedColumnName = "coditem", nullable = false)})
-    private Set<ItemConforto> itemConfortos;
+    private final Set<ItemConforto> itemConfortos = new HashSet<>();
 
     @OneToMany(mappedBy = "codCategoria", cascade = CascadeType.ALL)
-    private List<Quarto> quartos = new ArrayList<>();
+    private final List<Quarto> quartos = new ArrayList<>();
 
     public CategoriaQuarto() {
     }
@@ -59,11 +61,10 @@ public class CategoriaQuarto implements Serializable {
         this.codCategoria = codcategoria;
     }
 
-    public CategoriaQuarto(String codCategoria, String nomCategoria, BigDecimal vlrDiaria, Set<ItemConforto> itemConfortos) {
+    public CategoriaQuarto(String codCategoria, String nomCategoria, BigDecimal vlrDiaria) {
         this.codCategoria = codCategoria;
         this.nomCategoria = nomCategoria;
         this.vlrDiaria = vlrDiaria;
-        this.itemConfortos = itemConfortos;
     }
 
     public String getCodCategoria() {
@@ -97,27 +98,53 @@ public class CategoriaQuarto implements Serializable {
     public List<Quarto> getQuartos() {
         return quartos;
     }
-    
+
     public void addItemConforto(ItemConforto itemConforto) {
         this.itemConfortos.add(itemConforto);
         itemConforto.getCategorias().add(this);
     }
-    
+
+    public void transferItemConforto(CategoriaQuarto cqNov) {
+        Set<ItemConforto> itensAnt = this.itemConfortos;
+        Set<ItemConforto> itensNov = cqNov.getItemConfortos();
+
+        if (itensNov != null) {
+            Iterator<ItemConforto> itItensNovos = itensNov.iterator();
+            while (itItensNovos.hasNext()) {
+                ItemConforto itemNovo = itItensNovos.next();
+
+                if (itensAnt == null || !itensAnt.contains(itemNovo)) {
+                    this.addItemConforto(itemNovo);
+                }
+            }
+            if (itensAnt != null) {
+                Iterator<ItemConforto> itItensAnt = itensAnt.iterator();
+                while (itItensAnt.hasNext()) {
+                    ItemConforto itemAnt = itItensNovos.next();
+
+                    if (!itensNov.contains(itemAnt)) {
+                        this.removeItemConforto(itemAnt);
+                    }
+                }
+            }
+        }
+    }
+
     public void removeItemConforto(ItemConforto itemConforto) {
         this.itemConfortos.remove(itemConforto);
         itemConforto.getCategorias().remove(this);
     }
-    
+
     public void addQuarto(Quarto quarto) {
         this.quartos.add(quarto);
         quarto.setCodCategoria(this);
     }
-    
+
     public void removeQuarto(Quarto quarto, CategoriaQuarto categoriaQuartoNova) {
         this.quartos.remove(quarto);
         quarto.setCodCategoria(categoriaQuartoNova);
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

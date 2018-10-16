@@ -1,28 +1,34 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
+import br.cefetmg.inf.hosten.model.dao.ICargoDAO;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
+import br.cefetmg.inf.hosten.model.domain.Programa;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Nícolas
  */
-public class CargoDAOTest {
+public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
 
-    private static final String MSG_SUCESSO = "\n-> O teste foi bem-sucedido <--------";
-    private static final String MSG_ERRO = "\n->!! O teste falhou !!<--------";
-
-    private static CargoDAO DAO;
-
-    public CargoDAOTest() {
+    public CargoDAOTest() throws SQLException {
         DAO = CargoDAO.getInstance();
+        
+        for(Programa p : ProgramaDAO.getInstance().buscaTodos()) {
+            Iterator<Cargo> itC = p.getCargos().iterator();
+            while(itC.hasNext()) {
+                Cargo c = itC.next();
+                p.removeCargo(c);
+            }
+        }
+        for(Cargo c : DAO.buscaTodos()) {
+            DAO.deleta(c);
+        }
     }
 
     @BeforeClass
@@ -33,6 +39,7 @@ public class CargoDAOTest {
     public static void tearDownClass() {
     }
 
+    /*
     @Before
     public void setUp() {
         System.out.println("\n\n\n\n ");
@@ -41,8 +48,10 @@ public class CargoDAOTest {
     @After
     public void tearDown() {
     }
-
-    private Cargo getNewCargo(int i) {
+    */
+    
+    @Override
+    Cargo getNewInstanciaDomain(int i) {
         if (i < 10) {
             return new Cargo("00" + i, "Cargo " + i, false);
         } else if (i >= 10 && i < 100) {
@@ -52,40 +61,7 @@ public class CargoDAOTest {
         }
     }
 
-    private static void imprimeTituloTeste(String nomCasoTeste) {
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("-> " + nomCasoTeste.toUpperCase() + " <----------------------------------------");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("                                    ----------------------------");
-        System.out.println("                                                   -------------");
-    }
     
-    private static void finalizaCasoTeste() {
-        System.out.println("                                                   -------------");
-        System.out.println("                                    ----------------------------");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------");
-    }
-
-    private static void imprimeConteudoObjeto(Cargo c, String nota) {
-        System.out.println(nota + c.toString());
-    }
-
-    private static void concluiComSucesso() {
-        System.out.println(MSG_SUCESSO);
-        assert true;
-        finalizaCasoTeste();
-    }
-
-    private static void concluiComFalha(Exception e) {
-        if (e != null) {
-            System.out.println("--!!!!!!!!!!!!!!! Exceção gerada !!!!!!!!!!!!!!!----------------");
-            System.err.println(e.getMessage());
-        }
-        fail(MSG_ERRO);
-        finalizaCasoTeste();
-    }
-
     /**
      * Test of adiciona method, of class CargoDAO.
      */
@@ -93,7 +69,7 @@ public class CargoDAOTest {
     public void testAdiciona() {
         imprimeTituloTeste("adiciona");
         try {
-            Cargo c = getNewCargo(1);
+            Cargo c = getNewInstanciaDomain(1);
             imprimeConteudoObjeto(c, "");
 
             DAO.adiciona(c);
@@ -110,7 +86,7 @@ public class CargoDAOTest {
     public void testBuscaPorPk() {
         imprimeTituloTeste("buscaPorPk");
 
-        Cargo expResult = getNewCargo(2);
+        Cargo expResult = getNewInstanciaDomain(2);
 
         imprimeConteudoObjeto(expResult, "expResult = ");
         try {
@@ -138,7 +114,7 @@ public class CargoDAOTest {
         imprimeTituloTeste("buscaPorColuna");
 
         try {
-            Cargo cargo = getNewCargo(3);
+            Cargo cargo = getNewInstanciaDomain(3);
             imprimeConteudoObjeto(cargo, "");
 
             DAO.adiciona(cargo);
@@ -170,9 +146,9 @@ public class CargoDAOTest {
     public void testBuscaTodos() {
         imprimeTituloTeste("buscaTodos");
 
-        Cargo c1 = getNewCargo(4);
+        Cargo c1 = getNewInstanciaDomain(4);
         imprimeConteudoObjeto(c1, "c1 = ");
-        Cargo c2 = getNewCargo(5);
+        Cargo c2 = getNewInstanciaDomain(5);
         imprimeConteudoObjeto(c2, "c2 = ");
 
         try {
@@ -205,13 +181,13 @@ public class CargoDAOTest {
     public void testAtualiza() {
         imprimeTituloTeste("atualiza");
 
-        Cargo c = getNewCargo(6);
+        Cargo c = getNewInstanciaDomain(6);
 
         try {
             DAO.adiciona(c);
             imprimeConteudoObjeto(c, "Cargo antes do Update = ");
 
-            Cargo c2 = getNewCargo(7);
+            Cargo c2 = getNewInstanciaDomain(7);
             imprimeConteudoObjeto(c2, "O outro cargo = ");
 
             DAO.atualiza(c.getCodCargo(), c2);
@@ -237,7 +213,7 @@ public class CargoDAOTest {
     public void testDeleta() {
         imprimeTituloTeste("deleta");
 
-        Cargo c = getNewCargo(8);
+        Cargo c = getNewInstanciaDomain(8);
 
         try {
             DAO.adiciona(c);

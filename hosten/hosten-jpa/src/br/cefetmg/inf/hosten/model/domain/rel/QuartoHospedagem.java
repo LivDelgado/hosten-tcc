@@ -3,8 +3,12 @@ package br.cefetmg.inf.hosten.model.domain.rel;
 import br.cefetmg.inf.hosten.model.domain.embeddable.QuartoHospedagemId;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
+import br.cefetmg.inf.hosten.model.domain.Servico;
+import br.cefetmg.inf.hosten.model.domain.Usuario;
+import br.cefetmg.inf.hosten.model.domain.embeddable.QuartoConsumoId;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -13,6 +17,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -22,36 +27,48 @@ import javax.persistence.Table;
 @Table(name = "quartohospedagem", catalog = "hosten", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "QuartoHospedagem.findAll", query = "SELECT q FROM QuartoHospedagem q")
-    , @NamedQuery(name = "QuartoHospedagem.findBySeqhospedagem", query = "SELECT q FROM QuartoHospedagem q WHERE q.id.seqHospedagem = :seqHospedagem")
-    , @NamedQuery(name = "QuartoHospedagem.findByNroquarto", query = "SELECT q FROM QuartoHospedagem q WHERE q.id.nroQuarto = :nroQuarto")
-    , @NamedQuery(name = "QuartoHospedagem.findByNroadultos", query = "SELECT q FROM QuartoHospedagem q WHERE q.nroAdultos = :nroAdultos")
-    , @NamedQuery(name = "QuartoHospedagem.findByNrocriancas", query = "SELECT q FROM QuartoHospedagem q WHERE q.nroCriancas = :nroCriancas")
-    , @NamedQuery(name = "QuartoHospedagem.findByVlrdiaria", query = "SELECT q FROM QuartoHospedagem q WHERE q.vlrDiaria = :vlrDiaria")})
+    , @NamedQuery(name = "QuartoHospedagem.findBySeqHospedagem", 
+            query = "SELECT q FROM QuartoHospedagem q WHERE q.id.seqHospedagem = :seqHospedagem")
+    , @NamedQuery(name = "QuartoHospedagem.findByNroQuarto", 
+            query = "SELECT q FROM QuartoHospedagem q WHERE q.id.nroQuarto = :nroQuarto")
+    , @NamedQuery(name = "QuartoHospedagem.findByNroAdultos", 
+            query = "SELECT q FROM QuartoHospedagem q WHERE q.nroAdultos = :nroAdultos")
+    , @NamedQuery(name = "QuartoHospedagem.findByNroCriancas", 
+            query = "SELECT q FROM QuartoHospedagem q WHERE q.nroCriancas = :nroCriancas")
+    , @NamedQuery(name = "QuartoHospedagem.findByVlrDiaria", 
+            query = "SELECT q FROM QuartoHospedagem q WHERE q.vlrDiaria = :vlrDiaria")
+    , @NamedQuery(name = "QuartoHospedagem.fetchUltimoRegistroQuarto",
+            query = "SELECT qh FROM QuartoHospedagem qh "
+                    + "JOIN qh.hospedagem h "
+                    + "WHERE qh.id.nroQuarto = :nroQuarto "
+                    + "ORDER BY h.datCheckin DESC")})
 public class QuartoHospedagem implements Serializable {
 
     @EmbeddedId
     protected QuartoHospedagemId id;
-    
+
     @Basic(optional = false)
     @Column(name = "nroadultos", nullable = false)
     private short nroAdultos;
-    
+
     @Basic(optional = false)
     @Column(name = "nrocriancas", nullable = false)
     private short nroCriancas;
-    
+
     @Basic(optional = false)
     @Column(name = "vlrdiaria", nullable = false, precision = 7, scale = 2)
     private BigDecimal vlrDiaria;
-    
-    @JoinColumn(name = "seqhospedagem", referencedColumnName = "seqhospedagem", nullable = false, insertable = false, updatable = false)
+
     @ManyToOne(optional = false)
+    @JoinColumn(name = "seqhospedagem", referencedColumnName = "seqhospedagem", nullable = false)
+    @MapsId("seqHospedagem")
     private Hospedagem hospedagem;
-    
+
     @ManyToOne(optional = false)
-    @JoinColumn(name = "nroquarto", referencedColumnName = "nroquarto", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "nroquarto", referencedColumnName = "nroquarto", nullable = false)
+    @MapsId("nroQuarto")
     private Quarto quarto;
-    
+
     @OneToMany(mappedBy = "quartoHospedagem", cascade = CascadeType.ALL)
     private Set<QuartoConsumo> quartoConsumos;
 
@@ -124,11 +141,16 @@ public class QuartoHospedagem implements Serializable {
     public Set<QuartoConsumo> getQuartoConsumos() {
         return quartoConsumos;
     }
-
-    public void setQuartoConsumos(Set<QuartoConsumo> quartoConsumos) {
-        this.quartoConsumos = quartoConsumos;
-    }
     
+    public void addQuartoConsumo(Usuario usuario, Date datConsumo, short qtdConsumo, Servico servico) {
+        QuartoConsumoId qcid = new QuartoConsumoId(this, datConsumo);
+        QuartoConsumo qc = new QuartoConsumo(qcid, qtdConsumo, servico, usuario);
+
+        this.quartoConsumos.add(qc);
+        usuario.getQuartoConsumos().add(qc);
+        servico.getQuartoConsumos().add(qc);
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -153,5 +175,5 @@ public class QuartoHospedagem implements Serializable {
     public String toString() {
         return "br.cefetmg.inf.hosten.model.domain.Quartohospedagem[ quartohospedagemPK=" + id + " ]";
     }
-    
+
 }

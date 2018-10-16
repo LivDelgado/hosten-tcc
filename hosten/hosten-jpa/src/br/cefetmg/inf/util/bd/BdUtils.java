@@ -8,9 +8,9 @@ public final class BdUtils {
     private static EntityManager em;
     
     public enum BdEnum {
-        PERSISTENCE_UNIT("hosten-pu");
+        PERSISTENCE_UNIT("hosten");
 
-        String propriedade;
+        private final String propriedade;
         private BdEnum(String propriedade) {
             this.propriedade = propriedade;
         }
@@ -21,7 +21,7 @@ public final class BdUtils {
     }
     
     public static EntityManager getEntityManager() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("hosten");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory(BdEnum.PERSISTENCE_UNIT.getPropriedade());
         
         if (em == null) {
             em = factory.createEntityManager();
