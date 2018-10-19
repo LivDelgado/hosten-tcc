@@ -1,0 +1,79 @@
+/***** HEADER *****/
+
+.header-fixed {
+    background-color: #fff;
+    box-shadow: 0 1px 1px #ccc;
+    padding: 20px 40px;
+    margin-bottom: 20px;
+    height: 80px;
+    box-sizing: border-box;
+    top: -100px;
+    -webkit-transition: top 0.3s;
+    transition: top 0.3s;
+}
+
+.header-fixed .header-limiter {
+    max-width: 1200px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.header-fixed-placeholder{
+    height: 80px;
+    display: none;
+}
+
+/* Logo */
+
+.header-fixed .header-limiter h1 {
+    text-align: center;
+    font: normal 28px Oswald, Arial, Helvetica, sans-serif;
+    line-height: 40px;
+    margin: 0;
+}
+
+.header-fixed .header-limiter a {
+    color: #D2738F;
+    text-decoration: none;
+}
+
+/* Versão 'fixed' da header */
+
+body.fixed .header-fixed {
+    padding: 10px 40px;
+    height: 50px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+body.fixed .header-fixed-placeholder {
+    display: block;
+}
+
+body.fixed .header-fixed .header-limiter h1 {
+    font-size: 24px;
+    line-height: 30px;
+}
+
+/* Fazendo a header ser responsiva */
+
+@media all and (max-width: 600px) {
+
+    .header-fixed {
+        padding: 20px 0;
+        height: 75px;
+    }
+
+    body.fixed .header-fixed {
+        display: none;
+    }
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
