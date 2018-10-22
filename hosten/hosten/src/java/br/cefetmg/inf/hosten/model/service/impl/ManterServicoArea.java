@@ -1,10 +1,11 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
 import br.cefetmg.inf.hosten.model.persistencia.interfaces.IServicoAreaDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.ServicoAreaDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.ServicoDAO;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.ServicoAreaDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.ServicoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IServicoDAO;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,7 +16,7 @@ public class ManterServicoArea implements IManterServicoArea {
     IServicoAreaDAO objetoDAO;
 
     public ManterServicoArea() {
-        objetoDAO = ServicoAreaDAO.getInstance();
+        objetoDAO = ServicoAreaDAOAdapter.getInstance();
     }
 
     @Override
@@ -110,7 +111,7 @@ public class ManterServicoArea implements IManterServicoArea {
         }
 
         // confere se há algum serviço naquela área
-        ServicoDAO servicoDAO = ServicoDAO.getInstance();
+        IServicoDAO servicoDAO = ServicoDAOAdapter.getInstance();
         List<Servico> listaServicos = servicoDAO
                 .buscaServico(codRegistro, "codServicoArea");
         if (!listaServicos.isEmpty()) {

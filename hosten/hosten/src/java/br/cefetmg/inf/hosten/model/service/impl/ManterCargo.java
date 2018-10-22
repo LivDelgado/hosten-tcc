@@ -16,6 +16,11 @@ import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICargoProgramaDAO;
 import br.cefetmg.inf.hosten.model.domain.Programa;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.CargoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.CargoProgramaDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.ProgramaDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.UsuarioDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.interfaces.IUsuarioDAO;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
 
 public class ManterCargo implements IManterCargo {
@@ -23,7 +28,7 @@ public class ManterCargo implements IManterCargo {
     ICargoDAO objetoDAO;
 
     public ManterCargo() {
-        objetoDAO = CargoDAO.getInstance();
+        objetoDAO = CargoDAOAdapter.getInstance();
     }
 
     @Override
@@ -58,7 +63,7 @@ public class ManterCargo implements IManterCargo {
                 // adiciona o cargo
                 boolean testeRegistro = objetoDAO.adicionaCargo(cargo);
                 // cria os relacionamentos
-                ICargoProgramaDAO relDAO = CargoProgramaDAO.getInstance();
+                ICargoProgramaDAO relDAO = CargoProgramaDAOAdapter.getInstance();
                 for (String codPrograma : listaProgramas) {
                     CargoPrograma rel = new CargoPrograma(codPrograma, cargo.getCodCargo());
                     relDAO.adiciona(rel);
@@ -115,7 +120,7 @@ public class ManterCargo implements IManterCargo {
                 boolean testeRegistro = objetoDAO.atualizaCargo(codRegistro, cargo);
                 if (testeRegistro) {
                     // atualiza os relacionamentos
-                    ICargoProgramaDAO relDAO = CargoProgramaDAO.getInstance();
+                    ICargoProgramaDAO relDAO = CargoProgramaDAOAdapter.getInstance();
                     // deleta todos os relacionamentos com aquele cargo
                     List<CargoPrograma> listaREL = relDAO.busca(
                             cargo.getCodCargo(),
@@ -148,7 +153,7 @@ public class ManterCargo implements IManterCargo {
     public boolean excluir(String codRegistro)
             throws NegocioException, SQLException {
         // testar se tem usuario com esse cargo
-        UsuarioDAO dao = UsuarioDAO.getInstance();
+        IUsuarioDAO dao = UsuarioDAOAdapter.getInstance();
         List<Usuario> listaUsuarios = null;
         try {
             listaUsuarios = dao.buscaUsuario(codRegistro, "codCargo");
@@ -156,7 +161,7 @@ public class ManterCargo implements IManterCargo {
             throw new NegocioException("Erro! Não foi possível excluir o cargo");
         }
         if (listaUsuarios.isEmpty()) {
-            ICargoProgramaDAO relDAO = CargoProgramaDAO.getInstance();
+            ICargoProgramaDAO relDAO = CargoProgramaDAOAdapter.getInstance();
             // deleta todos os relacionamentos com aquele cargo
             List<CargoPrograma> listaREL = relDAO.busca(codRegistro, "codCargo");
             if (!listaREL.isEmpty()) {
@@ -193,7 +198,7 @@ public class ManterCargo implements IManterCargo {
     public List<Programa> listarProgramasRelacionados(String codCargo) 
             throws NegocioException, SQLException {
         if(codCargo != null) {
-            ICargoProgramaDAO cargoProgramaDAO = CargoProgramaDAO.getInstance();
+            ICargoProgramaDAO cargoProgramaDAO = CargoProgramaDAOAdapter.getInstance();
             List<Programa> lista = cargoProgramaDAO.buscaProgramasRelacionados(codCargo); 
             
             return lista;
@@ -205,7 +210,7 @@ public class ManterCargo implements IManterCargo {
     @Override
     public List<Programa> listarTodosProgramas() 
             throws NegocioException, SQLException {
-        IProgramaDAO programaDAO = ProgramaDAO.getInstance();
+        IProgramaDAO programaDAO = ProgramaDAOAdapter.getInstance();
         return programaDAO.buscaTodosProgramas();
     }
 }

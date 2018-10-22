@@ -1,10 +1,10 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
 import br.cefetmg.inf.hosten.model.persistencia.interfaces.IItemConfortoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.ItemConfortoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.CategoriaItemConfortoDAO;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.domain.rel.CategoriaItemConforto;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.CategoriaItemConfortoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.ItemConfortoDAOAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ManterItemConforto implements IManterItemConforto {
     IItemConfortoDAO objetoDAO;
 
     public ManterItemConforto() {
-        objetoDAO = ItemConfortoDAO.getInstance();
+        objetoDAO = ItemConfortoDAOAdapter.getInstance();
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ManterItemConforto implements IManterItemConforto {
         //
         // pesquisa se o código do item é utilizado em Categoria de Quarto
         //
-        ICategoriaItemConfortoDAO relDAO = CategoriaItemConfortoDAO.getInstance();
+        ICategoriaItemConfortoDAO relDAO = CategoriaItemConfortoDAOAdapter.getInstance();
         List<CategoriaItemConforto> rel = relDAO.busca(codRegistro, "codItem");
         if (rel.isEmpty()) {
             return objetoDAO.deletaItemConforto(codRegistro);

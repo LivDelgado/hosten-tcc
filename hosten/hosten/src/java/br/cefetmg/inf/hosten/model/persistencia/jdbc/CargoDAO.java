@@ -16,7 +16,7 @@ public class CargoDAO implements ICargoDAO{
     private static CargoDAO instancia;
     private static Connection con;
 
-    private CargoDAO() {
+    public CargoDAO() {
         super();
         con = new ConnectionFactory().getConnection();
     }

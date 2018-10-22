@@ -2,10 +2,10 @@ package br.cefetmg.inf.hosten.model.service.impl;
 
 import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.persistencia.interfaces.IRelatorioDespesasDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.QuartoConsumoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.RelatorioDespesasDAO;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.QuartoConsumoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistencia.adapters.RelatorioDespesasDAOAdapter;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ public class ControlarDespesas implements IControlarDespesas {
 
     @Override
     public boolean inserir(QuartoConsumo quartoConsumo) throws NegocioException, SQLException {
-        IQuartoConsumoDAO quartoConsumoDAO = QuartoConsumoDAO.getInstance();
+        IQuartoConsumoDAO quartoConsumoDAO = QuartoConsumoDAOAdapter.getInstance();
         if (quartoConsumo != null) {
             try {
                 quartoConsumoDAO.adiciona(quartoConsumo);
@@ -31,7 +31,7 @@ public class ControlarDespesas implements IControlarDespesas {
 
     @Override
     public List<Despesa> listar(int seqHospedagem, int nroQuarto) throws NegocioException, SQLException {
-        IRelatorioDespesasDAO relatorioDespesasDAO = RelatorioDespesasDAO.getInstance();
+        IRelatorioDespesasDAO relatorioDespesasDAO = RelatorioDespesasDAOAdapter.getInstance();
         List<Despesa> despesaEncontradas = null;
         if (seqHospedagem > 0 && nroQuarto > 0) {
             try {
@@ -47,7 +47,7 @@ public class ControlarDespesas implements IControlarDespesas {
 
     @Override
     public boolean excluir(QuartoConsumo quartoConsumo) throws NegocioException, SQLException {
-        IQuartoConsumoDAO quartoConsumoDAO = QuartoConsumoDAO.getInstance();
+        IQuartoConsumoDAO quartoConsumoDAO = QuartoConsumoDAOAdapter.getInstance();
         if (quartoConsumo != null) {
             try {
                 quartoConsumoDAO.deleta(quartoConsumo);
@@ -66,7 +66,7 @@ public class ControlarDespesas implements IControlarDespesas {
             throws NegocioException, SQLException {
         
         IRelatorioDespesasDAO relatorioDespesasDAO 
-                = RelatorioDespesasDAO.getInstance();
+                = RelatorioDespesasDAOAdapter.getInstance();
         
         Map<String, Object> despesaEncontradas = null;
         if (seqHospedagem > 0 && nroQuarto > 0) {
