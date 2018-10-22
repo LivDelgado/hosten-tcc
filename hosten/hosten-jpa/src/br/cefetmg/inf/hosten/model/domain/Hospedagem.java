@@ -60,12 +60,7 @@ public class Hospedagem implements Serializable {
     public Hospedagem() {
     }
 
-    public Hospedagem(Integer seqhospedagem) {
-        this.seqHospedagem = seqhospedagem;
-    }
-
-    public Hospedagem(Integer seqHospedagem, Date datCheckin, Date datCheckout, BigDecimal vlrPago) {
-        this.seqHospedagem = seqHospedagem;
+    public Hospedagem(Date datCheckin, Date datCheckout, BigDecimal vlrPago) {
         this.datCheckin = datCheckin;
         this.datCheckout = datCheckout;
         this.vlrPago = vlrPago;
@@ -73,10 +68,6 @@ public class Hospedagem implements Serializable {
 
     public Integer getSeqHospedagem() {
         return seqHospedagem;
-    }
-
-    public void setSeqHospedagem(Integer seqHospedagem) {
-        this.seqHospedagem = seqHospedagem;
     }
 
     public Date getDatCheckin() {
@@ -145,7 +136,14 @@ public class Hospedagem implements Serializable {
 
     @Override
     public String toString() {
-        return "br.cefetmg.inf.hosten.model.domain.Hospedagem[ seqhospedagem=" + seqHospedagem + " ]";
+        String saida = "";
+        saida += "Hospedagem={ seqhospedagem=[" + seqHospedagem + "], datCheckin=[" + datCheckin + "],"
+                + "datCheckout=[" + datCheckout + ", vlrPago=[" + vlrPago + "]";
+        if (codCpf != null) {
+            saida += ", codCpf = [" + codCpf.toString() + "]";
+        }
+        saida += "}";
+        
+        return saida;
     }
-
 }

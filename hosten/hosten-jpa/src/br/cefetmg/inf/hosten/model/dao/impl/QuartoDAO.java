@@ -38,7 +38,7 @@ public class QuartoDAO implements IQuartoDAO {
     }
 
     @Override
-    public Quarto buscaPorPk(String id) throws SQLException {
+    public Quarto buscaPorPk(Short id) throws SQLException {
         em.getTransaction().begin();
         Quarto quarto = em.find(Quarto.class, id);
         em.getTransaction().commit();
@@ -88,7 +88,7 @@ public class QuartoDAO implements IQuartoDAO {
     }
 
     @Override
-    public boolean atualiza(String id, Quarto quartoNov)
+    public boolean atualiza(Short id, Quarto quartoNov)
             throws SQLException {
         em.getTransaction().begin();
 

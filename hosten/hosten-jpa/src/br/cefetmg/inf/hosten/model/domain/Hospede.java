@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "hospede", catalog = "hosten", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Hospede.findAll", query = "SELECT h FROM Hospede h")
-    , @NamedQuery(name = "Hospede.findByCodCpf", query = "SELECT h FROM Hospede h WHERE h.codCpf = :codcpf")
+    , @NamedQuery(name = "Hospede.findByCodCpf", query = "SELECT h FROM Hospede h WHERE h.codCpf = :codCpf")
     , @NamedQuery(name = "Hospede.findByNomHospede", query = "SELECT h FROM Hospede h WHERE h.nomHospede = :nomHospede")
     , @NamedQuery(name = "Hospede.findByDesTelefone", query = "SELECT h FROM Hospede h WHERE h.desTelefone = :desTelefone")
     , @NamedQuery(name = "Hospede.findByDesEmail", query = "SELECT h FROM Hospede h WHERE h.desEmail = :desEmail")})
@@ -95,15 +95,17 @@ public class Hospede implements Serializable {
     public void setHospedagens(List<Hospedagem> hospedagens) {
         this.hospedagens = hospedagens;
     }
-    
+
     public void addHospedagem(Hospedagem hospedagem) {
-        this.hospedagens.add(hospedagem);
         hospedagem.setCodCpf(this);
+        this.hospedagens.add(hospedagem);
     }
-    
+
     public void removeHospedagem(Hospede hospedeNov, Hospedagem hospedagem) {
-        this.hospedagens.remove(hospedagem);
-        hospedagem.setCodCpf(hospedeNov);
+        if (hospedagens.contains(hospedagem)) {
+            hospedeNov.addHospedagem(hospedagem);
+            this.hospedagens.remove(hospedagem);
+        }
     }
 
     @Override
@@ -128,7 +130,8 @@ public class Hospede implements Serializable {
 
     @Override
     public String toString() {
-        return "br.cefetmg.inf.hosten.model.domain.Hospede[ codcpf=" + codCpf + " ]";
+        return "Hospede={codcpf=[" + codCpf + "], nomHospede=[" + nomHospede + ", "
+                + "desTelefone=[" + desTelefone + "], desEmail=[" + desEmail + "]}";
     }
 
 }

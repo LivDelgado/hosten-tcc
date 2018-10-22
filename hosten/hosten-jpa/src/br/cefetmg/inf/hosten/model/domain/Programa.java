@@ -77,8 +77,10 @@ public class Programa implements Serializable {
     }
     
     public void removeCargo(Cargo cargo) {
-        this.cargos.remove(cargo);
-        cargo.getProgramas().remove(this);
+        if (cargos.contains(cargo)) {
+            this.cargos.remove(cargo);
+            cargo.getProgramas().remove(this);
+        }
     }
 
     @Override

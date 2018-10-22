@@ -38,7 +38,7 @@ public class HospedagemDAO implements IHospedagemDAO {
     }
 
     @Override
-    public Hospedagem buscaPorPk(String id) throws SQLException {
+    public Hospedagem buscaPorPk(Integer id) throws SQLException {
         em.getTransaction().begin();
         Hospedagem hospedagem = em.find(Hospedagem.class, id);
         em.getTransaction().commit();
@@ -96,7 +96,7 @@ public class HospedagemDAO implements IHospedagemDAO {
     }
 
     @Override
-    public boolean atualiza(String id, Hospedagem hospedagemNov)
+    public boolean atualiza(Integer id, Hospedagem hospedagemNov)
             throws SQLException {
         em.getTransaction().begin();
 
@@ -108,8 +108,10 @@ public class HospedagemDAO implements IHospedagemDAO {
 
         Hospede hospedeAnt = hospedagemAnt.getCodCpf();
         Hospede hospedeNov = hospedagemNov.getCodCpf();
-        if (!hospedagemAnt.equals(hospedagemNov)) {
-            hospedeAnt.removeHospedagem(hospedeNov, hospedagemAnt);
+        if (hospedeAnt != null && hospedeNov != null) {
+            if (!hospedagemAnt.equals(hospedagemNov)) {
+                hospedeAnt.removeHospedagem(hospedeNov, hospedagemAnt);
+            }
         }
 
         em.getTransaction().commit();

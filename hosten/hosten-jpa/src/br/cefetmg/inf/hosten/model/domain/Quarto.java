@@ -33,9 +33,9 @@ public class Quarto implements Serializable {
     private Boolean idtOcupado;
 
     @OneToMany(mappedBy = "quarto", cascade = CascadeType.ALL)
-    private List<QuartoHospedagem> quartoHospedagens = new ArrayList<>();
+    private final List<QuartoHospedagem> quartoHospedagens = new ArrayList<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "codcategoria", referencedColumnName = "codcategoria", nullable = false)
     private CategoriaQuarto codCategoria;
 
@@ -46,10 +46,9 @@ public class Quarto implements Serializable {
         this.nroQuarto = nroquarto;
     }
 
-    public Quarto(Short nroQuarto, Boolean idtOcupado, CategoriaQuarto codCategoria) {
+    public Quarto(Short nroQuarto, Boolean idtOcupado) {
         this.nroQuarto = nroQuarto;
         this.idtOcupado = idtOcupado;
-        this.codCategoria = codCategoria;
     }
 
     public Short getNroQuarto() {

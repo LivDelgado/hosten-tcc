@@ -43,10 +43,10 @@ public class Servico implements Serializable {
     private BigDecimal vlrUnit;
 
     @OneToMany(mappedBy = "seqServico", cascade = CascadeType.ALL)
-    private List<QuartoConsumo> quartoConsumos = new ArrayList<>();
+    private final List<QuartoConsumo> quartoConsumos = new ArrayList<>();
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "codservicoarea", referencedColumnName = "codservicoarea", nullable = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "codservicoarea", nullable = false)
     private ServicoArea codServicoArea;
 
     public Servico() {

@@ -52,11 +52,11 @@ public class ServicoAreaDAO implements IServicoAreaDAO {
         String qryBusca = NAMED_QUERY_BASE;
 
         switch (coluna.toLowerCase()) {
-            case "codservicoArea":
+            case "codservicoarea":
                 qryBusca += "CodServicoArea";
                 parametro = "codServicoArea";
                 break;
-            case "nomservicoArea":
+            case "nomservicoarea":
                 qryBusca += "NomServicoArea";
                 parametro = "nomServicoArea";
                 break;

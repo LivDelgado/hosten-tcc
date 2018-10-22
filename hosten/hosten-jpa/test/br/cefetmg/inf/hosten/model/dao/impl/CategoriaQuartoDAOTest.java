@@ -1,20 +1,15 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
 import br.cefetmg.inf.hosten.model.dao.ICategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
-import br.cefetmg.inf.hosten.model.domain.Programa;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -23,21 +18,23 @@ import static org.junit.Assert.*;
 public class CategoriaQuartoDAOTest extends BaseTest<CategoriaQuarto, ICategoriaQuartoDAO> {
     
     public CategoriaQuartoDAOTest() throws SQLException {
-        DAO = CategoriaQuartoDAO.getInstance();
-        
-        for (CategoriaQuarto cq : DAO.buscaTodos()) {
+        dao = CategoriaQuartoDAO.getInstance();
+        limpaTabelas();
+    }
+    
+    @Override
+    final void limpaTabelas() throws SQLException {
+        for (CategoriaQuarto cq : dao.buscaTodos()) {
             Iterator<ItemConforto> itIc = cq.getItemConfortos().iterator();
             while (itIc.hasNext()) {
                 ItemConforto ic = itIc.next();
                 cq.removeItemConforto(ic);
             }
+            dao.deleta(cq);
         }
-        for (CategoriaQuarto cq : DAO.buscaTodos()) {
-            DAO.deleta(cq);
-        }
-        ItemConfortoDAO IcDAO = ItemConfortoDAO.getInstance();
-        for(ItemConforto ic : IcDAO.buscaTodos()) {
-            IcDAO.deleta(ic);
+        ItemConfortoDAO icDao = ItemConfortoDAO.getInstance();
+        for (ItemConforto ic : icDao.buscaTodos()) {
+            icDao.deleta(ic);
         }
     }
 
@@ -79,7 +76,7 @@ public class CategoriaQuartoDAOTest extends BaseTest<CategoriaQuarto, ICategoria
         imprimeTituloTeste("adiciona");
         try {
             CategoriaQuarto c = getNewInstanciaDomain(1);
-            DAO.adiciona(c);
+            dao.adiciona(c);
             
             ItemConforto ic = new ItemConforto("001", "Frigobar");
             c.addItemConforto(ic);
@@ -103,9 +100,9 @@ public class CategoriaQuartoDAOTest extends BaseTest<CategoriaQuarto, ICategoria
 
         imprimeConteudoObjeto(expResult, "expResult = ");
         try {
-            DAO.adiciona(expResult);
+            dao.adiciona(expResult);
 
-            CategoriaQuarto result = DAO.buscaPorPk(expResult.getCodCategoria());
+            CategoriaQuarto result = dao.buscaPorPk(expResult.getCodCategoria());
 
             imprimeConteudoObjeto(result, "result = ");
 
@@ -130,9 +127,9 @@ public class CategoriaQuartoDAOTest extends BaseTest<CategoriaQuarto, ICategoria
             CategoriaQuarto categoriaQuarto = getNewInstanciaDomain(3);
             imprimeConteudoObjeto(categoriaQuarto, "");
 
-            DAO.adiciona(categoriaQuarto);
+            dao.adiciona(categoriaQuarto);
 
-            List<CategoriaQuarto> result = DAO.buscaPorColuna(categoriaQuarto.getCodCategoria(), "codCategoria");
+            List<CategoriaQuarto> result = dao.buscaPorColuna(categoriaQuarto.getCodCategoria(), "codCategoria");
 
             boolean sucesso = false;
             for (CategoriaQuarto c : result) {
@@ -165,11 +162,11 @@ public class CategoriaQuartoDAOTest extends BaseTest<CategoriaQuarto, ICategoria
         imprimeConteudoObjeto(c2, "c2 = ");
 
         try {
-            DAO.adiciona(c1);
-            DAO.adiciona(c2);
+            dao.adiciona(c1);
+            dao.adiciona(c2);
 
             int j = 0;
-            List<CategoriaQuarto> result = DAO.buscaTodos();
+            List<CategoriaQuarto> result = dao.buscaTodos();
             for (CategoriaQuarto c : result) {
                 imprimeConteudoObjeto(c, "");
                 if (c1.equals(c) || c2.equals(c)) {
@@ -197,15 +194,15 @@ public class CategoriaQuartoDAOTest extends BaseTest<CategoriaQuarto, ICategoria
         CategoriaQuarto c = getNewInstanciaDomain(6);
 
         try {
-            DAO.adiciona(c);
+            dao.adiciona(c);
             imprimeConteudoObjeto(c, "CategoriaQuarto antes do Update = ");
 
             CategoriaQuarto c2 = getNewInstanciaDomain(7);
             imprimeConteudoObjeto(c2, "O outro categoriaQuarto = ");
 
-            DAO.atualiza(c.getCodCategoria(), c2);
+            dao.atualiza(c.getCodCategoria(), c2);
 
-            c = DAO.buscaPorPk(c.getCodCategoria());
+            c = dao.buscaPorPk(c.getCodCategoria());
 
         imprimeConteudoObjeto(c, "CategoriaQuarto depois do Update =");
 
@@ -229,11 +226,11 @@ public class CategoriaQuartoDAOTest extends BaseTest<CategoriaQuarto, ICategoria
         CategoriaQuarto c = getNewInstanciaDomain(8);
 
         try {
-            DAO.adiciona(c);
+            dao.adiciona(c);
 
-            DAO.deleta(c);
+            dao.deleta(c);
 
-            CategoriaQuarto c2 = DAO.buscaPorPk(c.getCodCategoria());
+            CategoriaQuarto c2 = dao.buscaPorPk(c.getCodCategoria());
             if (c2 == null) {
                 concluiComSucesso();
             } else {

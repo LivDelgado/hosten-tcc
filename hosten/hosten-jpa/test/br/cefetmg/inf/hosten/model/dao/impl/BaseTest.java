@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
+import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.fail;
@@ -11,13 +12,12 @@ import org.junit.BeforeClass;
  * @author Nícolas
  * @param <Domain>
  * @param <IDomainDAO>
- * @param <DomainDAO>
  */
 public abstract class BaseTest<Domain, IDomainDAO> {
     private static final String MSG_SUCESSO = "\n-> O teste foi bem-sucedido <--------";
     private static final String MSG_ERRO = "\n->!! O teste falhou !!<--------";
     
-    IDomainDAO DAO;
+    IDomainDAO dao;
 
     public BaseTest() {
     }
@@ -38,8 +38,6 @@ public abstract class BaseTest<Domain, IDomainDAO> {
     @After
     public void tearDown() {
     }
-
-    abstract Domain getNewInstanciaDomain(int i);
 
     static void imprimeTituloTeste(String nomCasoTeste) {
         System.out.println("----------------------------------------------------------------");
@@ -74,4 +72,7 @@ public abstract class BaseTest<Domain, IDomainDAO> {
         fail(MSG_ERRO);
         finalizaCasoTeste();
     }
+    
+    abstract Domain getNewInstanciaDomain(int i);
+    abstract void limpaTabelas() throws SQLException;
 }

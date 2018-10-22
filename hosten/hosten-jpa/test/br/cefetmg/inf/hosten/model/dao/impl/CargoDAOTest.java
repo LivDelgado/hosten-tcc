@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
 import br.cefetmg.inf.hosten.model.dao.ICargoDAO;
+import br.cefetmg.inf.hosten.model.dao.IProgramaDAO;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import java.sql.SQLException;
@@ -17,17 +18,23 @@ import org.junit.Test;
 public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
 
     public CargoDAOTest() throws SQLException {
-        DAO = CargoDAO.getInstance();
-        
-        for(Programa p : ProgramaDAO.getInstance().buscaTodos()) {
+        dao = CargoDAO.getInstance();
+        limpaTabelas();
+    }
+
+    @Override
+    final void limpaTabelas() throws SQLException {
+        IProgramaDAO progDao = ProgramaDAO.getInstance();
+        for (Programa p : progDao.buscaTodos()) {
             Iterator<Cargo> itC = p.getCargos().iterator();
-            while(itC.hasNext()) {
+            while (itC.hasNext()) {
                 Cargo c = itC.next();
                 p.removeCargo(c);
             }
+            progDao.deleta(p);
         }
-        for(Cargo c : DAO.buscaTodos()) {
-            DAO.deleta(c);
+        for (Cargo c : dao.buscaTodos()) {
+            dao.deleta(c);
         }
     }
 
@@ -72,7 +79,7 @@ public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
             Cargo c = getNewInstanciaDomain(1);
             imprimeConteudoObjeto(c, "");
 
-            DAO.adiciona(c);
+            dao.adiciona(c);
             concluiComSucesso();
         } catch (SQLException e) {
             concluiComFalha(e);
@@ -90,9 +97,9 @@ public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
 
         imprimeConteudoObjeto(expResult, "expResult = ");
         try {
-            DAO.adiciona(expResult);
+            dao.adiciona(expResult);
 
-            Cargo result = DAO.buscaPorPk(expResult.getCodCargo());
+            Cargo result = dao.buscaPorPk(expResult.getCodCargo());
 
             imprimeConteudoObjeto(result, "result = ");
 
@@ -117,9 +124,9 @@ public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
             Cargo cargo = getNewInstanciaDomain(3);
             imprimeConteudoObjeto(cargo, "");
 
-            DAO.adiciona(cargo);
+            dao.adiciona(cargo);
 
-            List<Cargo> result = DAO.buscaPorColuna(cargo.getCodCargo(), "codCargo");
+            List<Cargo> result = dao.buscaPorColuna(cargo.getCodCargo(), "codCargo");
 
             boolean sucesso = false;
             for (Cargo c : result) {
@@ -152,11 +159,11 @@ public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
         imprimeConteudoObjeto(c2, "c2 = ");
 
         try {
-            DAO.adiciona(c1);
-            DAO.adiciona(c2);
+            dao.adiciona(c1);
+            dao.adiciona(c2);
 
             int j = 0;
-            List<Cargo> result = DAO.buscaTodos();
+            List<Cargo> result = dao.buscaTodos();
             for (Cargo c : result) {
                 imprimeConteudoObjeto(c, "");
                 if (c1.equals(c) || c2.equals(c)) {
@@ -184,15 +191,15 @@ public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
         Cargo c = getNewInstanciaDomain(6);
 
         try {
-            DAO.adiciona(c);
+            dao.adiciona(c);
             imprimeConteudoObjeto(c, "Cargo antes do Update = ");
 
             Cargo c2 = getNewInstanciaDomain(7);
             imprimeConteudoObjeto(c2, "O outro cargo = ");
 
-            DAO.atualiza(c.getCodCargo(), c2);
+            dao.atualiza(c.getCodCargo(), c2);
 
-            c = DAO.buscaPorPk(c.getCodCargo());
+            c = dao.buscaPorPk(c.getCodCargo());
 
             imprimeConteudoObjeto(c, "Cargo depois do Update =");
 
@@ -216,11 +223,11 @@ public class CargoDAOTest extends BaseTest<Cargo, ICargoDAO> {
         Cargo c = getNewInstanciaDomain(8);
 
         try {
-            DAO.adiciona(c);
+            dao.adiciona(c);
 
-            DAO.deleta(c);
+            dao.deleta(c);
 
-            Cargo c2 = DAO.buscaPorPk(c.getCodCargo());
+            Cargo c2 = dao.buscaPorPk(c.getCodCargo());
             if (c2 == null) {
                 concluiComSucesso();
             } else {

@@ -1,7 +1,9 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
 import br.cefetmg.inf.hosten.model.dao.IServicoDAO;
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Servico;
+import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -37,7 +39,7 @@ public class ServicoDAO implements IServicoDAO {
     }
 
     @Override
-    public Servico buscaPorPk(String id) throws SQLException {
+    public Servico buscaPorPk(Short id) throws SQLException {
         em.getTransaction().begin();
         Servico servico = em.find(Servico.class, id);
         em.getTransaction().commit();
@@ -91,13 +93,19 @@ public class ServicoDAO implements IServicoDAO {
     }
 
     @Override
-    public boolean atualiza(String id, Servico servicoAtualizado)
+    public boolean atualiza(Short id, Servico servNov)
             throws SQLException {
         em.getTransaction().begin();
 
-        Servico servico = em.find(Servico.class, id);
-        servico.setDesServico(servicoAtualizado.getDesServico());
-        servico.setVlrUnit(servicoAtualizado.getVlrUnit());
+        Servico servAnt = em.find(Servico.class, id);
+        servAnt.setDesServico(servNov.getDesServico());
+        servAnt.setVlrUnit(servNov.getVlrUnit());
+        
+        ServicoArea saAnt = servAnt.getCodServicoArea();
+        ServicoArea saNov = servNov.getCodServicoArea();
+        if (!saAnt.equals(saNov)) {
+            saAnt.removeServico(servAnt, saNov);
+        }
 
         em.getTransaction().commit();
 
@@ -107,7 +115,7 @@ public class ServicoDAO implements IServicoDAO {
     @Override
     public boolean deleta(Servico servico) throws SQLException {
         em.getTransaction().begin();
-        em.remove(servico);
+        em.remove(em.getReference(Servico.class, servico.getSeqServico()));
         em.getTransaction().commit();
 
         return true;

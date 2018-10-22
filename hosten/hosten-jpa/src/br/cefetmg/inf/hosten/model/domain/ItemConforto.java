@@ -15,9 +15,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "itemconforto", catalog = "hosten", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "Itemconforto.findAll", query = "SELECT i FROM ItemConforto i")
-    , @NamedQuery(name = "Itemconforto.findByCodItem", query = "SELECT i FROM ItemConforto i WHERE i.codItem = :codItem")
-    , @NamedQuery(name = "Itemconforto.findByDesItem", query = "SELECT i FROM ItemConforto i WHERE i.desItem = :desItem")})
+    @NamedQuery(name = "ItemConforto.findAll", query = "SELECT i FROM ItemConforto i")
+    , @NamedQuery(name = "ItemConforto.findByCodItem", query = "SELECT i FROM ItemConforto i WHERE i.codItem = :codItem")
+    , @NamedQuery(name = "ItemConforto.findByDesItem", query = "SELECT i FROM ItemConforto i WHERE i.desItem = :desItem")})
 public class ItemConforto implements Serializable {
 
     @Id

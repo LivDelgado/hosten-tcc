@@ -1,7 +1,6 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
 import br.cefetmg.inf.hosten.model.dao.IHospedeDAO;
-import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
@@ -17,7 +16,7 @@ public class HospedeDAO implements IHospedeDAO {
 
     private final EntityManager em;
 
-    private HospedeDAO() {
+    HospedeDAO() {
         em = BdUtils.getEntityManager();
     }
 
@@ -54,7 +53,7 @@ public class HospedeDAO implements IHospedeDAO {
 
         switch (coluna.toLowerCase()) {
             case "codcpf":
-                qryBusca += "CodCpfp";
+                qryBusca += "CodCpf";
                 parametro = "codCpf";
                 break;
             case "nomhospede":

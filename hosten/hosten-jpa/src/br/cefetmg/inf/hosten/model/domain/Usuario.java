@@ -46,9 +46,9 @@ public class Usuario implements Serializable {
     private String desEmail;
 
     @OneToMany(mappedBy = "codUsuarioRegistro", cascade = CascadeType.ALL)
-    private List<QuartoConsumo> quartoConsumos = new ArrayList<>();
+    private final List<QuartoConsumo> quartoConsumos = new ArrayList<>();
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "codcargo", referencedColumnName = "codcargo", nullable = false)
     private Cargo codCargo;
 
@@ -59,12 +59,11 @@ public class Usuario implements Serializable {
         this.codUsuario = codusuario;
     }
 
-    public Usuario(String codUsuario, String nomUsuario, String desSenha, String desEmail, Cargo codCargo) {
+    public Usuario(String codUsuario, String nomUsuario, String desSenha, String desEmail) {
         this.codUsuario = codUsuario;
         this.nomUsuario = nomUsuario;
         this.desSenha = desSenha;
         this.desEmail = desEmail;
-        this.codCargo = codCargo;
     }
 
     public String getCodUsuario() {

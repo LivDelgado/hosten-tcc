@@ -8,13 +8,13 @@ public interface IHospedagemDAO {
 
     boolean adiciona(Hospedagem hospedagem) throws SQLException;
 
-    Hospedagem buscaPorPk(String id) throws SQLException;
+    Hospedagem buscaPorPk(Integer id) throws SQLException;
 
     List<Hospedagem> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
     List<Hospedagem> buscaTodos() throws SQLException;
 
-    boolean atualiza(String id, Hospedagem hospedagemAtualizado) throws SQLException;
+    boolean atualiza(Integer id, Hospedagem hospedagemAtualizado) throws SQLException;
 
     boolean deleta(Hospedagem hospedagem) throws SQLException;
 }

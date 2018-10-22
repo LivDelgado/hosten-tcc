@@ -1,30 +1,36 @@
 package br.cefetmg.inf.hosten.model.dao.impl;
 
+import br.cefetmg.inf.hosten.model.dao.IServicoAreaDAO;
+import br.cefetmg.inf.hosten.model.dao.IServicoDAO;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author Nícolas
  */
-public class ServicoAreaDAOTest {
-    
-    private static final String MSG_SUCESSO = "\n-> O teste foi bem-sucedido <--------";
-    private static final String MSG_ERRO = "\n->!! O teste falhou !!<--------";
+public class ServicoAreaDAOTest extends BaseTest<ServicoArea, IServicoAreaDAO> {
 
-    private static ServicoAreaDAO DAO;
+    public ServicoAreaDAOTest() throws SQLException {
+        dao = ServicoAreaDAO.getInstance();
+        limpaTabelas();
+    }
 
-    public ServicoAreaDAOTest() {
-        DAO = ServicoAreaDAO.getInstance();
+    @Override
+    final void limpaTabelas() throws SQLException {
+        IServicoDAO sDAO = ServicoDAO.getInstance();
+        for (Servico s : sDAO.buscaTodos()) {
+            sDAO.deleta(s);
+        }
+        for (ServicoArea sa : dao.buscaTodos()) {
+            dao.deleta(sa);
+        }
     }
 
     @BeforeClass
@@ -35,6 +41,7 @@ public class ServicoAreaDAOTest {
     public static void tearDownClass() {
     }
 
+    /*
     @Before
     public void setUp() {
         System.out.println("\n\n\n");
@@ -43,8 +50,9 @@ public class ServicoAreaDAOTest {
     @After
     public void tearDown() {
     }
-
-    private ServicoArea getNewServicoArea(int i) {
+     */
+    @Override
+    ServicoArea getNewInstanciaDomain(int i) {
         if (i < 10) {
             return new ServicoArea("00" + i, "ServicoArea " + i);
         } else if (i >= 10 && i < 100) {
@@ -54,40 +62,6 @@ public class ServicoAreaDAOTest {
         }
     }
 
-    private static void imprimeTituloTeste(String nomCasoTeste) {
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("-> " + nomCasoTeste.toUpperCase() + " <----------------------------------------");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("                                    ----------------------------");
-        System.out.println("                                                   -------------");
-    }
-
-    private static void finalizaCasoTeste() {
-        System.out.println("                                                   -------------");
-        System.out.println("                                    ----------------------------");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------");
-    }
-
-    private static void imprimeConteudoObjeto(ServicoArea c, String nota) {
-        System.out.println(nota + c.toString());
-    }
-
-    private static void concluiComSucesso() {
-        System.out.println(MSG_SUCESSO);
-        assert true;
-        finalizaCasoTeste();
-    }
-
-    private static void concluiComFalha(Exception e) {
-        if (e != null) {
-            System.out.println("--!!!!!!!!!!!!!!! Exceção gerada !!!!!!!!!!!!!!!----------------");
-            System.err.println(e.getMessage());
-        }
-        fail(MSG_ERRO);
-        finalizaCasoTeste();
-    }
-
     /**
      * Test of adiciona method, of class ServicoAreaDAO.
      */
@@ -95,21 +69,19 @@ public class ServicoAreaDAOTest {
     public void testAdiciona() {
         imprimeTituloTeste("adiciona");
         try {
-            ServicoArea sa = getNewServicoArea(1);
-            
-            List<Servico> ss = sa.getServicos();
-            System.out.println(ss == null);
-            
-            DAO.adiciona(sa);
+            ServicoArea sa = getNewInstanciaDomain(1);
+
+            dao.adiciona(sa);
+
             Servico s = new Servico("SERVICAO", BigDecimal.valueOf(10.0));
             sa.addServico(s);
-            
-            ServicoArea sa2 = getNewServicoArea(10);
-            DAO.adiciona(sa2);
+
+            ServicoArea sa2 = getNewInstanciaDomain(10);
+            dao.adiciona(sa2);
             sa.removeServico(s, sa2);
-            
+
             imprimeConteudoObjeto(sa, "");
-            
+
             concluiComSucesso();
         } catch (SQLException e) {
             concluiComFalha(e);
@@ -123,13 +95,13 @@ public class ServicoAreaDAOTest {
     public void testBuscaPorPk() {
         imprimeTituloTeste("buscaPorPk");
 
-        ServicoArea expResult = getNewServicoArea(2);
+        ServicoArea expResult = getNewInstanciaDomain(2);
 
         imprimeConteudoObjeto(expResult, "expResult = ");
         try {
-            DAO.adiciona(expResult);
+            dao.adiciona(expResult);
 
-            ServicoArea result = DAO.buscaPorPk(expResult.getCodServicoArea());
+            ServicoArea result = dao.buscaPorPk(expResult.getCodServicoArea());
 
             imprimeConteudoObjeto(result, "result = ");
 
@@ -151,12 +123,12 @@ public class ServicoAreaDAOTest {
         imprimeTituloTeste("buscaPorColuna");
 
         try {
-            ServicoArea servicoArea = getNewServicoArea(3);
+            ServicoArea servicoArea = getNewInstanciaDomain(3);
             imprimeConteudoObjeto(servicoArea, "");
 
-            DAO.adiciona(servicoArea);
+            dao.adiciona(servicoArea);
 
-            List<ServicoArea> result = DAO.buscaPorColuna(servicoArea.getCodServicoArea(), "codServicoArea");
+            List<ServicoArea> result = dao.buscaPorColuna(servicoArea.getCodServicoArea(), "codServicoArea");
 
             boolean sucesso = false;
             for (ServicoArea c : result) {
@@ -183,17 +155,17 @@ public class ServicoAreaDAOTest {
     public void testBuscaTodos() {
         imprimeTituloTeste("buscaTodos");
 
-        ServicoArea c1 = getNewServicoArea(4);
+        ServicoArea c1 = getNewInstanciaDomain(4);
         imprimeConteudoObjeto(c1, "c1 = ");
-        ServicoArea c2 = getNewServicoArea(5);
+        ServicoArea c2 = getNewInstanciaDomain(5);
         imprimeConteudoObjeto(c2, "c2 = ");
 
         try {
-            DAO.adiciona(c1);
-            DAO.adiciona(c2);
+            dao.adiciona(c1);
+            dao.adiciona(c2);
 
             int j = 0;
-            List<ServicoArea> result = DAO.buscaTodos();
+            List<ServicoArea> result = dao.buscaTodos();
             for (ServicoArea c : result) {
                 imprimeConteudoObjeto(c, "");
                 if (c1.equals(c) || c2.equals(c)) {
@@ -218,18 +190,18 @@ public class ServicoAreaDAOTest {
     public void testAtualiza() {
         imprimeTituloTeste("atualiza");
 
-        ServicoArea c = getNewServicoArea(6);
+        ServicoArea c = getNewInstanciaDomain(6);
 
         try {
-            DAO.adiciona(c);
+            dao.adiciona(c);
             imprimeConteudoObjeto(c, "ServicoArea antes do Update = ");
 
-            ServicoArea c2 = getNewServicoArea(7);
+            ServicoArea c2 = getNewInstanciaDomain(7);
             imprimeConteudoObjeto(c2, "O outro servicoArea = ");
 
-            DAO.atualiza(c.getCodServicoArea(), c2);
+            dao.atualiza(c.getCodServicoArea(), c2);
 
-            c = DAO.buscaPorPk(c.getCodServicoArea());
+            c = dao.buscaPorPk(c.getCodServicoArea());
 
             imprimeConteudoObjeto(c, "ServicoArea depois do Update =");
 
@@ -250,14 +222,14 @@ public class ServicoAreaDAOTest {
     public void testDeleta() {
         imprimeTituloTeste("deleta");
 
-        ServicoArea c = getNewServicoArea(8);
+        ServicoArea c = getNewInstanciaDomain(8);
 
         try {
-            DAO.adiciona(c);
+            dao.adiciona(c);
 
-            DAO.deleta(c);
+            dao.deleta(c);
 
-            ServicoArea c2 = DAO.buscaPorPk(c.getCodServicoArea());
+            ServicoArea c2 = dao.buscaPorPk(c.getCodServicoArea());
             if (c2 == null) {
                 concluiComSucesso();
             } else {

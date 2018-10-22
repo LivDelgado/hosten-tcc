@@ -17,8 +17,8 @@ import javax.persistence.Table;
 @Table(name = "servicoarea", catalog = "hosten", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "ServicoArea.findAll", query = "SELECT s FROM ServicoArea s")
-    , @NamedQuery(name = "ServicoArea.findByCodservicoarea", query = "SELECT s FROM ServicoArea s WHERE s.codServicoArea = :codServicoArea")
-    , @NamedQuery(name = "ServicoArea.findByNomservicoarea", query = "SELECT s FROM ServicoArea s WHERE s.nomServicoArea = :nomServicoArea")})
+    , @NamedQuery(name = "ServicoArea.findByCodServicoArea", query = "SELECT s FROM ServicoArea s WHERE s.codServicoArea = :codServicoArea")
+    , @NamedQuery(name = "ServicoArea.findByNomServicoArea", query = "SELECT s FROM ServicoArea s WHERE s.nomServicoArea = :nomServicoArea")})
 public class ServicoArea implements Serializable {
 
     @Id
@@ -31,7 +31,7 @@ public class ServicoArea implements Serializable {
     private String nomServicoArea;
 
     @OneToMany(mappedBy = "codServicoArea", cascade = CascadeType.ALL)
-    private List<Servico> servicos = new ArrayList<>();
+    private final List<Servico> servicos = new ArrayList<>();
 
     public ServicoArea() {
     }
@@ -65,25 +65,23 @@ public class ServicoArea implements Serializable {
         return servicos;
     }
 
-    public void setServicos(List<Servico> servicos) {
-        this.servicos = servicos;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (codServicoArea != null ? codServicoArea.hashCode() : 0);
         return hash;
     }
-    
+
     public void addServico(Servico servico) {
-        this.servicos.add(servico);
         servico.setCodServicoArea(this);
+        this.servicos.add(servico);
     }
-    
-    public void removeServico(Servico servico, ServicoArea servicoAreaNov) {
-        this.servicos.remove(servico);
-        servico.setCodServicoArea(servicoAreaNov);
+
+    public void removeServico(Servico serv, ServicoArea saNov) {
+        if (servicos.contains(serv)) {
+            saNov.addServico(serv);
+            this.servicos.remove(serv);
+        }
     }
 
     @Override
