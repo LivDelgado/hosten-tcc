@@ -1,11 +1,11 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoConsumoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IRelatorioDespesasDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoConsumoDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IRelatorioDespesasDAO;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.QuartoConsumoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.RelatorioDespesasDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoConsumoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.RelatorioDespesasDAOAdapter;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;

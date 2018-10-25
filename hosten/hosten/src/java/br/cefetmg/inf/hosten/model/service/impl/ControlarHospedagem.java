@@ -1,19 +1,19 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IHospedagemDAO;
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IQuartoHospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoHospedagemDAO;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.CategoriaQuartoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.HospedagemDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.QuartoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.QuartoHospedagemDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaQuartoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.HospedagemDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoHospedagemDAOAdapter;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IControlarHospedagem;
 import br.cefetmg.inf.util.exception.NegocioException;

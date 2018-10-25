@@ -267,14 +267,25 @@ ALTER TABLE QuartoConsumo ADD CONSTRAINT Relationship24 FOREIGN KEY (seqHospedag
 ALTER TABLE Hospedagem ADD CONSTRAINT Relationship26 FOREIGN KEY (codCPF) REFERENCES Hospede (codCPF) ON DELETE NO ACTION ON UPDATE CASCADE
 ;
 
--- CREATE VIEW RELATORIO DESPESAS --
+-- Create Views section -------------------------------------------------
 
-CREATE VIEW relatorioDespesas AS
-SELECT A.seqHospedagem, A.nroQuarto, A.nroAdultos, A.nroCriancas, A.vlrDiaria,
-       B.datCheckIn, B.datCheckOut, B.vlrPago,
-       C.nomHospede,
-       D.seqServico, D.qtdConsumo,
-       E.desServico, E.vlrUnit
+-- View Despesa 
+
+CREATE VIEW Despesa AS
+SELECT 
+    A.seqHospedagem, 
+    A.nroQuarto, 
+    A.nroAdultos, 
+    A.nroCriancas, 
+    A.vlrDiaria,
+    B.datCheckIn, 
+    B.datCheckOut, 
+    B.vlrPago,
+    C.nomHospede,
+    D.seqServico, 
+    D.qtdConsumo,
+    E.desServico, 
+    E.vlrUnit
 FROM
 	QuartoHospedagem A
 	JOIN Hospedagem B ON A.seqHospedagem = B.seqHospedagem
@@ -282,8 +293,27 @@ FROM
 	JOIN QuartoConsumo D ON A.seqHospedagem = D.seqHospedagem AND A.nroQuarto = D.nroQuarto
 	JOIN Servico E ON D.seqServico = E.seqServico;
 
+-- View Quarto Estado
+CREATE OR REPLACE VIEW QuartoEstado AS
+SELECT 
+    A.nroQuarto,
+    A.nroAdultos,
+    A.nroCriancas,
+    D.vlrDiaria,
+    C.idtOcupado,
+    B.datCheckOut
+FROM
+    QuartoHospedagem A
+    JOIN Hospedagem B
+        ON A.seqHospedagem = B.seqHospedagem
+    JOIN Quarto C
+        ON A.nroQuarto = C.nroQuarto
+    JOIN Categoria D
+        ON C.codCategoria = D.codCategoria;
 
--- INSERT ON PROGRAMA --
+-- Insert section -------------------------------------------------
+
+-- Insert on Programa
 
 INSERT INTO public.programa(codprograma, desprograma)
     VALUES ('001', 'cargos'),
@@ -300,19 +330,19 @@ INSERT INTO public.programa(codprograma, desprograma)
         ('012', 'servicos'),
         ('013', 'estado-quarto');
 
--- INSERT ON CARGO --
+-- Insert on Cargo
 
 INSERT INTO public.cargo(codcargo, nomcargo, idtmaster)
     VALUES('001', 'Administrador', true),
         ('002', 'Zé ninguém', false);
 
--- INSERT ON CARGO PROGRAMA -- 
+-- Insert on Cargo Programa
 
 INSERT INTO public.cargoprograma(codprograma, codcargo)
     VALUES ('008', '002'),
         ('009', '002');
 
--- INSERT ON USUARIO --
+-- Insert on Usuario
 
 INSERT INTO public.usuario(codusuario, nomusuario, codcargo, dessenha, desemail)
     VALUES('0001', 'O Cara', '001','B7E94BE513E96E8C45CD23D162275E5A12EBDE9100A425C4EBCDD7FA4DCD897C', 'adm@email.com'),

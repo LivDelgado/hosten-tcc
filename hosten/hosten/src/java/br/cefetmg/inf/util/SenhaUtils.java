@@ -5,8 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class SenhaUtils {
-        public static String stringParaSHA256(String senha) 
-                throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
+    public static String stringParaSHA256(String senha)
+            throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest ALGORITMOSHA256 = MessageDigest.getInstance("SHA-256");
 
         byte messageDigestSenhaAdmin[] = ALGORITMOSHA256.digest(senha.getBytes("UTF-8"));

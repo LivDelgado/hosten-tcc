@@ -1,11 +1,11 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICargoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IProgramaDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.CargoDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.ProgramaDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.UsuarioDAO;
-import br.cefetmg.inf.hosten.model.persistencia.jdbc.CargoProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoDAO;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.ProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.UsuarioDAO;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoProgramaDAO;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.rel.CargoPrograma;
@@ -14,13 +14,13 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.ICargoProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoProgramaDAO;
 import br.cefetmg.inf.hosten.model.domain.Programa;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.CargoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.CargoProgramaDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.ProgramaDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.UsuarioDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IUsuarioDAO;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CargoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CargoProgramaDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.ProgramaDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.UsuarioDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDAO;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
 
 public class ManterCargo implements IManterCargo {

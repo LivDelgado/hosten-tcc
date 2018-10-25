@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence          http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="hosten" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <class>br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem</class>
+    <class>br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo</class>
+    <class>br.cefetmg.inf.hosten.model.domain.rel.views.Despesa</class>
+    <class>br.cefetmg.inf.hosten.model.domain.rel.views.QuartoEstado</class>
+    <class>br.cefetmg.inf.hosten.model.domain.ServicoArea</class>
+    <class>br.cefetmg.inf.hosten.model.domain.ItemConforto</class>
+    <class>br.cefetmg.inf.hosten.model.domain.Cargo</class>
+    <class>br.cefetmg.inf.hosten.model.domain.Programa</class>
+    <class>br.cefetmg.inf.hosten.model.domain.Servico</class>
+    <class>br.cefetmg.inf.hosten.model.domain.Usuario</class>
+    <class>br.cefetmg.inf.hosten.model.domain.Quarto</class>
+    <class>br.cefetmg.inf.hosten.model.domain.Hospedagem</class>
+    <class>br.cefetmg.inf.hosten.model.domain.CategoriaQuarto</class>
+    <class>br.cefetmg.inf.hosten.model.domain.Hospede</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/hosten"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="123456"/>
+      <property name="javax.persistence.schema-generation.database.action" value="none"/>
+      <property name="javax.persistence.schema-generation.create-source" value="script"/>
+      <property name="javax.persistence.schema-generation.create-script-source" value="br/cefetmg/inf/hosten/conf/bd/hosten-bd.sql"/>
+    </properties>
+  </persistence-unit>
+</persistence>

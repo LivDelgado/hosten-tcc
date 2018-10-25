@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistencia.interfaces.IHospedeDAO;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedeDAO;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
-import br.cefetmg.inf.hosten.model.persistencia.adapters.HospedeDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.HospedeDAOAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
