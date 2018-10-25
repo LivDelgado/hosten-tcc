@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Hosten - Estados dos Quartos</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="template.xhtml">
+
+            <ui:define name="content">
+
+                <h:form id="formRegistro"> 
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <p:dataTable id="registros" var="quartoEstado" value="#{quartoEstadoMB.listaQuartosEstados}">
+                        <f:facet name="header">
+                            <h:outputText value="Estados dos Quartos" style="font-size: 25px"/>
+                        </f:facet>
+
+                        <p:column headerText="Número do Quarto" sortBy="#{quartoEstado.nroQuarto}" 
+                                  filterBy="#{quartoEstado.nroQuarto}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{quartoEstado.nroQuarto}"/>
+                        </p:column>
+
+                        <p:column headerText="Status" sortBy="#{quartoEstado.idtOcupado}" 
+                                  filterBy="#{quartoEstado.idtOcupado}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{quartoEstado.idtOcupado ? 'Ocupado' : 'Livre'}"/>
+                        </p:column>
+
+                        <p:column headerText="Data Limite (Prevista)" sortBy="#{quartoEstado.datCheckOut}" 
+                                  filterBy="#{quartoEstado.datCheckOut}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{quartoEstado.idtOcupado ? quartoEstado.datCheckOut.time : '-'}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Ações" style="text-align: center">
+                            <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
+                                             value="Detalhes" 
+                                             />
+                            <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
+                                             value="Check-out" 
+                                             />
+                            <h:commandButton rendered="#{!quartoEstado.idtOcupado}" 
+                                             value="Check-in" 
+                                             />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
