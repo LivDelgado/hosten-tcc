@@ -1,19 +1,15 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDAO;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDAO;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoHospedagemDAO;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaQuartoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.HospedagemDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoHospedagemDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaQuartoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.HospedagemDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoHospedagemDaoAdapter;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IControlarHospedagem;
 import br.cefetmg.inf.util.exception.NegocioException;
@@ -23,6 +19,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDao;
 
 public class ControlarHospedagem implements IControlarHospedagem {
 
@@ -42,14 +42,14 @@ public class ControlarHospedagem implements IControlarHospedagem {
 
         try {
             // vlrDiaria
-            IQuartoDAO quartoDAO = QuartoDAOAdapter.getInstance();
+            IQuartoDao quartoDAO = QuartoDaoAdapter.getInstance();
             List<Quarto> listaQuarto;
 
             listaQuarto = quartoDAO.buscaQuarto(Integer.parseInt(nroQuarto), "nroQuarto");
 
             String codCategoria = listaQuarto.get(0).getCodCategoria();
 
-            ICategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAOAdapter.getInstance();
+            ICategoriaQuartoDao categoriaDAO = CategoriaQuartoDaoAdapter.getInstance();
             List<CategoriaQuarto> categorias = categoriaDAO.buscaCategoriaQuarto(codCategoria, "codCategoria");
             Double valorDiaria = categorias.get(0).getVlrDiaria();
 
@@ -58,13 +58,13 @@ public class ControlarHospedagem implements IControlarHospedagem {
             // ----------------------------------------------------------------------------------------------------------------------------------------
             // realiza a operação de check-in
             Hospedagem hosp = new Hospedagem(dataCheckIn, dataCheckOut, valorTotal, codCPF);
-            IHospedagemDAO hospDAO = HospedagemDAOAdapter.getInstance();
+            IHospedagemDao hospDAO = HospedagemDaoAdapter.getInstance();
 
             boolean testeAddHospedagem = hospDAO.adicionaHospedagem(hosp);
 
             List<Hospedagem> hospEncontrada = hospDAO.busca(hosp);
 
-            IQuartoHospedagemDAO quartoHosp = QuartoHospedagemDAOAdapter.getInstance();
+            IQuartoHospedagemDao quartoHosp = QuartoHospedagemDaoAdapter.getInstance();
             int seqHospedagem = hospEncontrada.get(0).getSeqHospedagem();
             QuartoHospedagem objAdicionar = new QuartoHospedagem(seqHospedagem, Integer.parseInt(nroQuarto), nroAdultos, nroCriancas, valorDiaria);
             boolean testeAddQuarto = quartoHosp.adiciona(objAdicionar);
@@ -86,7 +86,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
     public int efetuarCheckOut(String nroQuarto) {
         int intNroQuarto = Integer.parseInt(nroQuarto);
 
-        IQuartoDAO quartoDAO = QuartoDAOAdapter.getInstance();
+        IQuartoDao quartoDAO = QuartoDaoAdapter.getInstance();
         int seqHospedagem = 0;
         try {
             seqHospedagem = quartoDAO.buscaUltimoRegistroRelacionadoAoQuarto(intNroQuarto);
@@ -94,7 +94,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             Date dataAtual = new Date();
             Timestamp dataCheckOut = new Timestamp(dataAtual.getTime());
 
-            IHospedagemDAO hospDAO = HospedagemDAOAdapter.getInstance();
+            IHospedagemDao hospDAO = HospedagemDaoAdapter.getInstance();
             List<Hospedagem> hospBuscada
                     = hospDAO.buscaHospedagem(seqHospedagem, "seqHospedagem");
 
@@ -125,7 +125,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             long dias = horas / 24;
             
             Double valorDiaria = 0.0;
-            ICategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAOAdapter.getInstance();
+            ICategoriaQuartoDao categoriaDAO = CategoriaQuartoDaoAdapter.getInstance();
             valorDiaria = categoriaDAO.buscaCategoriaQuarto(
                     quartoDAO.buscaQuarto(nroQuarto, "nroQuarto").get(0).getCodCategoria(), 
                     "codCategoria"
@@ -157,7 +157,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
 
     @Override
     public List<QuartoEstado> listarTodos() throws NegocioException {
-        IQuartoHospedagemDAO dao = QuartoHospedagemDAOAdapter.getInstance();
+        IQuartoHospedagemDao dao = QuartoHospedagemDaoAdapter.getInstance();
         try {
             List<QuartoEstado> lista = dao.buscaTodos();
             if (lista == null) {

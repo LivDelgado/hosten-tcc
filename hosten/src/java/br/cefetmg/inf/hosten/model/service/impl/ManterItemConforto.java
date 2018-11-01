@@ -1,22 +1,22 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IItemConfortoDAO;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.domain.rel.CategoriaItemConforto;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaItemConfortoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.ItemConfortoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaItemConfortoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.ItemConfortoDaoAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaItemConfortoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterItemConforto;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.ICategoriaItemConfortoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IItemConfortoDao;
 
 public class ManterItemConforto implements IManterItemConforto {
 
-    IItemConfortoDAO objetoDAO;
+    IItemConfortoDao objetoDAO;
 
     public ManterItemConforto() {
-        objetoDAO = ItemConfortoDAOAdapter.getInstance();
+        objetoDAO = ItemConfortoDaoAdapter.getInstance();
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ManterItemConforto implements IManterItemConforto {
         //
         // pesquisa se o código do item é utilizado em Categoria de Quarto
         //
-        ICategoriaItemConfortoDAO relDAO = CategoriaItemConfortoDAOAdapter.getInstance();
+        ICategoriaItemConfortoDao relDAO = CategoriaItemConfortoDaoAdapter.getInstance();
         List<CategoriaItemConforto> rel = relDAO.busca(codRegistro, "codItem");
         if (rel.isEmpty()) {
             return objetoDAO.deletaItemConforto(codRegistro);

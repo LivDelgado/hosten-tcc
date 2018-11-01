@@ -1,19 +1,19 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedeDAO;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
-import br.cefetmg.inf.hosten.model.persistence.adapters.HospedeDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.HospedeDaoAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.service.IManterHospede;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedeDao;
 
 public class ManterHospede implements IManterHospede {
 
-    IHospedeDAO objetoDAO;
+    IHospedeDao objetoDAO;
 
     public ManterHospede() {
-        objetoDAO = HospedeDAOAdapter.getInstance();
+        objetoDAO = HospedeDaoAdapter.getInstance();
     }
 
     @Override

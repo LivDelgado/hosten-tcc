@@ -1,27 +1,27 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDAO;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.CategoriaItemConfortoDAO;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.CategoriaItemConfortoDao;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.domain.rel.CategoriaItemConforto;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaItemConfortoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaQuartoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaItemConfortoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaQuartoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDaoAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaItemConfortoDAO;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.ICategoriaItemConfortoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDao;
 
 public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
 
-    ICategoriaQuartoDAO objetoDAO;
+    ICategoriaQuartoDao objetoDAO;
 
     public ManterCategoriaQuarto() {
-        objetoDAO = CategoriaQuartoDAOAdapter.getInstance();
+        objetoDAO = CategoriaQuartoDaoAdapter.getInstance();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
                         .adicionaCategoriaQuarto(categoriaQuarto);
 
                 // cria os relacionamentos
-                ICategoriaItemConfortoDAO relDAO = CategoriaItemConfortoDAO
+                ICategoriaItemConfortoDao relDAO = CategoriaItemConfortoDao
                         .getInstance();
                 for (ItemConforto item : itensCategoria) {
                     CategoriaItemConforto rel
@@ -128,7 +128,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
                 boolean testeRegistro = objetoDAO.atualizaCategoriaQuarto(codRegistro, categoriaQuarto);
                 if (testeRegistro) {
                     // atualiza os relacionamentos
-                    ICategoriaItemConfortoDAO relDAO = CategoriaItemConfortoDAOAdapter.getInstance();
+                    ICategoriaItemConfortoDao relDAO = CategoriaItemConfortoDaoAdapter.getInstance();
                     // deleta todos os relacionamentos com aquela categoria
                     List<CategoriaItemConforto> listaREL = relDAO.busca(categoriaQuarto.getCodCategoria(), "codCategoria");
                     if (!listaREL.isEmpty()) {
@@ -164,7 +164,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
         }
 
         // confere se há algum quarto na categoria
-        IQuartoDAO quartoDAO = QuartoDAOAdapter.getInstance();
+        IQuartoDao quartoDAO = QuartoDaoAdapter.getInstance();
         List<Quarto> listaQuartos = quartoDAO
                 .buscaQuarto(codRegistro, "codCategoria");
         if (!listaQuartos.isEmpty()) {
@@ -174,7 +174,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
         }
 
         // deleta todos os relacionamentos com aquela categoria
-        ICategoriaItemConfortoDAO relDAO = CategoriaItemConfortoDAOAdapter.getInstance();
+        ICategoriaItemConfortoDao relDAO = CategoriaItemConfortoDaoAdapter.getInstance();
         List<CategoriaItemConforto> listaREL = relDAO.busca(
                 categoriasPesquisadas.get(0).getCodCategoria(),
                 "codCategoria");
@@ -211,8 +211,8 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
     public List<ItemConforto> listarItensRelacionados(String codCategoria)
             throws NegocioException, SQLException {
         if (codCategoria != null) {
-            ICategoriaItemConfortoDAO categoriaItemConfortoDAO
-                    = CategoriaItemConfortoDAOAdapter.getInstance();
+            ICategoriaItemConfortoDao categoriaItemConfortoDAO
+                    = CategoriaItemConfortoDaoAdapter.getInstance();
             return categoriaItemConfortoDAO.buscaItensConfortoRelacionados(codCategoria);
         }
         return null;

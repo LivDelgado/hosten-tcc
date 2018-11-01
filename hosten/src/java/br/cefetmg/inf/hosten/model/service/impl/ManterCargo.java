@@ -1,11 +1,9 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoDAO;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IProgramaDAO;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoDAO;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.ProgramaDAO;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.UsuarioDAO;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoProgramaDAO;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoDao;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.ProgramaDao;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.UsuarioDao;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.CargoProgramaDao;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.rel.CargoPrograma;
@@ -14,21 +12,23 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoProgramaDAO;
 import br.cefetmg.inf.hosten.model.domain.Programa;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CargoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CargoProgramaDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.ProgramaDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.UsuarioDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDAO;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CargoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.CargoProgramaDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.ProgramaDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.UsuarioDaoAdapter;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.ICargoProgramaDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IProgramaDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDao;
 
 public class ManterCargo implements IManterCargo {
 
-    ICargoDAO objetoDAO;
+    ICargoDao objetoDAO;
 
     public ManterCargo() {
-        objetoDAO = CargoDAOAdapter.getInstance();
+        objetoDAO = CargoDaoAdapter.getInstance();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ManterCargo implements IManterCargo {
                 // adiciona o cargo
                 boolean testeRegistro = objetoDAO.adicionaCargo(cargo);
                 // cria os relacionamentos
-                ICargoProgramaDAO relDAO = CargoProgramaDAOAdapter.getInstance();
+                ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
                 for (String codPrograma : listaProgramas) {
                     CargoPrograma rel = new CargoPrograma(codPrograma, cargo.getCodCargo());
                     relDAO.adiciona(rel);
@@ -120,7 +120,7 @@ public class ManterCargo implements IManterCargo {
                 boolean testeRegistro = objetoDAO.atualizaCargo(codRegistro, cargo);
                 if (testeRegistro) {
                     // atualiza os relacionamentos
-                    ICargoProgramaDAO relDAO = CargoProgramaDAOAdapter.getInstance();
+                    ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
                     // deleta todos os relacionamentos com aquele cargo
                     List<CargoPrograma> listaREL = relDAO.busca(
                             cargo.getCodCargo(),
@@ -153,7 +153,7 @@ public class ManterCargo implements IManterCargo {
     public boolean excluir(String codRegistro)
             throws NegocioException, SQLException {
         // testar se tem usuario com esse cargo
-        IUsuarioDAO dao = UsuarioDAOAdapter.getInstance();
+        IUsuarioDao dao = UsuarioDaoAdapter.getInstance();
         List<Usuario> listaUsuarios = null;
         try {
             listaUsuarios = dao.buscaUsuario(codRegistro, "codCargo");
@@ -161,7 +161,7 @@ public class ManterCargo implements IManterCargo {
             throw new NegocioException("Erro! Não foi possível excluir o cargo");
         }
         if (listaUsuarios.isEmpty()) {
-            ICargoProgramaDAO relDAO = CargoProgramaDAOAdapter.getInstance();
+            ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
             // deleta todos os relacionamentos com aquele cargo
             List<CargoPrograma> listaREL = relDAO.busca(codRegistro, "codCargo");
             if (!listaREL.isEmpty()) {
@@ -198,7 +198,7 @@ public class ManterCargo implements IManterCargo {
     public List<Programa> listarProgramasRelacionados(String codCargo) 
             throws NegocioException, SQLException {
         if(codCargo != null) {
-            ICargoProgramaDAO cargoProgramaDAO = CargoProgramaDAOAdapter.getInstance();
+            ICargoProgramaDao cargoProgramaDAO = CargoProgramaDaoAdapter.getInstance();
             List<Programa> lista = cargoProgramaDAO.buscaProgramasRelacionados(codCargo); 
             
             return lista;
@@ -210,7 +210,7 @@ public class ManterCargo implements IManterCargo {
     @Override
     public List<Programa> listarTodosProgramas() 
             throws NegocioException, SQLException {
-        IProgramaDAO programaDAO = ProgramaDAOAdapter.getInstance();
+        IProgramaDao programaDAO = ProgramaDaoAdapter.getInstance();
         return programaDAO.buscaTodosProgramas();
     }
 }
