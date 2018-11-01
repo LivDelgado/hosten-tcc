@@ -1,24 +1,24 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDAO;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
-import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoConsumoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.UsuarioDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoConsumoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.UsuarioDaoAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterUsuario;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDao;
 
 public class ManterUsuario implements IManterUsuario {
 
-    IUsuarioDAO objetoDAO;
+    IUsuarioDao objetoDAO;
 
     public ManterUsuario() {
-        objetoDAO = UsuarioDAOAdapter.getInstance();
+        objetoDAO = UsuarioDaoAdapter.getInstance();
     }
 
     @Override
@@ -119,7 +119,7 @@ public class ManterUsuario implements IManterUsuario {
     public boolean excluir(String codRegistro)
             throws NegocioException, SQLException {
         // testa se o codUsuario é usado em QuartoConsumo
-        IQuartoConsumoDAO dao = QuartoConsumoDAOAdapter.getInstance();
+        IQuartoConsumoDao dao = QuartoConsumoDaoAdapter.getInstance();
         List<QuartoConsumo> listaQuartoConsumo = dao.busca(codRegistro, "codUsuarioRegistro");
 
         if (listaQuartoConsumo.isEmpty()) {

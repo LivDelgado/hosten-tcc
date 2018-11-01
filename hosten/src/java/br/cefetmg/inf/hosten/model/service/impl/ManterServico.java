@@ -1,22 +1,22 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IServicoDAO;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
-import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoConsumoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.ServicoDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoConsumoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.ServicoDaoAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoConsumoDAO;
 import br.cefetmg.inf.hosten.model.service.IManterServico;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IServicoDao;
 
 public class ManterServico implements IManterServico {
 
-    IServicoDAO objetoDAO;
+    IServicoDao objetoDAO;
 
     public ManterServico() {
-        objetoDAO = ServicoDAOAdapter.getInstance();
+        objetoDAO = ServicoDaoAdapter.getInstance();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ManterServico implements IManterServico {
     public boolean excluir(String codRegistro)
             throws NegocioException, SQLException {
         // confere se o servico é usado em quartoconsumo
-        IQuartoConsumoDAO dao = QuartoConsumoDAOAdapter.getInstance();
+        IQuartoConsumoDao dao = QuartoConsumoDaoAdapter.getInstance();
         List<QuartoConsumo> listaREL = dao.busca(
                 Integer.parseInt(codRegistro),
                 "seqServico");

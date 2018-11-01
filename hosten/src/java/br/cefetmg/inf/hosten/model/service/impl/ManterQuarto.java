@@ -1,22 +1,22 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDAO;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
-import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDAOAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoHospedagemDAOAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoHospedagemDaoAdapter;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoHospedagemDAO;
 import br.cefetmg.inf.hosten.model.service.IManterQuarto;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDao;
 
 public class ManterQuarto implements IManterQuarto {
 
-    IQuartoDAO objetoDAO;
+    IQuartoDao objetoDAO;
 
     public ManterQuarto() {
-        objetoDAO = QuartoDAOAdapter.getInstance();
+        objetoDAO = QuartoDaoAdapter.getInstance();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ManterQuarto implements IManterQuarto {
                 //
                 // testa se o nroQuarto está sendo usado em QuartoHospedagem
                 //
-                IQuartoHospedagemDAO relDAO = QuartoHospedagemDAOAdapter.getInstance();
+                IQuartoHospedagemDao relDAO = QuartoHospedagemDaoAdapter.getInstance();
                 List<QuartoHospedagem> listaREL = relDAO.busca(
                         codRegistro,
                         "nroQuarto");
