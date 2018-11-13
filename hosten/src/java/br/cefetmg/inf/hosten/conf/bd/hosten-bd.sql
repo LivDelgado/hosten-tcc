@@ -142,7 +142,7 @@ CREATE TABLE Hospedagem(
  datCheckIn Timestamp NOT NULL,
  datCheckOut Timestamp,
  vlrPago Numeric(7,2),
- codCPF Character(11)
+ codCPF Character(14)
 )
 ;
 
