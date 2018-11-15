@@ -3,7 +3,7 @@ package br.cefetmg.inf.hosten.model.service.impl;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoConsumoDaoAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.RelatorioDespesasDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.DespesaDaoAdapter;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
@@ -31,11 +31,11 @@ public class ControlarDespesas implements IControlarDespesas {
 
     @Override
     public List<Despesa> listar(int seqHospedagem, int nroQuarto) throws NegocioException, SQLException {
-        IDespesaDao relatorioDespesasDAO = RelatorioDespesasDaoAdapter.getInstance();
+        IDespesaDao DespesaDAO = DespesaDaoAdapter.getInstance();
         List<Despesa> despesaEncontradas = null;
         if (seqHospedagem > 0 && nroQuarto > 0) {
             try {
-                despesaEncontradas = relatorioDespesasDAO.busca(seqHospedagem, nroQuarto);
+                despesaEncontradas = DespesaDAO.busca(seqHospedagem, nroQuarto);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -61,19 +61,19 @@ public class ControlarDespesas implements IControlarDespesas {
     }
 
     @Override
-    public Map<String, Object> retornaRelatorioDespesas(
+    public Map<String, Object> retornaDespesa(
             int seqHospedagem, int nroQuarto) 
             throws NegocioException, SQLException {
         
-        IDespesaDao relatorioDespesasDAO 
-                = RelatorioDespesasDaoAdapter.getInstance();
+        IDespesaDao DespesaDAO 
+                = DespesaDaoAdapter.getInstance();
         
         Map<String, Object> despesaEncontradas = null;
         if (seqHospedagem > 0 && nroQuarto > 0) {
             try {
                 despesaEncontradas 
-                        = relatorioDespesasDAO
-                                .retornaRelatorioDespesas(
+                        = DespesaDAO
+                                .retornaDespesa(
                                         seqHospedagem, nroQuarto);
             } catch (SQLException e) {
             }

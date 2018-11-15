@@ -127,7 +127,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             Double valorDiaria = 0.0;
             ICategoriaQuartoDao categoriaDAO = CategoriaQuartoDaoAdapter.getInstance();
             valorDiaria = categoriaDAO.buscaCategoriaQuarto(
-                    quartoDAO.buscaQuarto(nroQuarto, "nroQuarto").get(0).getCodCategoria(), 
+                    quartoDAO.buscaQuarto(Integer.parseInt(nroQuarto), "nroQuarto").get(0).getCodCategoria(), 
                     "codCategoria"
             ).get(0).getVlrDiaria();
             
@@ -167,5 +167,15 @@ public class ControlarHospedagem implements IControlarHospedagem {
         } catch (SQLException ex) {
             throw new NegocioException("Houve um erro no processamento da requisição");
         }
+    }
+
+    @Override
+    public Hospedagem buscaHospedagem(int seqHospedagem) throws SQLException {
+        return (HospedagemDaoAdapter.getInstance().buscaHospedagem(seqHospedagem, "seqHospedagem").get(0));
+    }
+
+    @Override
+    public QuartoHospedagem buscaQuartoHospedagem(int seqHospedagem) throws SQLException{
+        return (QuartoHospedagemDaoAdapter.getInstance().busca(seqHospedagem, "seqHospedagem").get(0));
     }
 }

@@ -17,6 +17,6 @@ public interface IControlarDespesas {
     boolean excluir(QuartoConsumo quartoConsumo) 
             throws NegocioException, SQLException;
     
-    Map<String, Object> retornaRelatorioDespesas(int seqHospedagem, int nroQuarto) 
+    Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) 
             throws NegocioException, SQLException;
 }

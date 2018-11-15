@@ -1,10 +1,13 @@
 package br.cefetmg.inf.hosten.controller.hospedagem;
 
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IControlarHospedagem;
+import br.cefetmg.inf.hosten.model.service.IManterHospede;
 import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import com.itextpdf.text.BaseColor;
@@ -18,10 +21,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
@@ -119,6 +119,9 @@ public class CheckMB implements Serializable {
         this.hospedeSelecionado = hospedeSelecionado;
     }
 
+
+    private Document document;
+
     public void checkOut() {
         IControlarHospedagem controlarHosp = new ControlarHospedagem();
 
@@ -126,34 +129,17 @@ public class CheckMB implements Serializable {
 
         String nomeArquivo = "fatura.pdf";
 
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        ec.responseReset();
         ec.setResponseHeader("Content-Type", "application/pdf");
-        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + "fatura" + ".pdf" + "\"");
+        ec.setResponseHeader("Content-Disposition", "inline; filename=fatura.pdf");
         
         try {
-            geraFatura(nroQuarto, seqHospedagem, nomeArquivo,ec.getResponseOutputStream());
-            FacesContext.getCurrentInstance().responseComplete();
+            document = new Document(PageSize.A4, 90, 90, 90, 90);
+            PdfWriter.getInstance(document, ec.getResponseOutputStream());
 
-            ContextUtils.redireciona("./quartos-estados.jsf");
-
-        } catch (DocumentException | IOException ex) {
-            //
-            //
-            //
-        }
-
-    }
-
-    private Document document;
-
-    public void geraFatura(int nroQuarto, int seqHospedagem, String nomeArquivo, OutputStream outs)
-            throws DocumentException, IOException {
-        
-        this.document = new Document();
-        PdfWriter.getInstance(document, outs);
-        document = new Document(PageSize.A4, 90, 90, 90, 90);
-
-        document.open();
+            document.open();
 
         try {
             montaArquivo(seqHospedagem);
@@ -162,8 +148,16 @@ public class CheckMB implements Serializable {
             //
             //
         }
-
+        
         document.close();
+        fc.responseComplete();
+        
+        } catch (DocumentException | IOException ex) {
+            //
+            //
+            //
+        }
+
     }
 
     private void montaArquivo(int seqHospedagem) throws NegocioException, SQLException, DocumentException {
@@ -172,8 +166,10 @@ public class CheckMB implements Serializable {
                 seqHospedagem, nroQuarto
         );
 
-        //Hospedagem hosp;
-        //QuartoHospedagem quartoHosp;
+        IControlarHospedagem controlarHospedagem = new ControlarHospedagem();
+        
+        Hospedagem hosp = controlarHospedagem.buscaHospedagem(seqHospedagem);
+        QuartoHospedagem quartoHosp = controlarHospedagem.buscaQuartoHospedagem(seqHospedagem);
 
         // monta o arquivo
         DottedLineSeparator separator = new DottedLineSeparator();
@@ -197,8 +193,14 @@ public class CheckMB implements Serializable {
         String nomeHospede;
         //
         //
-        	nomeHospede = listaDespesas.get(0).getNomeHospede();
+//              CODIGO ANTERIOR, COM LISTA DE DESPESAS        
+//        	nomeHospede = listaDespesas.get(0).getNomeHospede();
+//               
                 // buscar o nome do hospede pelo codigo do cpf que ta em hospedagem
+                IManterHospede manterHospede = new ManterHospede();
+                Hospede hospede = manterHospede.listar(hosp.getCodCPF(), "codCPF").get(0);
+                nomeHospede = hospede.getNomHospede();
+                
         //
         //
 
@@ -209,90 +211,95 @@ public class CheckMB implements Serializable {
         document.add(p);
         p.clear();
 
-////        Double vlrTotal = 0.0;
-//        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-//
-//        if (listaDespesas != null) {
-//	        for (Despesa despesa : listaDespesas) {
-//	            // um parágrafo para cada item/servico consumido
-//	            int qtdServico = despesa.getQtdConsumo();
-//	            String desServico = despesa.getDesServico();
-//	            Double vlrServico = despesa.getVlrUnit();
-//
-////	            vlrTotal += vlrServico * qtdServico;
-//
-//	            String strVlrServico = currencyFormatter.format(vlrServico);
-//
-//	            p.setFont(fonteMulberry);
-//	            p.setSpacingAfter(2);
-//	            p.setSpacingBefore(0);
-//	            p.add(String.valueOf(qtdServico));
-//	            p.add(" ");
-//	            p.add(desServico);
-//	            p.add(c);
-//	            p.setFont(fonteSparklingGrape);
-//	            p.add(strVlrServico);
-//	            document.add(p);
-//	            p.clear();
-//	        }
-//	    }
-//
-//        // parágrafo com as informações da diária
-//        int nroAdultos = quartoHosp.getNroAdultos();
-//        int nroCriancas = quartoHosp.getNroCriancas();
-//        Double vlrDiaria = quartoHosp.getVlrDiaria();
-//
-//        Timestamp datCheckIn = hosp.getDatCheckIn();
-//        long msDiferenca = (datCheckOut.getTime()) - (datCheckIn.getTime());
-//        long segundos = msDiferenca / 1000;
-//        long minutos = segundos / 60;
-//        long horas = minutos / 60;
-//        long dias = horas / 24;
-//
-//        Double valorDiarias = dias * vlrDiaria;
-//
-//        // valor total pago pelo cliente
-//        vlrTotal = hosp.getVlrPago();
-//
-//        p.setFont(fonteChateauRose);
-//        p.setSpacingAfter(2);
-//        p.setSpacingBefore(0);
-//
-//        p.add("Número de adultos");
-//        p.add(c);
-//        p.add(String.valueOf(nroAdultos));
-//        document.add(p);
-//        p.clear();
-//
-//        p.add("Número de crianças");
-//        p.add(c);
-//        p.add(String.valueOf(nroCriancas));
-//        document.add(p);
-//        p.clear();
-//
-//        p.add("Dias de estadia");
-//        p.add(c);
-//        p.add(String.valueOf(dias));
-//        document.add(p);
-//        p.clear();
-//
-//        p.add("Valor total das diárias");
-//        p.add(c);
-//
-//        String strValorDiarias = currencyFormatter.format(valorDiarias);
-//        p.setFont(fonteChateauRoseNegrito);
-//        p.add(strValorDiarias);
-//        document.add(p);
-//        p.clear();
-//
-//        // parágrafo com o valor total
-//        String strValorTotal = currencyFormatter.format(vlrTotal);
-//        p.setFont(fonteRedViolet);
-//        p.setSpacingBefore(20);
-//        p.add("Valor total");
-//        p.add(c);
-//        p.add(strValorTotal);
-//        document.add(p);
-    }
+        Double vlrTotal = 0.0;
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
 
+        if (listaDespesas != null) {
+            for (Despesa despesa : listaDespesas) {
+                // um parágrafo para cada item/servico consumido
+                int qtdServico = despesa.getQtdConsumo();
+                String desServico = despesa.getDesServico();
+                Double vlrServico = despesa.getVlrUnit();
+
+//                vlrTotal += vlrServico * qtdServico;
+
+                String strVlrServico = currencyFormatter.format(vlrServico);
+
+                p.setFont(fonteMulberry);
+                p.setSpacingAfter(2);
+                p.setSpacingBefore(0);
+                p.add(String.valueOf(qtdServico));
+                p.add(" ");
+                p.add(desServico);
+                p.add(c);
+                p.setFont(fonteSparklingGrape);
+                p.add(strVlrServico);
+                document.add(p);
+                p.clear();
+            }
+        }
+
+        // parágrafo com as informações da diária
+        int nroAdultos = quartoHosp.getNroAdultos();
+        int nroCriancas = quartoHosp.getNroCriancas();
+        Double vlrDiaria = quartoHosp.getVlrDiaria();
+        
+
+        Timestamp datCheckIn = hosp.getDatCheckIn();
+        Timestamp datCheckOut = hosp.getDatCheckOut();
+        long msDiferenca = (datCheckOut.getTime()) - (datCheckIn.getTime());
+        long segundos = msDiferenca / 1000;
+        long minutos = segundos / 60;
+        long horas = minutos / 60;
+        long dias = horas / 24;
+        
+        if (dias < 1)
+            dias = 1;
+
+        Double valorDiarias = dias * vlrDiaria;
+
+        // valor total pago pelo cliente
+        vlrTotal = hosp.getVlrPago();
+
+        p.setFont(fonteChateauRose);
+        p.setSpacingAfter(2);
+        p.setSpacingBefore(0);
+
+        p.add("Número de adultos");
+        p.add(c);
+        p.add(String.valueOf(nroAdultos));
+        document.add(p);
+        p.clear();
+
+        p.add("Número de crianças");
+        p.add(c);
+        p.add(String.valueOf(nroCriancas));
+        document.add(p);
+        p.clear();
+
+        p.add("Dias de estadia");
+        p.add(c);
+        p.add(String.valueOf(dias));
+        document.add(p);
+        p.clear();
+
+        p.add("Valor total das diárias");
+        p.add(c);
+
+        String strValorDiarias = currencyFormatter.format(valorDiarias);
+        p.setFont(fonteChateauRoseNegrito);
+        p.add(strValorDiarias);
+        document.add(p);
+        p.clear();
+
+        // parágrafo com o valor total
+        String strValorTotal = currencyFormatter.format(vlrTotal);
+        p.setFont(fonteRedViolet);
+        p.setSpacingBefore(20);
+        p.add("Valor total");
+        p.add(c);
+        p.add(strValorTotal);
+        document.add(p);
+    }
+    
 }

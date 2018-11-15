@@ -31,7 +31,7 @@ public class DespesaDao implements IDespesaDao {
     @Override
     public List<Despesa> busca(int seqHospedagem, int nroQuarto) throws SQLException {
         String qry = "SELECT * "
-                + "FROM RelatorioDespesas "
+                + "FROM Despesa "
                 + "WHERE "
                 + "seqHospedagem = ? AND "
                 + "nroQuarto = ?";
@@ -76,10 +76,10 @@ public class DespesaDao implements IDespesaDao {
     }
     
     @Override
-    public Map<String, Object> retornaRelatorioDespesas(int seqHospedagem, int nroQuarto) 
+    public Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) 
             throws SQLException {
         String qry = "SELECT * "
-                + "FROM  RelatorioDespesas "
+                + "FROM  Despesa "
                 + "WHERE seqHospedagem = ? "
                 + "AND nroQuarto = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);

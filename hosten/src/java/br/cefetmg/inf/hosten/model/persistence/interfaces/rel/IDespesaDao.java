@@ -8,6 +8,6 @@ import java.util.Map;
 public interface IDespesaDao {
     List<Despesa> busca(int seqHospedagem, int nroQuarto) throws SQLException;
     
-    Map<String, Object> retornaRelatorioDespesas(int seqHospedagem, int nroQuarto) 
+    Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) 
             throws SQLException;
 }

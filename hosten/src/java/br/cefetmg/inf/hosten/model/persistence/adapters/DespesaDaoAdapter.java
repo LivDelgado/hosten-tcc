@@ -7,7 +7,7 @@ import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.DespesaDao;
 import java.util.Map;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IDespesaDao;
 
-public class RelatorioDespesasDaoAdapter implements IDespesaDao {
+public class DespesaDaoAdapter implements IDespesaDao {
     
     private static IDespesaDao instancia;
     
@@ -24,8 +24,8 @@ public class RelatorioDespesasDaoAdapter implements IDespesaDao {
     }
     
     @Override
-    public Map<String, Object> retornaRelatorioDespesas(int seqHospedagem, int nroQuarto) 
+    public Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) 
             throws SQLException {
-        return instancia.retornaRelatorioDespesas(seqHospedagem, nroQuarto);
+        return instancia.retornaDespesa(seqHospedagem, nroQuarto);
     }
 }
