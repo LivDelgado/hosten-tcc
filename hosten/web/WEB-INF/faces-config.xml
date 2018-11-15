@@ -226,6 +226,32 @@
             <redirect/>
         </navigation-case>
         
+        <!-- Despesas -->
+        <navigation-case>
+            <from-action>#{controleDespesaMB.excluir(despesa)}</from-action>
+            <from-outcome>falha</from-outcome>
+            <to-view-id>/view/detalhes-conta.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{controleDespesaMB.excluir(despesa)}</from-action>
+            <from-outcome>sucesso</from-outcome>
+            <to-view-id>/view/detalhes-conta.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{despesaMB.inserir}</from-action>
+            <from-outcome>falha</from-outcome>
+            <to-view-id>/view/servicos.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{despesaMB.inserir}</from-action>
+            <from-outcome>sucesso</from-outcome>
+            <to-view-id>/view/detalhes-conta.jsf</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
         <!-- Hospedagem -->
         <navigation-case>
             <from-action>#{checkMB.checkIn()}</from-action>
