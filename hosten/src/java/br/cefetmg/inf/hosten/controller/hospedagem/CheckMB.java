@@ -1,9 +1,9 @@
 package br.cefetmg.inf.hosten.controller.hospedagem;
 
-import br.cefetmg.inf.hosten.model.service.impl.ControlarHospedagem;
-import br.cefetmg.inf.hosten.model.service.impl.ManterHospede;
-import br.cefetmg.inf.hosten.model.service.impl.ControlarDespesas;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.dist.proxy.ControlarDespesasProxy;
+import br.cefetmg.inf.hosten.dist.proxy.ControlarHospedagemProxy;
+import br.cefetmg.inf.hosten.dist.proxy.ManterHospedeProxy;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
@@ -99,7 +99,7 @@ public class CheckMB implements Serializable {
     }
 
     public String checkIn() {
-        IControlarHospedagem controlarHosp = new ControlarHospedagem();
+        IControlarHospedagem controlarHosp = new ControlarHospedagemProxy();
 
         boolean testeRegistro = controlarHosp.efetuarCheckIn(String.valueOf(nroQuarto), hospedeSelecionado.getCodCPF(), diasDeEstadia, nroAdultos, nroCriancas);
         if (testeRegistro) {
@@ -125,7 +125,7 @@ public class CheckMB implements Serializable {
     private Document document;
 
     public void checkOut() {
-        IControlarHospedagem controlarHosp = new ControlarHospedagem();
+        IControlarHospedagem controlarHosp = new ControlarHospedagemProxy();
 
         int seqHospedagem = controlarHosp.efetuarCheckOut(String.valueOf(nroQuarto));
 
@@ -163,12 +163,12 @@ public class CheckMB implements Serializable {
     }
 
     private void montaArquivo(int seqHospedagem) throws NegocioException, SQLException, DocumentException {
-        IControlarDespesas controlarDespesas = new ControlarDespesas();
+        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
         List<Despesa> listaDespesas = controlarDespesas.listar(
                 seqHospedagem, nroQuarto
         );
 
-        IControlarHospedagem controlarHospedagem = new ControlarHospedagem();
+        IControlarHospedagem controlarHospedagem = new ControlarHospedagemProxy();
         
         Hospedagem hosp = controlarHospedagem.buscaHospedagem(seqHospedagem);
         QuartoHospedagem quartoHosp = controlarHospedagem.buscaQuartoHospedagem(seqHospedagem);
@@ -199,7 +199,7 @@ public class CheckMB implements Serializable {
 //        	nomeHospede = listaDespesas.get(0).getNomeHospede();
 //               
                 // buscar o nome do hospede pelo codigo do cpf que ta em hospedagem
-                IManterHospede manterHospede = new ManterHospede();
+                IManterHospede manterHospede = new ManterHospedeProxy();
                 Hospede hospede = manterHospede.listar(hosp.getCodCPF(), "codCPF").get(0);
                 nomeHospede = hospede.getNomHospede();
                 

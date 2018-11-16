@@ -1,9 +1,9 @@
 package br.cefetmg.inf.hosten.controller.hospedagem;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterQuarto;
-import br.cefetmg.inf.hosten.model.service.impl.ControlarDespesas;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.controller.sessao.Sessao;
+import br.cefetmg.inf.hosten.dist.proxy.ControlarDespesasProxy;
+import br.cefetmg.inf.hosten.dist.proxy.ManterQuartoProxy;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
@@ -32,7 +32,7 @@ public class DespesaMB implements Serializable {
     private String codUsuarioRegistro;
 
     public List<Despesa> getListaDespesas() {
-        IControlarDespesas controlarDespesas = new ControlarDespesas();
+        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
         try {
             listaDespesas = controlarDespesas.listar(seqHospedagem, nroQuarto);
         } catch (NegocioException | SQLException ex) {
@@ -70,7 +70,7 @@ public class DespesaMB implements Serializable {
     public void exibeDespesas(int nroQuarto, int operacao) {
         try {
             setNroQuarto(nroQuarto);
-            IManterQuarto manterQuarto = new ManterQuarto();
+            IManterQuarto manterQuarto = new ManterQuartoProxy();
             setSeqHospedagem(manterQuarto.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto));
 
             if (operacao == 1) {
@@ -86,7 +86,7 @@ public class DespesaMB implements Serializable {
 
     public String inserir() {
         codUsuarioRegistro = Sessao.getInstance().getUsuarioLogado().getCodUsuario();
-        IControlarDespesas controlarDespesas = new ControlarDespesas();
+        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
         Date dataAtual = new Date();
         Timestamp datConsumo = new Timestamp(dataAtual.getTime());
 
@@ -112,7 +112,7 @@ public class DespesaMB implements Serializable {
     }
 
     public String excluir(Despesa despesa) {
-        IControlarDespesas controlarDespesas = new ControlarDespesas();
+        IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
         
         //
         //

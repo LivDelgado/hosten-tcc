@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.controller.servico;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterServicoArea;
-import br.cefetmg.inf.hosten.model.service.impl.ManterServico;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.dist.proxy.ManterServicoAreaProxy;
+import br.cefetmg.inf.hosten.dist.proxy.ManterServicoProxy;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.hosten.model.service.IManterServico;
@@ -32,7 +32,7 @@ public class ServicoMB implements Serializable{
 
     public ServicoMB() {
         servico = new Servico(null, null, null);
-        manterServico = new ManterServico();
+        manterServico = new ManterServicoProxy();
         try {
             listaServicos = manterServico.listarTodos();
         } catch (NegocioException | SQLException e) {
@@ -41,7 +41,7 @@ public class ServicoMB implements Serializable{
     }
 
     public ServicoArea getAreaServico(Servico servico) {
-        IManterServicoArea manterServicoArea = new ManterServicoArea();
+        IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
         try {
             areaServico = manterServicoArea.listar(servico.getCodServicoArea(), "codServicoArea").get(0);
         } catch (NegocioException | SQLException ex) {

@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.controller.login;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterUsuario;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.controller.sessao.Sessao;
+import br.cefetmg.inf.hosten.dist.proxy.ManterUsuarioProxy;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.service.IManterUsuario;
 import br.cefetmg.inf.util.exception.NegocioException;
@@ -38,7 +38,7 @@ public class LoginMB implements Serializable {
     public boolean validaLogin () {
         boolean retorno = false;
         
-        IManterUsuario manterUsuario = new ManterUsuario();
+        IManterUsuario manterUsuario = new ManterUsuarioProxy();
         try {
             Usuario usuarioAtual = manterUsuario.usuarioLogin(email, senha);
             if (usuarioAtual != null) {

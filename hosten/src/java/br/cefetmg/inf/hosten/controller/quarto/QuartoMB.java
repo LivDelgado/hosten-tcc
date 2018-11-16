@@ -1,8 +1,8 @@
  package br.cefetmg.inf.hosten.controller.quarto;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterCategoriaQuarto;
-import br.cefetmg.inf.hosten.model.service.impl.ManterQuarto;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.dist.proxy.ManterCategoriaQuartoProxy;
+import br.cefetmg.inf.hosten.dist.proxy.ManterQuartoProxy;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
@@ -32,7 +32,7 @@ public class QuartoMB implements Serializable{
 
     public QuartoMB() {
         quarto = new Quarto(0, null, false);
-        manterQuarto = new ManterQuarto();
+        manterQuarto = new ManterQuartoProxy();
         try {
             listaQuartos = manterQuarto.listarTodos();
         } catch (NegocioException | SQLException e) {
@@ -41,7 +41,7 @@ public class QuartoMB implements Serializable{
     }
 
     public CategoriaQuarto getCategoriaQuarto(Quarto quarto) {
-        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuarto();
+        IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
         try {
             categoriaQuarto = manterCategoria.listar(quarto.getCodCategoria(), "codCategoria").get(0);
         } catch (NegocioException | SQLException ex) {

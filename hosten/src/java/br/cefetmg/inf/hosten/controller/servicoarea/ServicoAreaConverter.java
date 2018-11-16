@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.controller.servicoarea;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterServicoArea;
+import br.cefetmg.inf.hosten.dist.proxy.ManterServicoAreaProxy;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.hosten.model.service.IManterServicoArea;
 import br.cefetmg.inf.util.exception.NegocioException;
@@ -14,7 +14,7 @@ import javax.faces.convert.FacesConverter;
 public class ServicoAreaConverter implements Converter  {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        IManterServicoArea manterServicoArea = new ManterServicoArea();
+        IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
         ServicoArea servicoArea = null;
         try {
             servicoArea = manterServicoArea.listar(value, "nomServicoArea").get(0);

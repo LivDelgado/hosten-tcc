@@ -1,7 +1,7 @@
 package br.cefetmg.inf.hosten.controller.hospedes;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterHospede;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
+import br.cefetmg.inf.hosten.dist.proxy.ManterHospedeProxy;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.hosten.model.service.IManterHospede;
 import br.cefetmg.inf.util.exception.NegocioException;
@@ -23,7 +23,7 @@ public class HospedeMB implements Serializable {
 
     public HospedeMB() {
         hospede = new Hospede(null, null, null, null);
-        IManterHospede manterHospede = new ManterHospede();
+        IManterHospede manterHospede = new ManterHospedeProxy();
         try {
             listaHospedes = manterHospede.listarTodos();
         } catch (NegocioException | SQLException ex) {
@@ -51,7 +51,7 @@ public class HospedeMB implements Serializable {
     public void onRowEdit(RowEditEvent event) throws IOException {
         hospede = (Hospede) event.getObject();
 
-        IManterHospede manterHospede = new ManterHospede();
+        IManterHospede manterHospede = new ManterHospedeProxy();
         try {
             boolean testeAlteracao = manterHospede.alterar(codHospedeAlterar, hospede);
             if (testeAlteracao) {
@@ -70,7 +70,7 @@ public class HospedeMB implements Serializable {
     }
 
     public String inserir() {
-        IManterHospede manterHospede = new ManterHospede();
+        IManterHospede manterHospede = new ManterHospedeProxy();
 
         try {
             boolean testeInsercao = manterHospede.inserir(hospede);

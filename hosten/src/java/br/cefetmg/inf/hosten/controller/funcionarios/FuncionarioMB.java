@@ -1,9 +1,9 @@
 package br.cefetmg.inf.hosten.controller.funcionarios;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterCargo;
-import br.cefetmg.inf.hosten.model.service.impl.ManterUsuario;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.controller.sessao.Sessao;
+import br.cefetmg.inf.hosten.dist.proxy.ManterCargoProxy;
+import br.cefetmg.inf.hosten.dist.proxy.ManterUsuarioProxy;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
@@ -31,7 +31,7 @@ public class FuncionarioMB implements Serializable {
 
     public FuncionarioMB() {
         funcionario = new Usuario(null, null, null, null, null);
-        IManterUsuario manterFuncionario = new ManterUsuario();
+        IManterUsuario manterFuncionario = new ManterUsuarioProxy();
         try {
             listaFuncionarios = manterFuncionario.listarTodos();
         } catch (NegocioException | SQLException e) {
@@ -40,7 +40,7 @@ public class FuncionarioMB implements Serializable {
     }
 
     public Cargo getCargoFuncionario(Usuario funcionario) {
-        IManterCargo manterCargo = new ManterCargo();
+        IManterCargo manterCargo = new ManterCargoProxy();
         try {
             cargoFuncionario = manterCargo.listar(funcionario.getCodCargo(), "codCargo").get(0);
         } catch (NegocioException | SQLException ex) {
@@ -79,7 +79,7 @@ public class FuncionarioMB implements Serializable {
         funcionario.setCodCargo(cargoSelecionado.getCodCargo());
 
         if (!codFuncionarioAlterar.equals(Sessao.getInstance().getUsuarioLogado().getCodUsuario())) {
-            IManterUsuario manterFuncionario = new ManterUsuario();
+            IManterUsuario manterFuncionario = new ManterUsuarioProxy();
             try {
                 boolean testeExclusao = manterFuncionario.alterar(codFuncionarioAlterar, funcionario);
                 if (testeExclusao) {
@@ -103,7 +103,7 @@ public class FuncionarioMB implements Serializable {
     public String excluir(Usuario funcionario) {
         this.funcionario = funcionario;
 
-        IManterUsuario manterFuncionario = new ManterUsuario();
+        IManterUsuario manterFuncionario = new ManterUsuarioProxy();
         try {
             boolean testeExclusao = manterFuncionario.excluir(funcionario.getCodUsuario());
             if (testeExclusao) {
@@ -121,7 +121,7 @@ public class FuncionarioMB implements Serializable {
     }
 
     public String inserir() {
-        IManterUsuario manterFuncionario = new ManterUsuario();
+        IManterUsuario manterFuncionario = new ManterUsuarioProxy();
         funcionario.setCodCargo(cargoSelecionado.getCodCargo());
 
         try {

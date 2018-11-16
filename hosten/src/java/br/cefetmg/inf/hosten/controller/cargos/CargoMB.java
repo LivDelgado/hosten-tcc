@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.controller.cargos;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterCargo;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.controller.sessao.Sessao;
+import br.cefetmg.inf.hosten.dist.proxy.ManterCargoProxy;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
@@ -31,7 +31,7 @@ public class CargoMB implements Serializable {
 
     public CargoMB() {
         cargo = new Cargo(null, null, false);
-        IManterCargo manterCargo = new ManterCargo();
+        IManterCargo manterCargo = new ManterCargoProxy();
         try {
             listaCargos = manterCargo.listarTodos();
         } catch (NegocioException | SQLException e) {
@@ -71,7 +71,7 @@ public class CargoMB implements Serializable {
                 listaProgramasString.add(prog.getCodPrograma());
             }
 
-            IManterCargo manterCargo = new ManterCargo();
+            IManterCargo manterCargo = new ManterCargoProxy();
             try {
                 boolean testeExclusao = manterCargo.alterar(codCargoAlterar, cargo, listaProgramasString);
                 if (testeExclusao) {
@@ -95,7 +95,7 @@ public class CargoMB implements Serializable {
     public String excluir(Cargo cargo) {
         this.cargo = cargo;
 
-        IManterCargo manterCargo = new ManterCargo();
+        IManterCargo manterCargo = new ManterCargoProxy();
         try {
             boolean testeExclusao = manterCargo.excluir(cargo.getCodCargo());
             if (testeExclusao) {
@@ -113,7 +113,7 @@ public class CargoMB implements Serializable {
     }
 
     public String inserir() {
-        IManterCargo manterCargo = new ManterCargo();
+        IManterCargo manterCargo = new ManterCargoProxy();
 
         List<Programa> listaProgramas = new ArrayList();
         listaProgramas.addAll(Arrays.asList(programasSelecionados));
@@ -156,7 +156,7 @@ public class CargoMB implements Serializable {
     }
 
     public List<Programa> getProgramasRelacionados(Cargo cargo) {
-        IManterCargo manterCargo = new ManterCargo();
+        IManterCargo manterCargo = new ManterCargoProxy();
 
         try {
             programasRelacionados = manterCargo.listarProgramasRelacionados(cargo.getCodCargo());

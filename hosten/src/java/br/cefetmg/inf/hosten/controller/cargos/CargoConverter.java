@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.controller.cargos;
 
-import br.cefetmg.inf.hosten.model.service.impl.ManterCargo;
+import br.cefetmg.inf.hosten.dist.proxy.ManterCargoProxy;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
 import br.cefetmg.inf.util.exception.NegocioException;
@@ -14,7 +14,7 @@ import javax.faces.convert.FacesConverter;
 public class CargoConverter implements Converter  {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        IManterCargo manterCargo = new ManterCargo();
+        IManterCargo manterCargo = new ManterCargoProxy();
         Cargo cargo = null;
         try {
             cargo = manterCargo.listar(value, "nomCargo").get(0);

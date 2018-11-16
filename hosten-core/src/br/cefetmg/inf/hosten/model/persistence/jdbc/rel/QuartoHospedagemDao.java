@@ -96,7 +96,7 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
                 + "		SELECT D.seqhospedagem, nroquarto, nroadultos, nrocriancas, vlrdiaria, datcheckin, datcheckout, vlrpago, codcpf\n"
                 + "		FROM QuartoHospedagem D\n"
                 + "		JOIN Hospedagem E on D.seqhospedagem = E.seqhospedagem\n"
-                + "		WHERE datcheckout = NULL OR datcheckout < CURRENT_DATE\n"
+                + "		WHERE datcheckout = NULL OR datcheckout > CURRENT_DATE\n"
                 + "	) A ON A.nroQuarto = B.nroQuarto\n"
                 + "ORDER BY nroquarto";
         Statement stmt = con.createStatement();
