@@ -1,10 +1,10 @@
 package br.cefetmg.inf.hosten.controller.categoriaquarto;
 
+import br.cefetmg.inf.hosten.model.service.impl.ManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
-import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;

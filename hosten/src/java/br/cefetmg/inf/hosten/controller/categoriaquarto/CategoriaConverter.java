@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.controller.categoriaquarto;
 
+import br.cefetmg.inf.hosten.model.service.impl.ManterCategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.service.IManterCategoriaQuarto;
-import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import javax.faces.component.UIComponent;

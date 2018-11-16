@@ -45,7 +45,7 @@
                     <p:password id="senhaLogin" value="#{loginMB.senha}" required="true" requiredMessage="Campo obrigatório"/>
                     
                     <h:outputLabel value="" />
-                    <p:commandButton value="Login" action="#{loginMB.validaLogin}" update="mensagens"/> 
+                    <p:commandButton value="Login" action="#{loginMB.validaLogin}" ajax="false" /> 
                 </p:panelGrid>
             </div>
         </h:form>

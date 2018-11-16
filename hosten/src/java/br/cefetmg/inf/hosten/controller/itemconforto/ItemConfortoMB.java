@@ -1,9 +1,9 @@
 package br.cefetmg.inf.hosten.controller.itemconforto;
 
+import br.cefetmg.inf.hosten.model.service.impl.ManterItemConforto;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.hosten.model.service.IManterItemConforto;
-import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;

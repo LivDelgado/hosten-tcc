@@ -163,9 +163,10 @@ public class UsuarioDao implements IUsuarioDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, email);
         ResultSet rs = pStmt.executeQuery();
-
-        rs.next();
-        String senhaEncontrada = rs.getString(1);
+        
+        String senhaEncontrada = "";
+        while (rs.next())
+             senhaEncontrada = rs.getString(1);
 
         if (SenhaUtils.verificaSenha(senha, senhaEncontrada)) {
             List<Usuario> usuariosEncontrado

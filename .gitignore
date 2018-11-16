@@ -13,3 +13,9 @@ hosten/hosten-core/nbproject/private/private\.xml
 /hosten/build/
 /hosten/dist/
 hosten/nbproject/build-impl\.xml~
+/hosten-common/nbproject/private/
+/hosten-core/nbproject/private/
+/hosten-common/build/
+/hosten-common/dist/
+/hosten-core/build/
+/hosten-core/dist/

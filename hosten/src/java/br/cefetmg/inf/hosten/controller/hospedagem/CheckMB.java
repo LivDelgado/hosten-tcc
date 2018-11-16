@@ -1,5 +1,8 @@
 package br.cefetmg.inf.hosten.controller.hospedagem;
 
+import br.cefetmg.inf.hosten.model.service.impl.ControlarHospedagem;
+import br.cefetmg.inf.hosten.model.service.impl.ManterHospede;
+import br.cefetmg.inf.hosten.model.service.impl.ControlarDespesas;
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
@@ -8,7 +11,6 @@ import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IControlarHospedagem;
 import br.cefetmg.inf.hosten.model.service.IManterHospede;
-import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;

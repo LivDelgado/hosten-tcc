@@ -1,11 +1,11 @@
 package br.cefetmg.inf.hosten.controller.login;
 
+import br.cefetmg.inf.hosten.model.service.impl.ManterCargo;
 import br.cefetmg.inf.hosten.controller.sessao.ConstantesSessao;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
-import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.sql.SQLException;

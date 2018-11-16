@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.controller.servicoarea;
 
+import br.cefetmg.inf.hosten.model.service.impl.ManterServicoArea;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.hosten.model.service.IManterServicoArea;
-import br.cefetmg.inf.hosten.model.service.impl.*;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import javax.faces.component.UIComponent;
