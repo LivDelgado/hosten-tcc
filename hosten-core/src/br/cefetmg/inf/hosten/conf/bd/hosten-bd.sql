@@ -1,3 +1,6 @@
+-- CONFIGURING THE DATABASE --
+SET timezone="America/Sao_Paulo";
+
 -- Create tables section -------------------------------------------------
 
 -- Table Programa

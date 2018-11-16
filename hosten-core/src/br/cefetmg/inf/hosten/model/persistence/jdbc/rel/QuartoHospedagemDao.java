@@ -83,22 +83,21 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
         String qry
                 = "SELECT \n"
                 + "	A.seqHospedagem, \n"
-                + "	B.nroQuarto, \n"
-                + "	A.nroAdultos, \n"
+                + "	B.nroQuarto,\n"
+                + "	A.nroAdultos,\n"
                 + "	A.nroCriancas,\n"
-                + "	A.vlrDiaria, \n"
-                + "	B.idtOcupado, \n"
+                + "	A.vlrDiaria,\n"
+                + "	B.idtOcupado,\n"
                 + "	A.datCheckOut\n"
                 + "FROM \n"
-                + "Quarto B\n"
-                + "	LEFT JOIN \n"
-                + "	(\n"
-                + "		SELECT D.seqhospedagem, nroquarto, nroadultos, nrocriancas, vlrdiaria, datcheckin, datcheckout, vlrpago, codcpf\n"
-                + "		FROM QuartoHospedagem D\n"
-                + "		JOIN Hospedagem E on D.seqhospedagem = E.seqhospedagem\n"
-                + "		WHERE datcheckout = NULL OR datcheckout > CURRENT_DATE\n"
-                + "	) A ON A.nroQuarto = B.nroQuarto\n"
-                + "ORDER BY nroquarto";
+                + "	Quarto B\n"
+                + "	LEFT JOIN (\n"
+                + "                SELECT D.seqhospedagem, nroquarto, nroadultos, nrocriancas, vlrdiaria, datcheckin, datcheckout, vlrpago, codcpf\n"
+                + "                FROM QuartoHospedagem D\n"
+                + "                JOIN Hospedagem E on D.seqhospedagem = E.seqhospedagem\n"
+                + "                WHERE datcheckout = NULL OR datcheckout > (SELECT NOW())\n"
+                + "        ) A ON A.nroQuarto = B.nroQuarto\n"
+                + "ORDER BY nroquarto;";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
