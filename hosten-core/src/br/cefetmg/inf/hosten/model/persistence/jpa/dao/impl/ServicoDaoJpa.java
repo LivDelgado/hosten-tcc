@@ -1,8 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.CategoriaQuartoJpa;
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.ServicoJpa;
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.ServicoAreaJpa;
+import br.cefetmg.inf.hosten.model.domain.Servico;
+import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,7 +29,7 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public boolean adiciona(ServicoJpa servico) throws SQLException {
+    public boolean adiciona(Servico servico) throws SQLException {
         em.getTransaction().begin();
         em.persist(servico);
         em.getTransaction().commit();
@@ -39,16 +38,16 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public ServicoJpa buscaPorPk(Short id) throws SQLException {
+    public Servico buscaPorPk(Short id) throws SQLException {
         em.getTransaction().begin();
-        ServicoJpa servico = em.find(ServicoJpa.class, id);
+        Servico servico = em.find(Servico.class, id);
         em.getTransaction().commit();
 
         return servico;
     }
 
     @Override
-    public List<ServicoJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<Servico> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -70,10 +69,10 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<ServicoJpa> tq = em
-                .createNamedQuery(qryBusca, ServicoJpa.class)
+        TypedQuery<Servico> tq = em
+                .createNamedQuery(qryBusca, Servico.class)
                 .setParameter(parametro, dadoBusca);
-        List<ServicoJpa> servicos = tq.getResultList();
+        List<Servico> servicos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -81,11 +80,11 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public List<ServicoJpa> buscaTodos() throws SQLException {
+    public List<Servico> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<ServicoJpa> tq = em.createNamedQuery("Servico.findAll", ServicoJpa.class);
-        List<ServicoJpa> servicos = tq.getResultList();
+        TypedQuery<Servico> tq = em.createNamedQuery("Servico.findAll", Servico.class);
+        List<Servico> servicos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -93,16 +92,16 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public boolean atualiza(Short id, ServicoJpa servNov)
+    public boolean atualiza(Short id, Servico servNov)
             throws SQLException {
         em.getTransaction().begin();
 
-        ServicoJpa servAnt = em.find(ServicoJpa.class, id);
+        Servico servAnt = em.find(Servico.class, id);
         servAnt.setDesServico(servNov.getDesServico());
         servAnt.setVlrUnit(servNov.getVlrUnit());
         
-        ServicoAreaJpa saAnt = servAnt.getCodServicoArea();
-        ServicoAreaJpa saNov = servNov.getCodServicoArea();
+        ServicoArea saAnt = servAnt.getServicoArea();
+        ServicoArea saNov = servNov.getServicoArea();
         if (!saAnt.equals(saNov)) {
             saAnt.removeServico(servAnt, saNov);
         }
@@ -113,9 +112,9 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public boolean deleta(ServicoJpa servico) throws SQLException {
+    public boolean deleta(Servico servico) throws SQLException {
         em.getTransaction().begin();
-        em.remove(em.getReference(ServicoJpa.class, servico.getSeqServico()));
+        em.remove(em.getReference(Servico.class, servico.getSeqServico()));
         em.getTransaction().commit();
 
         return true;

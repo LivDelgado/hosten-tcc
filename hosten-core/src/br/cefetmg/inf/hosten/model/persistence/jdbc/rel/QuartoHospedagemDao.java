@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc.rel;
 
+import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.util.List;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
 import java.sql.Statement;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
+import java.math.BigDecimal;
 
 public class QuartoHospedagemDao implements IQuartoHospedagemDao {
 
@@ -38,11 +40,11 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
                 + "vlrDiaria) "
                 + "VALUES(?,?,?,?,?)";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quartoHospedagem.getSeqHospedagem());
-        pStmt.setInt(2, quartoHospedagem.getNroQuarto());
-        pStmt.setInt(3, quartoHospedagem.getNroAdultos());
-        pStmt.setInt(4, quartoHospedagem.getNroCriancas());
-        pStmt.setDouble(5, quartoHospedagem.getVlrDiaria());
+        pStmt.setInt(1, quartoHospedagem.getId().getSeqHospedagem());
+        pStmt.setShort(2, quartoHospedagem.getId().getNroQuarto());
+        pStmt.setShort(3, quartoHospedagem.getNroAdultos());
+        pStmt.setShort(4, quartoHospedagem.getNroCriancas());
+        pStmt.setBigDecimal(5, quartoHospedagem.getVlrDiaria());
         return pStmt.executeUpdate() > 0;
     }
 
@@ -64,16 +66,15 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
 
         List<QuartoHospedagem> quartoHospedagemEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
             quartoHospedagemEncontrados
                     .add(new QuartoHospedagem(
-                            rs.getInt(1),
-                            rs.getInt(2),
-                            rs.getInt(3),
-                            rs.getInt(4),
-                            rs.getDouble(5)));
-            i++;
+                            new QuartoHospedagemId(
+                                    rs.getInt(1),
+                                    rs.getShort(2)),
+                            rs.getShort(3),
+                            rs.getShort(4),
+                            rs.getBigDecimal(5)));
         }
         return quartoHospedagemEncontrados;
     }
@@ -107,10 +108,10 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
             quartoEstadoEncontrados
                     .add(new QuartoEstado(
                             rs.getInt(1),
-                            rs.getInt(2),
-                            rs.getInt(3),
-                            rs.getInt(4),
-                            rs.getDouble(5),
+                            rs.getShort(2),
+                            rs.getShort(3),
+                            rs.getShort(4),
+                            rs.getBigDecimal(5),
                             rs.getBoolean(6),
                             rs.getTimestamp(7)));
         }
@@ -134,8 +135,8 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
                 + "WHERE seqHospedagem = ? AND "
                 + "nroQuarto = ? ";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quartoHospedagem.getSeqHospedagem());
-        pStmt.setInt(2, quartoHospedagem.getNroQuarto());
+        pStmt.setInt(1, quartoHospedagem.getId().getSeqHospedagem());
+        pStmt.setInt(2, quartoHospedagem.getId().getNroQuarto());
         return pStmt.executeUpdate() > 0;
     }
 

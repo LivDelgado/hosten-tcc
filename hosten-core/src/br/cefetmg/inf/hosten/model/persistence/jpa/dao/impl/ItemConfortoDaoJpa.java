@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.ItemConfortoJpa;
+import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,7 +28,7 @@ public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
     }
 
     @Override
-    public boolean adiciona(ItemConfortoJpa itemConforto) throws SQLException {
+    public boolean adiciona(ItemConforto itemConforto) throws SQLException {
         em.getTransaction().begin();
         em.persist(itemConforto);
         em.getTransaction().commit();
@@ -37,16 +37,16 @@ public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
     }
 
     @Override
-    public ItemConfortoJpa buscaPorPk(String id) throws SQLException {
+    public ItemConforto buscaPorPk(String id) throws SQLException {
         em.getTransaction().begin();
-        ItemConfortoJpa itemConforto = em.find(ItemConfortoJpa.class, id);
+        ItemConforto itemConforto = em.find(ItemConforto.class, id);
         em.getTransaction().commit();
 
         return itemConforto;
     }
 
     @Override
-    public List<ItemConfortoJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<ItemConforto> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -64,10 +64,10 @@ public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<ItemConfortoJpa> tq = em
-                .createNamedQuery(qryBusca, ItemConfortoJpa.class)
+        TypedQuery<ItemConforto> tq = em
+                .createNamedQuery(qryBusca, ItemConforto.class)
                 .setParameter(parametro, dadoBusca);
-        List<ItemConfortoJpa> itemConfortos = tq.getResultList();
+        List<ItemConforto> itemConfortos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -75,11 +75,11 @@ public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
     }
 
     @Override
-    public List<ItemConfortoJpa> buscaTodos() throws SQLException {
+    public List<ItemConforto> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<ItemConfortoJpa> tq = em.createNamedQuery("ItemConforto.findAll", ItemConfortoJpa.class);
-        List<ItemConfortoJpa> itemConfortos = tq.getResultList();
+        TypedQuery<ItemConforto> tq = em.createNamedQuery("ItemConforto.findAll", ItemConforto.class);
+        List<ItemConforto> itemConfortos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -87,10 +87,10 @@ public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
     }
 
     @Override
-    public boolean atualiza(String id, ItemConfortoJpa itemConfortoAtualizado)
+    public boolean atualiza(String id, ItemConforto itemConfortoAtualizado)
             throws SQLException {
         em.getTransaction().begin();
-        ItemConfortoJpa itemConforto = em.find(ItemConfortoJpa.class, id);
+        ItemConforto itemConforto = em.find(ItemConforto.class, id);
         itemConforto.setDesItem(itemConfortoAtualizado.getDesItem());
         em.getTransaction().commit();
 
@@ -98,7 +98,7 @@ public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
     }
 
     @Override
-    public boolean deleta(ItemConfortoJpa itemConforto) throws SQLException {
+    public boolean deleta(ItemConforto itemConforto) throws SQLException {
         em.getTransaction().begin();
         em.remove(itemConforto);
         em.getTransaction().commit();

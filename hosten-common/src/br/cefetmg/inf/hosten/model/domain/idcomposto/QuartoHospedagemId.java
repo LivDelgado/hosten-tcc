@@ -1,4 +1,4 @@
-package br.cefetmg.inf.hosten.model.persistence.jpa.domain.embeddable;
+package br.cefetmg.inf.hosten.model.domain.idcomposto;
 
 import java.io.Serializable;
 import javax.persistence.Basic;

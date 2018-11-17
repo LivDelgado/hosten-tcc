@@ -36,7 +36,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
         if (categoriaQuarto.getNomCategoria().length() > 40) {
             throw new NegocioException("O nome da categoria ultrapassou os 40 caracteres máximos permitidos.");
         }
-        if (categoriaQuarto.getVlrDiaria() > 99999.99) {
+        if (categoriaQuarto.getVlrDiaria().doubleValue() > 99999.99) {
             throw new NegocioException("O valor da diária ultrapassou valor máximo de R$ 9999999,99.");
         }
 
@@ -97,7 +97,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
         if (categoriaQuarto.getNomCategoria().length() > 40) {
             throw new NegocioException("O nome da categoria ultrapassou os 40 caracteres máximos permitidos.");
         }
-        if (categoriaQuarto.getVlrDiaria() > 99999.99) {
+        if (categoriaQuarto.getVlrDiaria().doubleValue() > 99999.99) {
             throw new NegocioException("O valor da diária ultrapassou valor máximo de R$ 9999999,99.");
         }
 

@@ -1,140 +1,161 @@
 package br.cefetmg.inf.hosten.model.domain.rel;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import org.hibernate.annotations.Immutable;
 
+@Entity
+@Table(name = "despesa", catalog = "hosten", schema = "public")
+@Immutable
+@NamedQueries({
+    @NamedQuery(name = "Despesa.findAll", query = "SELECT d FROM Despesa d")
+    , @NamedQuery(name = "Despesa.findById", query = "SELECT d FROM Despesa d WHERE d.id = :id")
+    , @NamedQuery(name = "Despesa.findBySeqHospedagem", query = "SELECT d FROM Despesa d WHERE d.seqHospedagem = :seqHospedagem")
+    , @NamedQuery(name = "Despesa.findByNroQuarto", query = "SELECT d FROM Despesa d WHERE d.nroQuarto = :nroQuarto")
+    , @NamedQuery(name = "Despesa.findByNroAdultos", query = "SELECT d FROM Despesa d WHERE d.nroAdultos = :nroAdultos")
+    , @NamedQuery(name = "Despesa.findByNroCriancas", query = "SELECT d FROM Despesa d WHERE d.nroCriancas = :nroCriancas")
+    , @NamedQuery(name = "Despesa.findByVlrDiaria", query = "SELECT d FROM Despesa d WHERE d.vlrDiaria = :vlrDiaria")
+    , @NamedQuery(name = "Despesa.findByDatCheckin", query = "SELECT d FROM Despesa d WHERE d.datCheckin = :datCheckin")
+    , @NamedQuery(name = "Despesa.findByDatCheckout", query = "SELECT d FROM Despesa d WHERE d.datCheckout = :datCheckout")
+    , @NamedQuery(name = "Despesa.findByVlrPago", query = "SELECT d FROM Despesa d WHERE d.vlrPago = :vlrPago")
+    , @NamedQuery(name = "Despesa.findByNomHospede", query = "SELECT d FROM Despesa d WHERE d.nomHospede = :nomHospede")
+    , @NamedQuery(name = "Despesa.findBySeqServico", query = "SELECT d FROM Despesa d WHERE d.seqServico = :seqServico")
+    , @NamedQuery(name = "Despesa.findByQtdConsumo", query = "SELECT d FROM Despesa d WHERE d.qtdConsumo = :qtdConsumo")
+    , @NamedQuery(name = "Despesa.findByDesServico", query = "SELECT d FROM Despesa d WHERE d.desServico = :desServico")
+    , @NamedQuery(name = "Despesa.findByVlrUnit", query = "SELECT d FROM Despesa d WHERE d.vlrUnit = :vlrUnit")
+    , @NamedQuery(
+            name = "Despesa.findBySeqHospedagemAndNroQuarto",
+            query = "SELECT d FROM Despesa d WHERE d.seqHospedagem = :seqHospedagem AND d.nroQuarto = :nroQuarto")
+})
 public class Despesa implements Serializable {
-    private int seqHospedagem;
-    private int nroQuarto;
-    private int nroAdultos;
-    private int nroCriancas;
-    private Double vlrDiaria;
-    private Timestamp datCheckIn;
-    private Timestamp datCheckOut;
-    private Double vlrPago;
-    private String nomeHospede;
-    private int seqServico;
-    private int qtdConsumo;
-    private String desServico;
-    private Double vlrUnit;
 
-    public Despesa(int seqHospedagem, int nroQuarto, int nroAdultos, int nroCriancas, Double vlrDiaria, Timestamp datCheckIn, Timestamp datCheckOut, Double vlrPago, String nomeHospede, int seqServico, int qtdConsumo, String desServico, Double vlrUnit) {
+    @Id
+    @Column(name = "id")
+    private long id;
+    
+    @Column(name = "seqhospedagem")
+    private Integer seqHospedagem;
+
+    @Column(name = "nroquarto")
+    private Short nroQuarto;
+
+    @Column(name = "nroadultos")
+    private Short nroAdultos;
+
+    @Column(name = "nrocriancas")
+    private Short nroCriancas;
+
+    @Column(name = "vlrdiaria", precision = 7, scale = 2)
+    private BigDecimal vlrDiaria;
+
+    @Column(name = "datcheckin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datCheckin;
+
+    @Column(name = "datcheckout")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date datCheckout;
+
+    @Column(name = "vlrpago", precision = 7, scale = 2)
+    private BigDecimal vlrPago;
+
+    @Column(name = "nomhospede", length = 90)
+    private String nomHospede;
+
+    @Column(name = "seqservico")
+    private Short seqServico;
+
+    @Column(name = "qtdconsumo")
+    private Short qtdConsumo;
+
+    @Column(name = "desservico", length = 40)
+    private String desServico;
+
+    @Column(name = "vlrunit", precision = 7, scale = 2)
+    private BigDecimal vlrUnit;
+
+    public Despesa() {
+    }
+
+    public Despesa(long id, Integer seqHospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Date datCheckin, Date datCheckout, BigDecimal vlrPago, String nomHospede, Short seqServico, Short qtdConsumo, String desServico, BigDecimal vlrUnit) {
+        this.id = id;
         this.seqHospedagem = seqHospedagem;
         this.nroQuarto = nroQuarto;
         this.nroAdultos = nroAdultos;
         this.nroCriancas = nroCriancas;
         this.vlrDiaria = vlrDiaria;
-        this.datCheckIn = datCheckIn;
-        this.datCheckOut = datCheckOut;
+        this.datCheckin = datCheckin;
+        this.datCheckout = datCheckout;
         this.vlrPago = vlrPago;
-        this.nomeHospede = nomeHospede;
+        this.nomHospede = nomHospede;
         this.seqServico = seqServico;
         this.qtdConsumo = qtdConsumo;
         this.desServico = desServico;
         this.vlrUnit = vlrUnit;
     }
 
-    public int getSeqHospedagem() {
+    public long getId() {
+        return id;
+    }
+
+    public Integer getSeqHospedagem() {
         return seqHospedagem;
     }
 
-    public void setSeqHospedagem(int seqHospedagem) {
-        this.seqHospedagem = seqHospedagem;
-    }
-
-    public int getNroQuarto() {
+    public Short getNroQuarto() {
         return nroQuarto;
     }
 
-    public void setNroQuarto(int nroQuarto) {
-        this.nroQuarto = nroQuarto;
-    }
-
-    public int getNroAdultos() {
+    public Short getNroAdultos() {
         return nroAdultos;
     }
 
-    public void setNroAdultos(int nroAdultos) {
-        this.nroAdultos = nroAdultos;
-    }
-
-    public int getNroCriancas() {
+    public Short getNroCriancas() {
         return nroCriancas;
     }
 
-    public void setNroCriancas(int nroCriancas) {
-        this.nroCriancas = nroCriancas;
-    }
-
-    public Double getVlrDiaria() {
+    public BigDecimal getVlrDiaria() {
         return vlrDiaria;
     }
 
-    public void setVlrDiaria(Double vlrDiaria) {
-        this.vlrDiaria = vlrDiaria;
+    public Date getDatCheckin() {
+        return datCheckin;
     }
 
-    public Timestamp getDatCheckIn() {
-        return datCheckIn;
+    public Date getDatCheckout() {
+        return datCheckout;
     }
 
-    public void setDatCheckIn(Timestamp datCheckIn) {
-        this.datCheckIn = datCheckIn;
-    }
-
-    public Timestamp getDatCheckOut() {
-        return datCheckOut;
-    }
-
-    public void setDatCheckOut(Timestamp datCheckOut) {
-        this.datCheckOut = datCheckOut;
-    }
-
-    public Double getVlrPago() {
+    public BigDecimal getVlrPago() {
         return vlrPago;
     }
 
-    public void setVlrPago(Double vlrPago) {
-        this.vlrPago = vlrPago;
+    public String getNomHospede() {
+        return nomHospede;
     }
 
-    public String getNomeHospede() {
-        return nomeHospede;
-    }
-
-    public void setNomeHospede(String nomeHospede) {
-        this.nomeHospede = nomeHospede;
-    }
-
-    public int getSeqServico() {
+    public Short getSeqServico() {
         return seqServico;
     }
 
-    public void setSeqServico(int seqServico) {
-        this.seqServico = seqServico;
-    }
-
-    public int getQtdConsumo() {
+    public Short getQtdConsumo() {
         return qtdConsumo;
-    }
-
-    public void setQtdConsumo(int qtdConsumo) {
-        this.qtdConsumo = qtdConsumo;
     }
 
     public String getDesServico() {
         return desServico;
     }
 
-    public void setDesServico(String desServico) {
-        this.desServico = desServico;
-    }
-
-    public Double getVlrUnit() {
+    public BigDecimal getVlrUnit() {
         return vlrUnit;
-    }
-
-    public void setVlrUnit(Double vlrUnit) {
-        this.vlrUnit = vlrUnit;
     }
 }

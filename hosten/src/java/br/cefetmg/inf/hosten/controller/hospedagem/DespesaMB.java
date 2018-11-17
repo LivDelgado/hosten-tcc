@@ -5,8 +5,11 @@ import br.cefetmg.inf.hosten.controller.sessao.Sessao;
 import br.cefetmg.inf.hosten.dist.proxy.ControlarDespesasProxy;
 import br.cefetmg.inf.hosten.dist.proxy.ManterQuartoProxy;
 import br.cefetmg.inf.hosten.model.domain.Servico;
+import br.cefetmg.inf.hosten.model.domain.Usuario;
+import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoConsumoId;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IManterQuarto;
 import br.cefetmg.inf.util.exception.NegocioException;
@@ -24,10 +27,10 @@ import javax.inject.Named;
 public class DespesaMB implements Serializable {
 
     private List<Despesa> listaDespesas;
-    private int nroQuarto;
+    private short nroQuarto;
     private int seqHospedagem;
 
-    private int qtdConsumo;
+    private short qtdConsumo;
     private Servico servicoSelecionado;
     private String codUsuarioRegistro;
 
@@ -50,7 +53,7 @@ public class DespesaMB implements Serializable {
         return nroQuarto;
     }
 
-    public void setNroQuarto(int nroQuarto) {
+    public void setNroQuarto(short nroQuarto) {
         this.nroQuarto = nroQuarto;
     }
 
@@ -63,11 +66,12 @@ public class DespesaMB implements Serializable {
     }
 
     public void resetaVariaveis() {
-        nroQuarto = seqHospedagem = 0;
+        nroQuarto = 0;
+        seqHospedagem = 0;
         listaDespesas = null;
     }
 
-    public void exibeDespesas(int nroQuarto, int operacao) {
+    public void exibeDespesas(short nroQuarto, int operacao) {
         try {
             setNroQuarto(nroQuarto);
             IManterQuarto manterQuarto = new ManterQuartoProxy();
@@ -91,11 +95,15 @@ public class DespesaMB implements Serializable {
         Timestamp datConsumo = new Timestamp(dataAtual.getTime());
 
         QuartoConsumo registro = new QuartoConsumo(
-                seqHospedagem, nroQuarto, datConsumo,
-                qtdConsumo, servicoSelecionado.getSeqServico(), 
-                codUsuarioRegistro
-        );
-        
+                new QuartoConsumoId(
+                        new QuartoHospedagem(
+                                seqHospedagem,
+                                nroQuarto),
+                        datConsumo),
+                qtdConsumo,
+                servicoSelecionado,
+                new Usuario(codUsuarioRegistro));
+
         try {
             boolean testeRegistro = controlarDespesas.inserir(registro);
             if (testeRegistro) {
@@ -113,7 +121,7 @@ public class DespesaMB implements Serializable {
 
     public String excluir(Despesa despesa) {
         IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
-        
+
         //
         //
         Date dataAtual = new Date();
@@ -122,16 +130,17 @@ public class DespesaMB implements Serializable {
         //
 
         QuartoConsumo registro = new QuartoConsumo(
-                despesa.getSeqHospedagem(), 
-                despesa.getNroQuarto(), 
-//                despesa.getDatConsumo(),
-                datConsumo,
-//                
-                despesa.getQtdConsumo(), 
-                despesa.getSeqServico(), 
-                null
-        );
-        
+                new QuartoConsumoId(
+                        new QuartoHospedagem(
+                                despesa.getSeqHospedagem(),
+                                despesa.getNroQuarto()),
+                        //                despesa.getDatConsumo(),
+                        datConsumo),
+                //                
+                 despesa.getQtdConsumo(),
+                 new Servico(despesa.getSeqServico()),
+                 null);
+
         try {
             boolean testeRegistro = controlarDespesas.excluir(registro);
             if (testeRegistro) {
@@ -159,7 +168,7 @@ public class DespesaMB implements Serializable {
         return qtdConsumo;
     }
 
-    public void setQtdConsumo(int qtdConsumo) {
+    public void setQtdConsumo(short qtdConsumo) {
         this.qtdConsumo = qtdConsumo;
     }
 

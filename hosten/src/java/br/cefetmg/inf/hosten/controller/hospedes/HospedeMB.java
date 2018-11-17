@@ -66,7 +66,7 @@ public class HospedeMB implements Serializable {
     }
 
     public void onRowCancel(RowEditEvent event) {
-        ContextUtils.mostrarMensagem("Edição Cancelada", ((Hospede) event.getObject()).getCodCPF(), false);
+        ContextUtils.mostrarMensagem("Edição Cancelada", ((Hospede) event.getObject()).getCodCpf(), false);
     }
 
     public String inserir() {

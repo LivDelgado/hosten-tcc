@@ -1,20 +1,20 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.ServicoAreaJpa;
+import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface IServicoAreaDaoJpa {
 
-    boolean adiciona(ServicoAreaJpa servicoArea) throws SQLException;
+    boolean adiciona(ServicoArea servicoArea) throws SQLException;
 
-    ServicoAreaJpa buscaPorPk(String id) throws SQLException;
+    ServicoArea buscaPorPk(String id) throws SQLException;
 
-    List<ServicoAreaJpa> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
+    List<ServicoArea> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    List<ServicoAreaJpa> buscaTodos() throws SQLException;
+    List<ServicoArea> buscaTodos() throws SQLException;
 
-    boolean atualiza(String id, ServicoAreaJpa servicoAreaAtualizado) throws SQLException;
+    boolean atualiza(String id, ServicoArea servicoAreaAtualizado) throws SQLException;
 
-    boolean deleta(ServicoAreaJpa servicoArea) throws SQLException;
+    boolean deleta(ServicoArea servicoArea) throws SQLException;
 }

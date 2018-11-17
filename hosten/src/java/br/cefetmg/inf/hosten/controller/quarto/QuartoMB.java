@@ -31,7 +31,7 @@ public class QuartoMB implements Serializable{
     private int nroQuartoAlterar;
 
     public QuartoMB() {
-        quarto = new Quarto(0, null, false);
+        quarto = new Quarto();
         manterQuarto = new ManterQuartoProxy();
         try {
             listaQuartos = manterQuarto.listarTodos();
@@ -43,7 +43,7 @@ public class QuartoMB implements Serializable{
     public CategoriaQuarto getCategoriaQuarto(Quarto quarto) {
         IManterCategoriaQuarto manterCategoria = new ManterCategoriaQuartoProxy();
         try {
-            categoriaQuarto = manterCategoria.listar(quarto.getCodCategoria(), "codCategoria").get(0);
+            categoriaQuarto = manterCategoria.listar(quarto.getCategoria(), "codCategoria").get(0);
         } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
             //
@@ -78,7 +78,7 @@ public class QuartoMB implements Serializable{
     public void onRowEdit(RowEditEvent event) throws IOException {
         try {
             quarto = (Quarto) event.getObject();
-            quarto.setCodCategoria(categoriaSelecionada.getCodCategoria());
+            quarto.setCategoria(categoriaSelecionada);
             
             boolean testeExclusao = manterQuarto.alterar(String.valueOf(nroQuartoAlterar), quarto);
             if (testeExclusao) {
@@ -93,7 +93,7 @@ public class QuartoMB implements Serializable{
     }
 
     public void onRowCancel(RowEditEvent event) {
-        ContextUtils.mostrarMensagem("Edição Cancelada", ((Quarto) event.getObject()).getCodCategoria(), false);
+        ContextUtils.mostrarMensagem("Edição Cancelada", ((Quarto) event.getObject()).getCategoria().getCodCategoria(), false);
     }
 
     public String excluir(Quarto quarto) {
@@ -117,7 +117,7 @@ public class QuartoMB implements Serializable{
 
     public String inserir() {
         try {
-            quarto.setCodCategoria(categoriaSelecionada.getCodCategoria());
+            quarto.setCategoria(categoriaSelecionada);
             
             boolean testeInsercao = manterQuarto.inserir(quarto);
             if (testeInsercao) {

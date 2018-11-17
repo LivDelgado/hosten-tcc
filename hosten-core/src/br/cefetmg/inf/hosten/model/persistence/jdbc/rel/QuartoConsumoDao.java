@@ -1,6 +1,10 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc.rel;
 
+import br.cefetmg.inf.hosten.model.domain.Servico;
+import br.cefetmg.inf.hosten.model.domain.Usuario;
+import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoConsumoId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
+import java.sql.Date;
 
 public class QuartoConsumoDao implements IQuartoConsumoDao {
 
@@ -34,12 +39,12 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
                 + "qtdConsumo, seqServico, codUsuarioRegistro) "
                 + "VALUES(?,?,?,?,?,?)";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quartoConsumo.getSeqHospedagem());
-        pStmt.setInt(2, quartoConsumo.getNroQuarto());
-        pStmt.setTimestamp(3, quartoConsumo.getDatConsumo());
+        pStmt.setInt(1, quartoConsumo.getQuartoHospedagem().getId().getSeqHospedagem());
+        pStmt.setInt(2, quartoConsumo.getQuartoHospedagem().getId().getNroQuarto());
+        pStmt.setTimestamp(3, (Timestamp) quartoConsumo.getDatConsumo());
         pStmt.setInt(4, quartoConsumo.getQtdConsumo());
-        pStmt.setInt(5, quartoConsumo.getSeqServico());
-        pStmt.setString(6, quartoConsumo.getCodUsuarioRegistro());
+        pStmt.setInt(5, quartoConsumo.getServico().getSeqServico());
+        pStmt.setString(6, quartoConsumo.getUsuarioRegistro().getCodUsuario());
         return pStmt.executeUpdate() > 0;
     }
 
@@ -63,18 +68,17 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
 
         List<QuartoConsumo> quartoConsumoEncontrados = new ArrayList<>();
 
-        rs.beforeFirst();
-        int i = 0;
         while (rs.next()) {
             quartoConsumoEncontrados
                     .add(new QuartoConsumo(
-                            rs.getInt(1),
-                            rs.getInt(2),
-                            rs.getTimestamp(3),
-                            rs.getInt(4),
-                            rs.getInt(5),
-                            rs.getString(6)));
-            i++;
+                            new QuartoConsumoId(
+                                    new QuartoHospedagem(
+                                            rs.getInt(1), 
+                                            rs.getShort(2)), 
+                                    rs.getDate(3)),
+                            rs.getShort(4),
+                            new Servico(rs.getShort(5)),
+                            new Usuario(rs.getString(6))));
         }
         return quartoConsumoEncontrados;
     }
@@ -96,9 +100,9 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
         String qry = "DELETE FROM QuartoConsumo "
                 + "WHERE seqHospedagem = ? AND nroQuarto = ? AND datConsumo = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quartoConsumo.getSeqHospedagem());
-        pStmt.setInt(2, quartoConsumo.getNroQuarto());
-        pStmt.setTimestamp(3, quartoConsumo.getDatConsumo());
+        pStmt.setInt(1, quartoConsumo.getQuartoHospedagem().getId().getSeqHospedagem());
+        pStmt.setInt(2, quartoConsumo.getQuartoHospedagem().getId().getNroQuarto());
+        pStmt.setDate(3, new Date(quartoConsumo.getDatConsumo().getTime()));
         return pStmt.executeUpdate() > 0;
     }
 }

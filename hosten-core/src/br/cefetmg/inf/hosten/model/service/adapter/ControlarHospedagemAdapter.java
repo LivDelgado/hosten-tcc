@@ -19,12 +19,12 @@ public class ControlarHospedagemAdapter implements IControlarHospedagemRemote {
     }
 
     @Override
-    public boolean efetuarCheckIn(String nroQuarto, String codCPF, int diasEstadia, int nroAdultos, int nroCriancas) throws RemoteException {
+    public boolean efetuarCheckIn(short nroQuarto, String codCPF, short diasEstadia, short nroAdultos, short nroCriancas) throws RemoteException {
         return controlarHospedagem.efetuarCheckIn(nroQuarto, codCPF, diasEstadia, nroAdultos, nroCriancas);
     }
 
     @Override
-    public int efetuarCheckOut(String nroQuarto) throws RemoteException {
+    public int efetuarCheckOut(short nroQuarto) throws RemoteException {
         return controlarHospedagem.efetuarCheckOut(nroQuarto);
     }
 

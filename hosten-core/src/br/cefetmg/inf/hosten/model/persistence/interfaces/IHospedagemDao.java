@@ -20,9 +20,6 @@ public interface IHospedagemDao {
 
     boolean atualizaHospedagemPorPk(Object pK, Hospedagem hospedagemAtualizado)
             throws SQLException;
-    
-    boolean atualizaHospedagem(Hospedagem hospedagemAntiga,
-            Hospedagem hospedagemAtualizado) throws SQLException;
 
     boolean deletaHospedagem(Object pK) throws SQLException; 
 }

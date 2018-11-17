@@ -34,22 +34,11 @@ public final class HospedagemDaoAdapter implements IHospedagemDao{
         return instancia.buscaTodosHospedagems();
     }
 
-    public List<Hospedagem> buscaHospedagem(
-            Hospedagem hospedagem) throws SQLException {
-        return instancia.busca(hospedagem);
-    }
-
     @Override
     public boolean atualizaHospedagemPorPk(
             Object pK, 
             Hospedagem hospedagemAtualizado) throws SQLException {
         return instancia.atualizaHospedagemPorPk(pK, hospedagemAtualizado);
-    }
-
-    @Override
-    public boolean atualizaHospedagem(Hospedagem hospedagemAntiga,
-            Hospedagem hospedagemAtualizado) throws SQLException {
-        return instancia.atualizaHospedagem(hospedagemAntiga, hospedagemAtualizado);
     }
 
     @Override

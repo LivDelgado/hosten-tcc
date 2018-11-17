@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.rel.views.QuartoEstadoJpa;
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -25,9 +25,9 @@ public class QuartoEstadoDaoJpa implements IQuartoEstadoDaoJpa {
     }
 
     @Override
-    public List<QuartoEstadoJpa> buscaTodos() throws SQLException {
-        List<QuartoEstadoJpa> quartoEstados = em
-                .createNamedQuery("QuartoEstado.findAll", QuartoEstadoJpa.class)
+    public List<QuartoEstado> buscaTodos() throws SQLException {
+        List<QuartoEstado> quartoEstados = em
+                .createNamedQuery("QuartoEstado.findAll", QuartoEstado.class)
                 .getResultList();
         
         return quartoEstados;

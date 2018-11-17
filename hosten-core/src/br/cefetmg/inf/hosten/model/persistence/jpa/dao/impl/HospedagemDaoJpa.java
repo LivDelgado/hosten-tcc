@@ -1,7 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.HospedagemJpa;
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.HospedeJpa;
+import br.cefetmg.inf.hosten.model.domain.Hospedagem;
+import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,7 +29,7 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public boolean adiciona(HospedagemJpa hospedagem) throws SQLException {
+    public boolean adiciona(Hospedagem hospedagem) throws SQLException {
         em.getTransaction().begin();
         em.persist(hospedagem);
         em.getTransaction().commit();
@@ -38,16 +38,16 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public HospedagemJpa buscaPorPk(Integer id) throws SQLException {
+    public Hospedagem buscaPorPk(Integer id) throws SQLException {
         em.getTransaction().begin();
-        HospedagemJpa hospedagem = em.find(HospedagemJpa.class, id);
+        Hospedagem hospedagem = em.find(Hospedagem.class, id);
         em.getTransaction().commit();
 
         return hospedagem;
     }
 
     @Override
-    public List<HospedagemJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<Hospedagem> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -73,10 +73,10 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<HospedagemJpa> tq = em
-                .createNamedQuery(qryBusca, HospedagemJpa.class)
+        TypedQuery<Hospedagem> tq = em
+                .createNamedQuery(qryBusca, Hospedagem.class)
                 .setParameter(parametro, dadoBusca);
-        List<HospedagemJpa> hospedagems = tq.getResultList();
+        List<Hospedagem> hospedagems = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -84,11 +84,11 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public List<HospedagemJpa> buscaTodos() throws SQLException {
+    public List<Hospedagem> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<HospedagemJpa> tq = em.createNamedQuery("Hospedagem.findAll", HospedagemJpa.class);
-        List<HospedagemJpa> hospedagems = tq.getResultList();
+        TypedQuery<Hospedagem> tq = em.createNamedQuery("Hospedagem.findAll", Hospedagem.class);
+        List<Hospedagem> hospedagems = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -96,18 +96,18 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public boolean atualiza(Integer id, HospedagemJpa hospedagemNov)
+    public boolean atualiza(Integer id, Hospedagem hospedagemNov)
             throws SQLException {
         em.getTransaction().begin();
 
-        HospedagemJpa hospedagemAnt = em.find(HospedagemJpa.class, id);
+        Hospedagem hospedagemAnt = em.find(Hospedagem.class, id);
 
         hospedagemAnt.setDatCheckin(hospedagemNov.getDatCheckin());
         hospedagemAnt.setDatCheckout(hospedagemNov.getDatCheckout());
         hospedagemAnt.setVlrPago(hospedagemNov.getVlrPago());
 
-        HospedeJpa hospedeAnt = hospedagemAnt.getCodCpf();
-        HospedeJpa hospedeNov = hospedagemNov.getCodCpf();
+        Hospede hospedeAnt = hospedagemAnt.getHospede();
+        Hospede hospedeNov = hospedagemNov.getHospede();
         if (hospedeAnt != null && hospedeNov != null) {
             if (!hospedagemAnt.equals(hospedagemNov)) {
                 hospedeAnt.removeHospedagem(hospedeNov, hospedagemAnt);
@@ -120,7 +120,7 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public boolean deleta(HospedagemJpa hospedagem) throws SQLException {
+    public boolean deleta(Hospedagem hospedagem) throws SQLException {
         em.getTransaction().begin();
         em.remove(hospedagem);
         em.getTransaction().commit();

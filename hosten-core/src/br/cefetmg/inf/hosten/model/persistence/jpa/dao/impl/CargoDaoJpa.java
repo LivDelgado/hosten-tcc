@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.CargoJpa;
+import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,7 +28,7 @@ public class CargoDaoJpa implements ICargoDaoJpa {
     }
 
     @Override
-    public boolean adiciona(CargoJpa cargo) throws SQLException {
+    public boolean adiciona(Cargo cargo) throws SQLException {
         em.getTransaction().begin();
         em.persist(cargo);
         em.getTransaction().commit();
@@ -37,16 +37,16 @@ public class CargoDaoJpa implements ICargoDaoJpa {
     }
 
     @Override
-    public CargoJpa buscaPorPk(String id) throws SQLException {
+    public Cargo buscaPorPk(String id) throws SQLException {
         em.getTransaction().begin();
-        CargoJpa cargo = em.find(CargoJpa.class, id);
+        Cargo cargo = em.find(Cargo.class, id);
         em.getTransaction().commit();
 
         return cargo;
     }
 
     @Override
-    public List<CargoJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<Cargo> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String qryBusca = NAMED_QUERY_BASE;
 
@@ -64,10 +64,10 @@ public class CargoDaoJpa implements ICargoDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<CargoJpa> tq = em
-                .createNamedQuery(qryBusca, CargoJpa.class)
+        TypedQuery<Cargo> tq = em
+                .createNamedQuery(qryBusca, Cargo.class)
                 .setParameter(coluna, dadoBusca);
-        List<CargoJpa> cargos = tq.getResultList();
+        List<Cargo> cargos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -75,11 +75,11 @@ public class CargoDaoJpa implements ICargoDaoJpa {
     }
 
     @Override
-    public List<CargoJpa> buscaTodos() throws SQLException {
+    public List<Cargo> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<CargoJpa> tq = em.createNamedQuery("Cargo.findAll", CargoJpa.class);
-        List<CargoJpa> cargos = tq.getResultList();
+        TypedQuery<Cargo> tq = em.createNamedQuery("Cargo.findAll", Cargo.class);
+        List<Cargo> cargos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -87,9 +87,9 @@ public class CargoDaoJpa implements ICargoDaoJpa {
     }
 
     @Override
-    public boolean atualiza(String id, CargoJpa cargoAtualizado)
+    public boolean atualiza(String id, Cargo cargoAtualizado)
             throws SQLException {
-        CargoJpa cargo = em.find(CargoJpa.class, id);
+        Cargo cargo = em.find(Cargo.class, id);
 
         em.getTransaction().begin();
         cargo.setNomCargo(cargoAtualizado.getNomCargo());
@@ -100,7 +100,7 @@ public class CargoDaoJpa implements ICargoDaoJpa {
     }
 
     @Override
-    public boolean deleta(CargoJpa cargo) throws SQLException {
+    public boolean deleta(Cargo cargo) throws SQLException {
         em.getTransaction().begin();
         em.remove(cargo);
         em.getTransaction().commit();

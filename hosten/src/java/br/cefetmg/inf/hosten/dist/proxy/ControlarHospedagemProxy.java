@@ -22,7 +22,7 @@ public class ControlarHospedagemProxy implements IControlarHospedagem {
     }
     
     @Override
-    public boolean efetuarCheckIn(String nroQuarto, String codCPF, int diasEstadia, int nroAdultos, int nroCriancas) {
+    public boolean efetuarCheckIn(short nroQuarto, String codCPF, short diasEstadia, short nroAdultos, short nroCriancas) {
         try {
             return controlarHospedagem.efetuarCheckIn(nroQuarto, codCPF, diasEstadia, nroAdultos, nroCriancas);
         } catch (RemoteException ex) {
@@ -32,7 +32,7 @@ public class ControlarHospedagemProxy implements IControlarHospedagem {
     }
 
     @Override
-    public int efetuarCheckOut(String nroQuarto) {
+    public int efetuarCheckOut(short nroQuarto) {
         try {
             return controlarHospedagem.efetuarCheckOut(nroQuarto);
         } catch (RemoteException ex) {

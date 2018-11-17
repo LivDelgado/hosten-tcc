@@ -1,7 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.CargoJpa;
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.UsuarioJpa;
+import br.cefetmg.inf.hosten.model.domain.Cargo;
+import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.util.SenhaUtils;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.io.UnsupportedEncodingException;
@@ -32,7 +32,7 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public boolean adiciona(UsuarioJpa usuario) throws SQLException {
+    public boolean adiciona(Usuario usuario) throws SQLException {
         em.getTransaction().begin();
         em.persist(usuario);
         em.getTransaction().commit();
@@ -41,16 +41,16 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public UsuarioJpa buscaPorPk(String id) throws SQLException {
+    public Usuario buscaPorPk(String id) throws SQLException {
         em.getTransaction().begin();
-        UsuarioJpa usuario = em.find(UsuarioJpa.class, id);
+        Usuario usuario = em.find(Usuario.class, id);
         em.getTransaction().commit();
 
         return usuario;
     }
 
     @Override
-    public List<UsuarioJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<Usuario> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -76,10 +76,10 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<UsuarioJpa> tq = em
-                .createNamedQuery(qryBusca, UsuarioJpa.class)
+        TypedQuery<Usuario> tq = em
+                .createNamedQuery(qryBusca, Usuario.class)
                 .setParameter(parametro, dadoBusca);
-        List<UsuarioJpa> usuarios = tq.getResultList();
+        List<Usuario> usuarios = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -87,11 +87,11 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public List<UsuarioJpa> buscaTodos() throws SQLException {
+    public List<Usuario> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<UsuarioJpa> tq = em.createNamedQuery("Usuario.findAll", UsuarioJpa.class);
-        List<UsuarioJpa> usuarios = tq.getResultList();
+        TypedQuery<Usuario> tq = em.createNamedQuery("Usuario.findAll", Usuario.class);
+        List<Usuario> usuarios = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -99,17 +99,17 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public boolean atualiza(String id, UsuarioJpa usuarioNov)
+    public boolean atualiza(String id, Usuario usuarioNov)
             throws SQLException {
         em.getTransaction().begin();
-        UsuarioJpa usuarioAnt = em.find(UsuarioJpa.class, id);
+        Usuario usuarioAnt = em.find(Usuario.class, id);
 
         usuarioAnt.setNomUsuario(usuarioNov.getNomUsuario());
         usuarioAnt.setDesEmail(usuarioNov.getDesEmail());
         usuarioAnt.setDesSenha(usuarioNov.getDesSenha());
         
-        CargoJpa crgAnt = usuarioAnt.getCodCargo();
-        CargoJpa crgNov = usuarioNov.getCodCargo();
+        Cargo crgAnt = usuarioAnt.getCargo();
+        Cargo crgNov = usuarioNov.getCargo();
         if (!crgAnt.equals(crgNov)) {
            crgAnt.removeUsuario(usuarioAnt, crgNov);
         }
@@ -120,7 +120,7 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public boolean deleta(UsuarioJpa usuario) throws SQLException {
+    public boolean deleta(Usuario usuario) throws SQLException {
         em.getTransaction().begin();
         em.remove(usuario);
         em.getTransaction().commit();
@@ -129,9 +129,9 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public UsuarioJpa usuarioLogin(String email, String senha) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        UsuarioJpa usuario = em
-                .createNamedQuery("Usuario.findByDesEmail", UsuarioJpa.class)
+    public Usuario usuarioLogin(String email, String senha) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        Usuario usuario = em
+                .createNamedQuery("Usuario.findByDesEmail", Usuario.class)
                 .setParameter("desEmail", email)
                 .getResultList()
                 .get(0);

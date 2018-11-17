@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
+import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.util.SenhaUtils;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
@@ -43,7 +44,7 @@ public class UsuarioDao implements IUsuarioDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, usuario.getCodUsuario());
         pStmt.setString(2, usuario.getNomUsuario());
-        pStmt.setString(3, usuario.getCodCargo());
+        pStmt.setString(3, usuario.getCargo().getCodCargo());
         pStmt.setString(4, SenhaUtils
                 .stringParaSHA256(usuario.getDesSenha()));
         pStmt.setString(5, usuario.getDesEmail());
@@ -56,7 +57,6 @@ public class UsuarioDao implements IUsuarioDao {
             throws SQLException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException {
-        int i = 0;
 
         String qry = "SELECT * FROM Usuario "
                 + "WHERE " + coluna + " "
@@ -76,13 +76,15 @@ public class UsuarioDao implements IUsuarioDao {
         List<Usuario> usuarioEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            usuarioEncontrados
-                    .add(new Usuario(rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4),
-                            rs.getString(5)));
-            i++;
+            Usuario user = new Usuario(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(4),
+                    rs.getString(5));
+            
+            user.setCargo(new Cargo(rs.getString(3)));
+            
+            usuarioEncontrados.add(user);
         }
 
         return usuarioEncontrados;
@@ -101,14 +103,16 @@ public class UsuarioDao implements IUsuarioDao {
 
         List<Usuario> usuariosEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            usuariosEncontrados.add(new Usuario(rs.getString(1),
+            Usuario user = new Usuario(
+                    rs.getString(1),
                     rs.getString(2),
-                    rs.getString(3),
                     rs.getString(4),
-                    rs.getString(5)));
-            i++;
+                    rs.getString(5));
+
+            user.setCargo(new Cargo(rs.getString(3)));
+
+            usuariosEncontrados.add(user);
         }
 
         return usuariosEncontrados;
@@ -126,7 +130,7 @@ public class UsuarioDao implements IUsuarioDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, usuarioAtualizado.getCodUsuario());
         pStmt.setString(2, usuarioAtualizado.getNomUsuario());
-        pStmt.setString(3, usuarioAtualizado.getCodCargo());
+        pStmt.setString(3, usuarioAtualizado.getCargo().getCodCargo());
         pStmt.setString(4, SenhaUtils
                 .stringParaSHA256(usuarioAtualizado.getDesSenha()));
         pStmt.setString(5, usuarioAtualizado.getDesEmail());

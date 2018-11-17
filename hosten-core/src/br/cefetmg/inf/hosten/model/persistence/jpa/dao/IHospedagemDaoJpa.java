@@ -1,20 +1,20 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.HospedagemJpa;
+import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface IHospedagemDaoJpa {
 
-    boolean adiciona(HospedagemJpa hospedagem) throws SQLException;
+    boolean adiciona(Hospedagem hospedagem) throws SQLException;
 
-    HospedagemJpa buscaPorPk(Integer id) throws SQLException;
+    Hospedagem buscaPorPk(Integer id) throws SQLException;
 
-    List<HospedagemJpa> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
+    List<Hospedagem> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    List<HospedagemJpa> buscaTodos() throws SQLException;
+    List<Hospedagem> buscaTodos() throws SQLException;
 
-    boolean atualiza(Integer id, HospedagemJpa hospedagemAtualizado) throws SQLException;
+    boolean atualiza(Integer id, Hospedagem hospedagemAtualizado) throws SQLException;
 
-    boolean deleta(HospedagemJpa hospedagem) throws SQLException;
+    boolean deleta(Hospedagem hospedagem) throws SQLException;
 }

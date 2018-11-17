@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
@@ -36,8 +37,8 @@ public class QuartoDao implements IQuartoDao {
 
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, quarto.getNroQuarto());
-        pStmt.setString(2, quarto.getCodCategoria());
-        pStmt.setBoolean(3, quarto.isIdtOcupado());
+        pStmt.setString(2, quarto.getCategoria().getCodCategoria());
+        pStmt.setBoolean(3, quarto.getIdtOcupado());
 
         return pStmt.executeUpdate() > 0;
     }
@@ -61,14 +62,12 @@ public class QuartoDao implements IQuartoDao {
 
         List<Quarto> quartoEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            quartoEncontrados
-                    .add(new Quarto(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getBoolean(3)));
-            i++;
+            Quarto qrt = new Quarto(
+                    (short) rs.getInt(1), rs.getBoolean(3));
+            qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
+
+            quartoEncontrados.add(qrt);
         }
 
         return quartoEncontrados;
@@ -83,14 +82,12 @@ public class QuartoDao implements IQuartoDao {
 
         List<Quarto> quartosEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            quartosEncontrados
-                    .add(new Quarto(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getBoolean(3)));
-            i++;
+            Quarto qrt = new Quarto(
+                    (short) rs.getInt(1), rs.getBoolean(3));
+            qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
+            
+            quartosEncontrados.add(qrt);
         }
 
         return quartosEncontrados;
@@ -104,8 +101,8 @@ public class QuartoDao implements IQuartoDao {
                 + "WHERE nroQuarto = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, quartoAtualizado.getNroQuarto());
-        pStmt.setString(2, quartoAtualizado.getCodCategoria());
-        pStmt.setBoolean(3, quartoAtualizado.isIdtOcupado());
+        pStmt.setString(2, quartoAtualizado.getCategoria().getCodCategoria());
+        pStmt.setBoolean(3, quartoAtualizado.getIdtOcupado());
         pStmt.setInt(4, Integer.parseInt(pK.toString()));
 
         return pStmt.executeUpdate() > 0;

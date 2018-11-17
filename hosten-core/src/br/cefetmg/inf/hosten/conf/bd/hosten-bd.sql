@@ -273,9 +273,9 @@ ALTER TABLE Hospedagem ADD CONSTRAINT Relationship26 FOREIGN KEY (codCPF) REFERE
 -- Create Views section -------------------------------------------------
 
 -- View Despesa 
-
-CREATE VIEW Despesa AS
+CREATE OR REPLACE VIEW Despesa AS
 SELECT 
+    Row_number() OVER () AS id,
     A.seqHospedagem, 
     A.nroQuarto, 
     A.nroAdultos, 
@@ -299,6 +299,8 @@ FROM
 -- View Quarto Estado
 CREATE OR REPLACE VIEW QuartoEstado AS
 SELECT 
+    Row_number() OVER () AS id,
+    A.seqHospedagem,
     A.nroQuarto,
     A.nroAdultos,
     A.nroCriancas,
@@ -317,7 +319,6 @@ FROM
 -- Insert section -------------------------------------------------
 
 -- Insert on Programa
-
 INSERT INTO public.programa(codprograma, desprograma)
     VALUES ('001', 'cargos'),
         ('002', 'check-in'),
@@ -334,19 +335,16 @@ INSERT INTO public.programa(codprograma, desprograma)
         ('013', 'estado-quarto');
 
 -- Insert on Cargo
-
 INSERT INTO public.cargo(codcargo, nomcargo, idtmaster)
     VALUES('001', 'Administrador', true),
         ('002', 'Zé ninguém', false);
 
 -- Insert on Cargo Programa
-
 INSERT INTO public.cargoprograma(codprograma, codcargo)
     VALUES ('008', '002'),
         ('009', '002');
 
--- Insert on Usuario
-
+-- Insert on Usuario    
 INSERT INTO public.usuario(codusuario, nomusuario, codcargo, dessenha, desemail)
     VALUES('0001', 'O Cara', '001','B7E94BE513E96E8C45CD23D162275E5A12EBDE9100A425C4EBCDD7FA4DCD897C', 'adm@email.com'),
         ('0002', 'Zé', '002','B7E94BE513E96E8C45CD23D162275E5A12EBDE9100A425C4EBCDD7FA4DCD897C', 'ze@email.com');

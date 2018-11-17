@@ -30,7 +30,7 @@ public class FuncionarioMB implements Serializable {
     private String codFuncionarioAlterar;
 
     public FuncionarioMB() {
-        funcionario = new Usuario(null, null, null, null, null);
+        funcionario = new Usuario();
         IManterUsuario manterFuncionario = new ManterUsuarioProxy();
         try {
             listaFuncionarios = manterFuncionario.listarTodos();
@@ -42,7 +42,7 @@ public class FuncionarioMB implements Serializable {
     public Cargo getCargoFuncionario(Usuario funcionario) {
         IManterCargo manterCargo = new ManterCargoProxy();
         try {
-            cargoFuncionario = manterCargo.listar(funcionario.getCodCargo(), "codCargo").get(0);
+            cargoFuncionario = manterCargo.listar(funcionario.getCargo(), "codCargo").get(0);
         } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
             //
@@ -76,7 +76,7 @@ public class FuncionarioMB implements Serializable {
 
     public void onRowEdit(RowEditEvent event) throws IOException {
         funcionario = (Usuario) event.getObject();
-        funcionario.setCodCargo(cargoSelecionado.getCodCargo());
+        funcionario.setCargo(cargoSelecionado);
 
         if (!codFuncionarioAlterar.equals(Sessao.getInstance().getUsuarioLogado().getCodUsuario())) {
             IManterUsuario manterFuncionario = new ManterUsuarioProxy();
@@ -122,7 +122,7 @@ public class FuncionarioMB implements Serializable {
 
     public String inserir() {
         IManterUsuario manterFuncionario = new ManterUsuarioProxy();
-        funcionario.setCodCargo(cargoSelecionado.getCodCargo());
+        funcionario.setCargo(cargoSelecionado);
 
         try {
             boolean testeInsercao = manterFuncionario.inserir(funcionario);

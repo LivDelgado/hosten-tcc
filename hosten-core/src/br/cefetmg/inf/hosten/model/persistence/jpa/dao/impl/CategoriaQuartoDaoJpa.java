@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.CategoriaQuartoJpa;
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,7 +28,7 @@ public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
     }
 
     @Override
-    public boolean adiciona(CategoriaQuartoJpa categoriaQuarto) throws SQLException {
+    public boolean adiciona(CategoriaQuarto categoriaQuarto) throws SQLException {
         em.getTransaction().begin();
         em.persist(categoriaQuarto);
         em.getTransaction().commit();
@@ -37,16 +37,16 @@ public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
     }
 
     @Override
-    public CategoriaQuartoJpa buscaPorPk(String id) throws SQLException {
+    public CategoriaQuarto buscaPorPk(String id) throws SQLException {
         em.getTransaction().begin();
-        CategoriaQuartoJpa categoriaQuarto = em.find(CategoriaQuartoJpa.class, id);
+        CategoriaQuarto categoriaQuarto = em.find(CategoriaQuarto.class, id);
         em.getTransaction().commit();
 
         return categoriaQuarto;
     }
 
     @Override
-    public List<CategoriaQuartoJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<CategoriaQuarto> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -68,8 +68,8 @@ public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
 
         em.getTransaction().begin();
 
-        List<CategoriaQuartoJpa> categoriaQuartos = em
-                .createNamedQuery(qryBusca, CategoriaQuartoJpa.class)
+        List<CategoriaQuarto> categoriaQuartos = em
+                .createNamedQuery(qryBusca, CategoriaQuarto.class)
                 .setParameter(parametro, dadoBusca)
                 .getResultList();
 
@@ -79,11 +79,11 @@ public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
     }
 
     @Override
-    public List<CategoriaQuartoJpa> buscaTodos() throws SQLException {
+    public List<CategoriaQuarto> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<CategoriaQuartoJpa> tq = em.createNamedQuery("CategoriaQuarto.findAll", CategoriaQuartoJpa.class);
-        List<CategoriaQuartoJpa> categoriaQuartos = tq.getResultList();
+        TypedQuery<CategoriaQuarto> tq = em.createNamedQuery("CategoriaQuarto.findAll", CategoriaQuarto.class);
+        List<CategoriaQuarto> categoriaQuartos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -91,11 +91,11 @@ public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
     }
 
     @Override
-    public boolean atualiza(String id, CategoriaQuartoJpa cqNova)
+    public boolean atualiza(String id, CategoriaQuarto cqNova)
             throws SQLException {
         em.getTransaction().begin();
 
-        CategoriaQuartoJpa cqAnt = em.find(CategoriaQuartoJpa.class, id);
+        CategoriaQuarto cqAnt = em.find(CategoriaQuarto.class, id);
         cqAnt.setNomCategoria(cqNova.getNomCategoria());
         cqAnt.setVlrDiaria(cqNova.getVlrDiaria());
 
@@ -107,7 +107,7 @@ public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
     }
 
     @Override
-    public boolean deleta(CategoriaQuartoJpa categoriaQuarto) throws SQLException {
+    public boolean deleta(CategoriaQuarto categoriaQuarto) throws SQLException {
         em.getTransaction().begin();
         em.remove(categoriaQuarto);
         em.getTransaction().commit();

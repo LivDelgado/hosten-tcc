@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
+import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.util.bd.BdUtils;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
@@ -12,8 +13,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDao;
+import java.math.BigDecimal;
+import java.util.Date;
 
-public final class HospedagemDao implements IHospedagemDao{
+public final class HospedagemDao implements IHospedagemDao {
 
     private static Connection con;
     private static HospedagemDao instancia;
@@ -38,10 +41,10 @@ public final class HospedagemDao implements IHospedagemDao{
                 + " VALUES (?,?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setTimestamp(1, hospedagem.getDatCheckIn());
-        pStmt.setTimestamp(2, hospedagem.getDatCheckOut());
-        pStmt.setDouble(3, hospedagem.getVlrPago());
-        pStmt.setString(4, hospedagem.getCodCPF());
+        pStmt.setTimestamp(1, new Timestamp(hospedagem.getDatCheckin().getTime()));
+        pStmt.setTimestamp(2, new Timestamp(hospedagem.getDatCheckout().getTime()));
+        pStmt.setDouble(3, hospedagem.getVlrPago().doubleValue());
+        pStmt.setString(4, hospedagem.getHospede().getCodCpf());
 
         return pStmt.executeUpdate() > 0;
     }
@@ -63,16 +66,15 @@ public final class HospedagemDao implements IHospedagemDao{
 
         List<Hospedagem> hospedagemEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            hospedagemEncontrados
-                    .add(new Hospedagem(
-                            rs.getInt(1),
-                            rs.getTimestamp(2),
-                            rs.getTimestamp(3),
-                            rs.getDouble(4),
-                            rs.getString(5)));
-            i++;
+            Hospedagem h = new Hospedagem(
+                    new Date(rs.getTimestamp(2).getTime()),
+                    new Date(rs.getTimestamp(3).getTime()),
+                    BigDecimal.valueOf(rs.getDouble(4)));
+            h.setSeqHospedagem(rs.getInt(1));
+            h.setHospede(new Hospede(rs.getString(5)));
+            
+            hospedagemEncontrados.add(h);
         }
 
         return hospedagemEncontrados;
@@ -87,45 +89,15 @@ public final class HospedagemDao implements IHospedagemDao{
 
         List<Hospedagem> hospedagemsEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            hospedagemsEncontrados
-                    .add(new Hospedagem(
-                            rs.getInt(1),
-                            rs.getTimestamp(2),
-                            rs.getTimestamp(3),
-                            rs.getDouble(4),
-                            rs.getString(5)));
-            i++;
-        }
+            Hospedagem h = new Hospedagem(
+                    new Date(rs.getTimestamp(2).getTime()),
+                    new Date(rs.getTimestamp(3).getTime()),
+                    BigDecimal.valueOf(rs.getDouble(4)));
+            h.setSeqHospedagem(rs.getInt(1));
+            h.setHospede(new Hospede(rs.getString(5)));
 
-        return hospedagemsEncontrados;
-    }
-
-    public List<Hospedagem> buscaHospedagem(
-            Hospedagem hospedagem) throws SQLException {
-        String qry = "SELECT * FROM Hospedagem WHERE "
-                + "datCheckIn=? AND datCheckOut=? AND vlrPago=? AND codCPF=?";
-
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setTimestamp(1, hospedagem.getDatCheckIn());
-        pStmt.setTimestamp(2, hospedagem.getDatCheckOut());
-        pStmt.setDouble(3, hospedagem.getVlrPago());
-        pStmt.setString(4, hospedagem.getCodCPF());
-
-        ResultSet rs = pStmt.executeQuery();
-        List<Hospedagem> hospedagemsEncontrados = new ArrayList<>();
-
-        int i = 0;
-        while (rs.next()) {
-            hospedagemsEncontrados
-                    .add(new Hospedagem(
-                            rs.getInt(1),
-                            rs.getTimestamp(2),
-                            rs.getTimestamp(3),
-                            rs.getDouble(4),
-                            rs.getString(5)));
-            i++;
+            hospedagemsEncontrados.add(h);
         }
 
         return hospedagemsEncontrados;
@@ -133,47 +105,23 @@ public final class HospedagemDao implements IHospedagemDao{
 
     @Override
     public boolean atualizaHospedagemPorPk(
-            Object pK, 
+            Object pK,
             Hospedagem hospedagemAtualizado) throws SQLException {
         String qry = "UPDATE Hospedagem "
                 + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, "
                 + "codCPF = ? "
                 + "WHERE seqHospedagem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckIn());
-        pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckOut());
-        pStmt.setDouble(3, hospedagemAtualizado.getVlrPago());
-        pStmt.setString(4, hospedagemAtualizado.getCodCPF());
-        if (pK instanceof String) {
-            pStmt.setString(5, pK.toString());
-        } else {
-            pStmt.setInt(5, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setTimestamp(1, new Timestamp(hospedagemAtualizado.getDatCheckin().getTime()));
+        pStmt.setTimestamp(2, new Timestamp(hospedagemAtualizado.getDatCheckout().getTime()));
+        pStmt.setDouble(3, hospedagemAtualizado.getVlrPago().doubleValue());
+        pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCpf());
+        pStmt.setInt(5, Integer.parseInt(pK.toString()));
 
         return pStmt.executeUpdate() > 0;
     }
 
-    @Override
-    public boolean atualizaHospedagem(Hospedagem hospedagemAntiga,
-            Hospedagem hospedagemAtualizado) throws SQLException {
-        String qry = "UPDATE Hospedagem "
-                + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
-                + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
-                + "codCPF = ?";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckIn());
-        pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckOut());
-        pStmt.setDouble(3, hospedagemAtualizado.getVlrPago());
-        pStmt.setString(4, hospedagemAtualizado.getCodCPF());
-        pStmt.setTimestamp(5, hospedagemAntiga.getDatCheckIn());
-        pStmt.setTimestamp(6, hospedagemAntiga.getDatCheckOut());
-        pStmt.setDouble(7, hospedagemAntiga.getVlrPago());
-        pStmt.setString(8, hospedagemAntiga.getCodCPF());
-
-        return pStmt.executeUpdate() > 0;
-    }
-
-    public boolean atualiza(Timestamp datCheckInAntiga, 
+    public boolean atualiza(Timestamp datCheckInAntiga,
             Timestamp datCheckOutAntiga,
             Double vlrPagoAntigo, String codCPFAntigo,
             Hospedagem hospedagemAtualizado) throws SQLException {
@@ -181,7 +129,7 @@ public final class HospedagemDao implements IHospedagemDao{
                 + "WHERE datCheckIn = ? AND datCheckOut = ? "
                 + "AND vlrPago = ? AND codCPF = ?";
 
-        PreparedStatement pStmt = con.prepareStatement(qry, 
+        PreparedStatement pStmt = con.prepareStatement(qry,
                 ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
         pStmt.setTimestamp(1, datCheckInAntiga);
@@ -197,10 +145,10 @@ public final class HospedagemDao implements IHospedagemDao{
                     + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? "
                     + "AND codCPF = ?";
             pStmt = con.prepareStatement(qry);
-            pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckIn());
-            pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckOut());
-            pStmt.setDouble(3, hospedagemAtualizado.getVlrPago());
-            pStmt.setString(4, hospedagemAtualizado.getCodCPF());
+            pStmt.setTimestamp(1, new Timestamp(hospedagemAtualizado.getDatCheckin().getTime()));
+            pStmt.setTimestamp(2, new Timestamp(hospedagemAtualizado.getDatCheckout().getTime()));
+            pStmt.setDouble(3, hospedagemAtualizado.getVlrPago().doubleValue());
+            pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCpf());
             pStmt.setTimestamp(5, datCheckInAntiga);
             pStmt.setTimestamp(6, datCheckOutAntiga);
             pStmt.setDouble(7, vlrPagoAntigo);
@@ -230,10 +178,10 @@ public final class HospedagemDao implements IHospedagemDao{
                 + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
                 + "codCPF = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setTimestamp(1, hospedagemAntiga.getDatCheckIn());
-        pStmt.setTimestamp(2, hospedagemAntiga.getDatCheckOut());
-        pStmt.setDouble(3, hospedagemAntiga.getVlrPago());
-        pStmt.setString(4, hospedagemAntiga.getCodCPF());
+        pStmt.setTimestamp(1, new Timestamp(hospedagemAntiga.getDatCheckin().getTime()));
+        pStmt.setTimestamp(2, new Timestamp(hospedagemAntiga.getDatCheckout().getTime()));
+        pStmt.setDouble(3, hospedagemAntiga.getVlrPago().doubleValue());
+        pStmt.setString(4, hospedagemAntiga.getHospede().getCodCpf());
 
         return pStmt.executeUpdate() > 0;
     }
@@ -267,34 +215,32 @@ public final class HospedagemDao implements IHospedagemDao{
         }
         return false;
     }
-    
+
     public List<Hospedagem> busca(Hospedagem hospedagem) throws SQLException {
         String qry = "SELECT * FROM Hospedagem WHERE "
                 + "datCheckIn=? AND datCheckOut=? AND vlrPago=? AND codCPF=?";
 
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setTimestamp(1, hospedagem.getDatCheckIn());
-        pStmt.setTimestamp(2, hospedagem.getDatCheckOut());
-        pStmt.setDouble(3, hospedagem.getVlrPago());
-        pStmt.setString(4, hospedagem.getCodCPF());
+        pStmt.setTimestamp(1, new Timestamp(hospedagem.getDatCheckin().getTime()));
+        pStmt.setTimestamp(2, new Timestamp(hospedagem.getDatCheckout().getTime()));
+        pStmt.setDouble(3, hospedagem.getVlrPago().doubleValue());
+        pStmt.setString(4, hospedagem.getHospede().getCodCpf());
 
         ResultSet rs = pStmt.executeQuery();
         List<Hospedagem> hospedagemsEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            hospedagemsEncontrados
-                    .add(new Hospedagem(
-                            rs.getInt(1),
-                            rs.getTimestamp(2),
-                            rs.getTimestamp(3),
-                            rs.getDouble(4),
-                            rs.getString(5)));
-            i++;
+            Hospedagem h = new Hospedagem(
+                    new Date(rs.getTimestamp(2).getTime()),
+                    new Date(rs.getTimestamp(3).getTime()),
+                    BigDecimal.valueOf(rs.getDouble(4)));
+            h.setSeqHospedagem(rs.getInt(1));
+            h.setHospede(new Hospede(rs.getString(5)));
+
+            hospedagemsEncontrados.add(h);
         }
 
         return hospedagemsEncontrados;
     }
-
 }

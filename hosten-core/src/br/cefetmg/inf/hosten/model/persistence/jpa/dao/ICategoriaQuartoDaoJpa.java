@@ -1,20 +1,20 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.CategoriaQuartoJpa;
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface ICategoriaQuartoDaoJpa {
 
-    boolean adiciona(CategoriaQuartoJpa categoriaQuarto) throws SQLException;
+    boolean adiciona(CategoriaQuarto categoriaQuarto) throws SQLException;
 
-    CategoriaQuartoJpa buscaPorPk(String id) throws SQLException;
+    CategoriaQuarto buscaPorPk(String id) throws SQLException;
 
-    List<CategoriaQuartoJpa> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
+    List<CategoriaQuarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    List<CategoriaQuartoJpa> buscaTodos() throws SQLException;
+    List<CategoriaQuarto> buscaTodos() throws SQLException;
 
-    boolean atualiza(String id, CategoriaQuartoJpa categoriaQuartoAtualizado) throws SQLException;
+    boolean atualiza(String id, CategoriaQuarto categoriaQuartoAtualizado) throws SQLException;
 
-    boolean deleta(CategoriaQuartoJpa categoriaQuarto) throws SQLException;
+    boolean deleta(CategoriaQuarto categoriaQuarto) throws SQLException;
 }

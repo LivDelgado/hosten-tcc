@@ -62,7 +62,7 @@ public class CargoMB implements Serializable {
     public void onRowEdit(RowEditEvent event) throws IOException {
         cargo = (Cargo) event.getObject();
 
-        if (!codCargoAlterar.equals(Sessao.getInstance().getUsuarioLogado().getCodCargo())) {
+        if (!codCargoAlterar.equals(Sessao.getInstance().getUsuarioLogado().getCargo())) {
             List<Programa> listaProgramas = new ArrayList();
             listaProgramas.addAll(Arrays.asList(programasSelecionados));
 

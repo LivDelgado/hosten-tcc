@@ -1,11 +1,43 @@
 package br.cefetmg.inf.hosten.model.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "itemconforto", catalog = "hosten", schema = "public")
+@NamedQueries({
+    @NamedQuery(name = "ItemConforto.findAll", query = "SELECT i FROM ItemConforto i")
+    , @NamedQuery(name = "ItemConforto.findByCodItem", query = "SELECT i FROM ItemConforto i WHERE i.codItem = :codItem")
+    , @NamedQuery(name = "ItemConforto.findByDesItem", query = "SELECT i FROM ItemConforto i WHERE i.desItem = :desItem")})
 public class ItemConforto implements Serializable {
-    private String codItem; 
-    private String desItem; 
+
+    @Id
+    @Basic(optional = false)
+    @Column(name = "coditem", nullable = false, length = 3)
+    private String codItem;
+
+    @Basic(optional = false)
+    @Column(name = "desitem", nullable = false, length = 40)
+    private String desItem;
+
+    @ManyToMany(mappedBy = "itemConfortos")
+    private final Set<CategoriaQuarto> categorias = new HashSet<>();
+
+    public ItemConforto() {
+    }
+
+    public ItemConforto(String coditem) {
+        this.codItem = coditem;
+    }
 
     public ItemConforto(String codItem, String desItem) {
         this.codItem = codItem;
@@ -28,25 +60,33 @@ public class ItemConforto implements Serializable {
         this.desItem = desItem;
     }
 
+    public Set<CategoriaQuarto> getCategorias() {
+        return categorias;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public int hashCode() {
+        int hash = 0;
+        hash += (codItem != null ? codItem.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ItemConforto)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ItemConforto other = (ItemConforto) obj;
-
-
-        if (!Objects.equals(this.codItem, other.codItem)) {
+        ItemConforto other = (ItemConforto) object;
+        if ((this.codItem == null && other.codItem != null) || (this.codItem != null && !this.codItem.equals(other.codItem))) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "br.cefetmg.inf.hosten.model.domain.Itemconforto[ coditem=" + codItem + " ]";
     }
 
 }

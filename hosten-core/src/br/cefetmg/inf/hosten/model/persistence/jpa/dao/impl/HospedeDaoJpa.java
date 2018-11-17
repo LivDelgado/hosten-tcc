@@ -1,6 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.HospedeJpa;
+import br.cefetmg.inf.hosten.model.domain.Hospede;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -28,7 +28,7 @@ public class HospedeDaoJpa implements IHospedeDaoJpa {
     }
 
     @Override
-    public boolean adiciona(HospedeJpa hospede) throws SQLException {
+    public boolean adiciona(Hospede hospede) throws SQLException {
         em.getTransaction().begin();
         em.persist(hospede);
         em.getTransaction().commit();
@@ -37,16 +37,16 @@ public class HospedeDaoJpa implements IHospedeDaoJpa {
     }
 
     @Override
-    public HospedeJpa buscaPorPk(String id) throws SQLException {
+    public Hospede buscaPorPk(String id) throws SQLException {
         em.getTransaction().begin();
-        HospedeJpa hospede = em.find(HospedeJpa.class, id);
+        Hospede hospede = em.find(Hospede.class, id);
         em.getTransaction().commit();
 
         return hospede;
     }
 
     @Override
-    public List<HospedeJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<Hospede> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -72,10 +72,10 @@ public class HospedeDaoJpa implements IHospedeDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<HospedeJpa> tq = em
-                .createNamedQuery(qryBusca, HospedeJpa.class)
+        TypedQuery<Hospede> tq = em
+                .createNamedQuery(qryBusca, Hospede.class)
                 .setParameter(parametro, dadoBusca);
-        List<HospedeJpa> hospedes = tq.getResultList();
+        List<Hospede> hospedes = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -83,11 +83,11 @@ public class HospedeDaoJpa implements IHospedeDaoJpa {
     }
 
     @Override
-    public List<HospedeJpa> buscaTodos() throws SQLException {
+    public List<Hospede> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<HospedeJpa> tq = em.createNamedQuery("Hospede.findAll", HospedeJpa.class);
-        List<HospedeJpa> hospedes = tq.getResultList();
+        TypedQuery<Hospede> tq = em.createNamedQuery("Hospede.findAll", Hospede.class);
+        List<Hospede> hospedes = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -95,11 +95,11 @@ public class HospedeDaoJpa implements IHospedeDaoJpa {
     }
 
     @Override
-    public boolean atualiza(String id, HospedeJpa hospedeNov)
+    public boolean atualiza(String id, Hospede hospedeNov)
             throws SQLException {
         em.getTransaction().begin();
 
-        HospedeJpa hospedeAnt = em.find(HospedeJpa.class, id);
+        Hospede hospedeAnt = em.find(Hospede.class, id);
         hospedeAnt.setNomHospede(hospedeNov.getNomHospede());
         hospedeAnt.setDesEmail(hospedeNov.getDesEmail());
         hospedeAnt.setDesTelefone(hospedeNov.getDesTelefone());
@@ -110,7 +110,7 @@ public class HospedeDaoJpa implements IHospedeDaoJpa {
     }
 
     @Override
-    public boolean deleta(HospedeJpa hospede) throws SQLException {
+    public boolean deleta(Hospede hospede) throws SQLException {
         em.getTransaction().begin();
         em.remove(hospede);
         em.getTransaction().commit();

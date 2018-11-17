@@ -25,8 +25,8 @@ import com.itextpdf.text.pdf.draw.DottedLineSeparator;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -37,12 +37,12 @@ import javax.inject.Named;
 @Named(value = "checkMB")
 public class CheckMB implements Serializable {
 
-    private int nroQuarto;
+    private short nroQuarto;
     private Hospede hospedeSelecionado;
 
-    private int diasDeEstadia;
-    private int nroAdultos;
-    private int nroCriancas;
+    private short diasDeEstadia;
+    private short nroAdultos;
+    private short nroCriancas;
 
     public void resetaVariaveis() {
         nroQuarto = 0;
@@ -52,7 +52,7 @@ public class CheckMB implements Serializable {
         nroCriancas = 0;
     }
 
-    public void iniciaCheck(int nroQuarto, String operacao) {
+    public void iniciaCheck(short nroQuarto, String operacao) {
         setNroQuarto(nroQuarto);
         try {
             if (operacao.equals("in")) {
@@ -66,19 +66,19 @@ public class CheckMB implements Serializable {
         }
     }
 
-    public int getNroQuarto() {
+    public short getNroQuarto() {
         return nroQuarto;
     }
 
-    public void setNroQuarto(int nroQuarto) {
+    public void setNroQuarto(short nroQuarto) {
         this.nroQuarto = nroQuarto;
     }
 
-    public int getDiasDeEstadia() {
+    public short getDiasDeEstadia() {
         return diasDeEstadia;
     }
 
-    public void setDiasDeEstadia(int diasDeEstadia) {
+    public void setDiasDeEstadia(short diasDeEstadia) {
         this.diasDeEstadia = diasDeEstadia;
     }
 
@@ -86,22 +86,27 @@ public class CheckMB implements Serializable {
         return nroAdultos;
     }
 
-    public void setNroAdultos(int nroAdultos) {
+    public void setNroAdultos(short nroAdultos) {
         this.nroAdultos = nroAdultos;
     }
 
-    public int getNroCriancas() {
+    public short getNroCriancas() {
         return nroCriancas;
     }
 
-    public void setNroCriancas(int nroCriancas) {
+    public void setNroCriancas(short nroCriancas) {
         this.nroCriancas = nroCriancas;
     }
 
     public String checkIn() {
         IControlarHospedagem controlarHosp = new ControlarHospedagemProxy();
 
-        boolean testeRegistro = controlarHosp.efetuarCheckIn(String.valueOf(nroQuarto), hospedeSelecionado.getCodCPF(), diasDeEstadia, nroAdultos, nroCriancas);
+        boolean testeRegistro = controlarHosp.efetuarCheckIn(
+                nroQuarto,
+                hospedeSelecionado.getCodCpf(),
+                diasDeEstadia,
+                nroAdultos,
+                nroCriancas);
         if (testeRegistro) {
             ContextUtils.mostrarMensagem("Check-in efetuado", "Operação efetuada com sucesso!", true);
             resetaVariaveis();
@@ -121,13 +126,12 @@ public class CheckMB implements Serializable {
         this.hospedeSelecionado = hospedeSelecionado;
     }
 
-
     private Document document;
 
     public void checkOut() {
         IControlarHospedagem controlarHosp = new ControlarHospedagemProxy();
 
-        int seqHospedagem = controlarHosp.efetuarCheckOut(String.valueOf(nroQuarto));
+        int seqHospedagem = controlarHosp.efetuarCheckOut(nroQuarto);
 
         String nomeArquivo = "fatura.pdf";
 
@@ -136,24 +140,24 @@ public class CheckMB implements Serializable {
         ec.responseReset();
         ec.setResponseHeader("Content-Type", "application/pdf");
         ec.setResponseHeader("Content-Disposition", "inline; filename=fatura.pdf");
-        
+
         try {
             document = new Document(PageSize.A4, 90, 90, 90, 90);
             PdfWriter.getInstance(document, ec.getResponseOutputStream());
 
             document.open();
 
-        try {
-            montaArquivo(seqHospedagem);
-        } catch (NegocioException | SQLException ex) {
-            //
-            //
-            //
-        }
-        
-        document.close();
-        fc.responseComplete();
-        
+            try {
+                montaArquivo(seqHospedagem);
+            } catch (NegocioException | SQLException ex) {
+                //
+                //
+                //
+            }
+
+            document.close();
+            fc.responseComplete();
+
         } catch (DocumentException | IOException ex) {
             //
             //
@@ -169,7 +173,7 @@ public class CheckMB implements Serializable {
         );
 
         IControlarHospedagem controlarHospedagem = new ControlarHospedagemProxy();
-        
+
         Hospedagem hosp = controlarHospedagem.buscaHospedagem(seqHospedagem);
         QuartoHospedagem quartoHosp = controlarHospedagem.buscaQuartoHospedagem(seqHospedagem);
 
@@ -198,14 +202,13 @@ public class CheckMB implements Serializable {
 //              CODIGO ANTERIOR, COM LISTA DE DESPESAS        
 //        	nomeHospede = listaDespesas.get(0).getNomeHospede();
 //               
-                // buscar o nome do hospede pelo codigo do cpf que ta em hospedagem
-                IManterHospede manterHospede = new ManterHospedeProxy();
-                Hospede hospede = manterHospede.listar(hosp.getCodCPF(), "codCPF").get(0);
-                nomeHospede = hospede.getNomHospede();
-                
-        //
-        //
+        // buscar o nome do hospede pelo codigo do cpf que ta em hospedagem
+        IManterHospede manterHospede = new ManterHospedeProxy();
+        Hospede hospede = manterHospede.listar(hosp.getHospede().getCodCpf(), "codCPF").get(0);
+        nomeHospede = hospede.getNomHospede();
 
+        //
+        //
         p.setFont(fonteRedViolet);
         p.setSpacingBefore(20);
         p.setSpacingAfter(20);
@@ -221,10 +224,9 @@ public class CheckMB implements Serializable {
                 // um parágrafo para cada item/servico consumido
                 int qtdServico = despesa.getQtdConsumo();
                 String desServico = despesa.getDesServico();
-                Double vlrServico = despesa.getVlrUnit();
+                Double vlrServico = despesa.getVlrUnit().doubleValue();
 
 //                vlrTotal += vlrServico * qtdServico;
-
                 String strVlrServico = currencyFormatter.format(vlrServico);
 
                 p.setFont(fonteMulberry);
@@ -242,26 +244,27 @@ public class CheckMB implements Serializable {
         }
 
         // parágrafo com as informações da diária
-        int nroAdultos = quartoHosp.getNroAdultos();
-        int nroCriancas = quartoHosp.getNroCriancas();
-        Double vlrDiaria = quartoHosp.getVlrDiaria();
-        
+        short nroAdultos = quartoHosp.getNroAdultos();
+        short nroCriancas = quartoHosp.getNroCriancas();
+        Double vlrDiaria = quartoHosp.getVlrDiaria().doubleValue();
 
-        Timestamp datCheckIn = hosp.getDatCheckIn();
-        Timestamp datCheckOut = hosp.getDatCheckOut();
+        Date datCheckIn;
+        datCheckIn = hosp.getDatCheckin();
+        Date datCheckOut = hosp.getDatCheckout();
         long msDiferenca = (datCheckOut.getTime()) - (datCheckIn.getTime());
         long segundos = msDiferenca / 1000;
         long minutos = segundos / 60;
         long horas = minutos / 60;
         long dias = horas / 24;
-        
-        if (dias < 1)
+
+        if (dias < 1) {
             dias = 1;
+        }
 
         Double valorDiarias = dias * vlrDiaria;
 
         // valor total pago pelo cliente
-        vlrTotal = hosp.getVlrPago();
+        vlrTotal = hosp.getVlrPago().doubleValue();
 
         p.setFont(fonteChateauRose);
         p.setSpacingAfter(2);
@@ -303,5 +306,5 @@ public class CheckMB implements Serializable {
         p.add(strValorTotal);
         document.add(p);
     }
-    
+
 }

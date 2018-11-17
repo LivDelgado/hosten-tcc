@@ -1,6 +1,6 @@
-package br.cefetmg.inf.hosten.model.persistence.jpa.domain.embeddable;
+package br.cefetmg.inf.hosten.model.domain.idcomposto;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.rel.QuartoHospedagemJpa;
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Embeddable;
@@ -10,7 +10,7 @@ import javax.persistence.TemporalType;
 @Embeddable
 public class QuartoConsumoId implements Serializable {
 
-    private QuartoHospedagemJpa quartoHospedagem;
+    private QuartoHospedagem quartoHospedagem;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date datConsumo;
@@ -18,12 +18,12 @@ public class QuartoConsumoId implements Serializable {
     public QuartoConsumoId() {
     }
 
-    public QuartoConsumoId(QuartoHospedagemJpa quartoHospedagem, Date datConsumo) {
+    public QuartoConsumoId(QuartoHospedagem quartoHospedagem, Date datConsumo) {
         this.quartoHospedagem = quartoHospedagem;
         this.datConsumo = datConsumo;
     }
 
-    public QuartoHospedagemJpa getQuartoHospedagem() {
+    public QuartoHospedagem getQuartoHospedagem() {
         return quartoHospedagem;
     }
 

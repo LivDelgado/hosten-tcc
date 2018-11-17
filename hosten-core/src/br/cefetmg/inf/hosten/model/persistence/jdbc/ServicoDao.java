@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.Servico;
+import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.bd.BdUtils;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
@@ -11,10 +12,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IServicoDao;
+import java.math.BigDecimal;
 
 public class ServicoDao implements IServicoDao {
 
-    private Connection con;
+    private final Connection con;
     private static ServicoDao instancia;
 
     private ServicoDao() {
@@ -37,8 +39,8 @@ public class ServicoDao implements IServicoDao {
 
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, servico.getDesServico());
-        pStmt.setDouble(2, servico.getVlrUnit());
-        pStmt.setString(3, servico.getCodServicoArea());
+        pStmt.setDouble(2, servico.getVlrUnit().doubleValue());
+        pStmt.setString(3, servico.getServicoArea().getCodServicoArea());
 
         return pStmt.executeUpdate() > 0;
     }
@@ -61,12 +63,12 @@ public class ServicoDao implements IServicoDao {
         List<Servico> servicoEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            servicoEncontrados
-                    .add(new Servico(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getDouble(3),
-                            rs.getString(4)));
+            Servico s = new Servico(
+                    rs.getString(2),
+                    BigDecimal.valueOf(rs.getDouble(3)));
+            s.setServicoArea(new ServicoArea(rs.getString(4)));
+            
+            servicoEncontrados.add(s);
         }
 
         return servicoEncontrados;
@@ -81,30 +83,28 @@ public class ServicoDao implements IServicoDao {
 
         List<Servico> servicosEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            servicosEncontrados
-                    .add(new Servico(
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getDouble(3),
-                            rs.getString(4)));
-            i++;
+            Servico s = new Servico(
+                    rs.getString(2),
+                    BigDecimal.valueOf(rs.getDouble(3)));
+            s.setServicoArea(new ServicoArea(rs.getString(4)));
+
+            servicosEncontrados.add(s);
         }
 
         return servicosEncontrados;
     }
 
     @Override
-    public boolean atualizaServicoPorPk(Object pK, Servico servicoAtualizado) 
+    public boolean atualizaServicoPorPk(Object pK, Servico servicoAtualizado)
             throws SQLException {
         String qry = "UPDATE Servico "
                 + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, servicoAtualizado.getDesServico());
-        pStmt.setDouble(2, servicoAtualizado.getVlrUnit());
-        pStmt.setString(3, servicoAtualizado.getCodServicoArea());
+        pStmt.setDouble(2, servicoAtualizado.getVlrUnit().doubleValue());
+        pStmt.setString(3, servicoAtualizado.getServicoArea().getCodServicoArea());
         pStmt.setInt(4, Integer.parseInt(pK.toString()));
 
         return pStmt.executeUpdate() > 0;
@@ -112,19 +112,19 @@ public class ServicoDao implements IServicoDao {
 
     @Override
     public boolean atualizaServico(
-            Servico servicoAntigo, 
-            Servico servicoAtualizado) 
+            Servico servicoAntigo,
+            Servico servicoAtualizado)
             throws SQLException {
         String qry = "UPDATE Servico "
                 + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, servicoAtualizado.getDesServico());
-        pStmt.setDouble(2, servicoAtualizado.getVlrUnit());
-        pStmt.setString(3, servicoAtualizado.getCodServicoArea());
+        pStmt.setDouble(2, servicoAtualizado.getVlrUnit().doubleValue());
+        pStmt.setString(3, servicoAtualizado.getServicoArea().getCodServicoArea());
         pStmt.setString(4, servicoAntigo.getDesServico());
-        pStmt.setDouble(5, servicoAntigo.getVlrUnit());
-        pStmt.setString(6, servicoAntigo.getCodServicoArea());
+        pStmt.setDouble(5, servicoAntigo.getVlrUnit().doubleValue());
+        pStmt.setString(6, servicoAntigo.getServicoArea().getCodServicoArea());
 
         return pStmt.executeUpdate() > 0;
     }
@@ -149,15 +149,15 @@ public class ServicoDao implements IServicoDao {
                 + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, servicoAntigo.getDesServico());
-        pStmt.setDouble(2, servicoAntigo.getVlrUnit());
-        pStmt.setString(3, servicoAntigo.getCodServicoArea());
+        pStmt.setDouble(2, servicoAntigo.getVlrUnit().doubleValue());
+        pStmt.setString(3, servicoAntigo.getServicoArea().getCodServicoArea());
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
     public boolean deletaServicoPorAtributos(
-            String desServicoAntigo, 
+            String desServicoAntigo,
             String codServicoAreaAntigo) throws SQLException {
         String qry = "SELECT * FROM Servico "
                 + "WHERE desServico = ? AND codServicoArea = ?";

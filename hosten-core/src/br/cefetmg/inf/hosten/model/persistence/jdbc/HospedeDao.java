@@ -35,7 +35,7 @@ public final class HospedeDao implements IHospedeDao{
                 + " VALUES (?,?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, hospede.getCodCPF());
+        pStmt.setString(1, hospede.getCodCpf());
         pStmt.setString(2, hospede.getNomHospede());
         pStmt.setString(3, hospede.getDesTelefone());
         pStmt.setString(4, hospede.getDesEmail());
@@ -106,7 +106,7 @@ public final class HospedeDao implements IHospedeDao{
                 + "SET codCPF = ?, nomHospede = ?, desTelefone = ?, desEmail = ? "
                 + "WHERE codCPF = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, hospedeAtualizado.getCodCPF());
+        pStmt.setString(1, hospedeAtualizado.getCodCpf());
         pStmt.setString(2, hospedeAtualizado.getNomHospede());
         pStmt.setString(3, hospedeAtualizado.getDesTelefone());
         pStmt.setString(4, hospedeAtualizado.getDesEmail());

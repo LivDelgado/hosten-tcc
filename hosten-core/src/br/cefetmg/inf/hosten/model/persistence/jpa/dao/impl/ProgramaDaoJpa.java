@@ -1,7 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.CargoJpa;
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.ProgramaJpa;
+import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ProgramaDaoJpa implements IProgramaDaoJpa {
     }
 
     @Override
-    public boolean adiciona(ProgramaJpa programa) throws SQLException {
+    public boolean adiciona(Programa programa) throws SQLException {
         em.getTransaction().begin();
         em.persist(programa);
         em.getTransaction().commit();
@@ -38,16 +37,16 @@ public class ProgramaDaoJpa implements IProgramaDaoJpa {
     }
 
     @Override
-    public ProgramaJpa buscaPorPk(String id) throws SQLException {
+    public Programa buscaPorPk(String id) throws SQLException {
         em.getTransaction().begin();
-        ProgramaJpa programa = em.find(ProgramaJpa.class, id);
+        Programa programa = em.find(Programa.class, id);
         em.getTransaction().commit();
 
         return programa;
     }
 
     @Override
-    public List<ProgramaJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<Programa> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -65,10 +64,10 @@ public class ProgramaDaoJpa implements IProgramaDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<ProgramaJpa> tq = em
-                .createNamedQuery(qryBusca, ProgramaJpa.class)
+        TypedQuery<Programa> tq = em
+                .createNamedQuery(qryBusca, Programa.class)
                 .setParameter(parametro, dadoBusca);
-        List<ProgramaJpa> programas = tq.getResultList();
+        List<Programa> programas = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -76,11 +75,11 @@ public class ProgramaDaoJpa implements IProgramaDaoJpa {
     }
 
     @Override
-    public List<ProgramaJpa> buscaTodos() throws SQLException {
+    public List<Programa> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<ProgramaJpa> tq = em.createNamedQuery("Programa.findAll", ProgramaJpa.class);
-        List<ProgramaJpa> programas = tq.getResultList();
+        TypedQuery<Programa> tq = em.createNamedQuery("Programa.findAll", Programa.class);
+        List<Programa> programas = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -88,11 +87,11 @@ public class ProgramaDaoJpa implements IProgramaDaoJpa {
     }
 
     @Override
-    public boolean atualiza(String id, ProgramaJpa programaNov)
+    public boolean atualiza(String id, Programa programaNov)
             throws SQLException {
         em.getTransaction().begin();
 
-        ProgramaJpa programaAnt = em.find(ProgramaJpa.class, id);
+        Programa programaAnt = em.find(Programa.class, id);
         programaAnt.setDesPrograma(programaNov.getDesPrograma());
 
         em.getTransaction().commit();
@@ -101,7 +100,7 @@ public class ProgramaDaoJpa implements IProgramaDaoJpa {
     }
 
     @Override
-    public boolean deleta(ProgramaJpa programa) throws SQLException {
+    public boolean deleta(Programa programa) throws SQLException {
         em.getTransaction().begin();
         em.remove(programa);
         em.getTransaction().commit();

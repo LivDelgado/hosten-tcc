@@ -58,7 +58,7 @@ public class FiltroAcesso implements Filter {
             IManterCargo mCargo = new ManterCargoProxy();
             try {
                 // Obtém o cargo do Usuário
-                Cargo cargoUsuario = mCargo.listar(usuario.getCodCargo(), "codCargo").get(0);
+                Cargo cargoUsuario = mCargo.listar(usuario.getCargo(), "codCargo").get(0);
 
                 // Caso o cargo do usuário seja de Gerente, (idtMaster == true)
                 // libera o acesso dele à qualquer página do sistema
@@ -71,7 +71,7 @@ public class FiltroAcesso implements Filter {
                     String nomPgRqstd = getNomPgRqstd(pgRqstdCompleta);
 
                     // Obtém os programas relacionados ao cargo
-                    List<Programa> listaProg = mCargo.listarProgramasRelacionados(usuario.getCodCargo());
+                    List<Programa> listaProg = mCargo.listarProgramasRelacionados(usuario.getCargo().getCodCargo());
 
                     for (Programa prog : listaProg) {
                         // Verifica se o usuário tem acesso à página requisitada

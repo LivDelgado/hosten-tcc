@@ -1,7 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.embeddable.QuartoHospedagemId;
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.rel.QuartoHospedagemJpa;
+import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
+import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,7 +29,7 @@ public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
     }
 
     @Override
-    public boolean adiciona(QuartoHospedagemJpa qh) throws SQLException {
+    public boolean adiciona(QuartoHospedagem qh) throws SQLException {
         em.getTransaction().begin();
         em.persist(qh);
         em.getTransaction().commit();
@@ -38,16 +38,16 @@ public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
     }
 
     @Override
-    public QuartoHospedagemJpa buscaPorPk(int seqHospedagem, short nroQuarto) throws SQLException {
+    public QuartoHospedagem buscaPorPk(int seqHospedagem, short nroQuarto) throws SQLException {
         em.getTransaction().begin();
-        QuartoHospedagemJpa qh = em.find(QuartoHospedagemJpa.class, new QuartoHospedagemId(seqHospedagem, nroQuarto));
+        QuartoHospedagem qh = em.find(QuartoHospedagem.class, new QuartoHospedagemId(seqHospedagem, nroQuarto));
         em.getTransaction().commit();
 
         return qh;
     }
 
     @Override
-    public List<QuartoHospedagemJpa> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+    public List<QuartoHospedagem> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
 
@@ -76,10 +76,10 @@ public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<QuartoHospedagemJpa> tq = em
-                .createNamedQuery(qryBusca, QuartoHospedagemJpa.class)
+        TypedQuery<QuartoHospedagem> tq = em
+                .createNamedQuery(qryBusca, QuartoHospedagem.class)
                 .setParameter(parametro, dadoBusca);
-        List<QuartoHospedagemJpa> qhs = tq.getResultList();
+        List<QuartoHospedagem> qhs = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -87,10 +87,10 @@ public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
     }
 
     @Override
-    public List<QuartoHospedagemJpa> buscaTodos() throws SQLException {
+    public List<QuartoHospedagem> buscaTodos() throws SQLException {
         em.getTransaction().begin();
-        List<QuartoHospedagemJpa> qhs = em
-                .createNamedQuery("QuartoHospedagem.findAll", QuartoHospedagemJpa.class)
+        List<QuartoHospedagem> qhs = em
+                .createNamedQuery("QuartoHospedagem.findAll", QuartoHospedagem.class)
                 .getResultList();
         em.getTransaction().commit();
 
@@ -98,7 +98,7 @@ public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
     }
 
     @Override
-    public boolean deleta(QuartoHospedagemJpa qh) throws SQLException {
+    public boolean deleta(QuartoHospedagem qh) throws SQLException {
         em.getTransaction().begin();
         em.remove(qh);
         em.getTransaction().commit();
@@ -110,7 +110,7 @@ public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
     public int buscaUltimoRegistro(int nroQuarto) throws SQLException {
         int seqHospedagem = em
                 .createNamedQuery("QuartoHospedagem.fetchUltimoRegistroQuarto",
-                        QuartoHospedagemJpa.class)
+                        QuartoHospedagem.class)
                 .setParameter("nroQuarto", nroQuarto)
                 .getResultList()
                 .get(0)

@@ -1,6 +1,5 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.impl;
-
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.rel.views.DespesaJpa;
+import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -25,9 +24,9 @@ public class DespesaDaoJpa implements IDespesaDaoJpa {
     }
 
     @Override
-    public List<DespesaJpa> busca(int seqHospedagem, int nroQuarto) throws SQLException {
-        List<DespesaJpa> despesas = em
-                .createNamedQuery("Despesa.findBySeqHospedagemAndNroQuarto", DespesaJpa.class)
+    public List<Despesa> busca(int seqHospedagem, int nroQuarto) throws SQLException {
+        List<Despesa> despesas = em
+                .createNamedQuery("Despesa.findBySeqHospedagemAndNroQuarto", Despesa.class)
                 .setParameter("seqHospedagem", seqHospedagem)
                 .setParameter("nroQuarto", nroQuarto)
                 .getResultList();

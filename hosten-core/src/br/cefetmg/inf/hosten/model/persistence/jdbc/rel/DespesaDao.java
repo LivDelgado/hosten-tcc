@@ -43,34 +43,39 @@ public class DespesaDao implements IDespesaDao {
 
         List<Despesa> despesaEncontradas = new ArrayList<>();
 
-        int i = 0;
-        /* 
-        int seqHospedagem, int nroQuarto, int nroAdultos, int nroCriancas, 
-        Double vlrDiaria, 
-        Timestamp datCheckIn, Timestamp datCheckOut, 
-        Double vlrPago, 
-        String nomeHospede, 
-        int seqServico, int qtdConsumo, 
+        /*
+        long id, 
+        Integer seqHospedagem, 
+        Short nroQuarto, 
+        Short nroAdultos, 
+        Short nroCriancas, 
+        BigDecimal vlrDiaria, 
+        Date datCheckin, 
+        Date datCheckout, 
+        BigDecimal vlrPago, 
+        String nomHospede, 
+        Short seqServico, 
+        Short qtdConsumo, 
         String desServico, 
-        Double vlrUnit
+        BigDecimal vlrUnit
         */
         while (rs.next()) {
             despesaEncontradas
                     .add(new Despesa(
                             rs.getInt(1),
-                            rs.getInt(2),
-                            rs.getInt(3),
-                            rs.getInt(4),
-                            rs.getDouble(5),
+                            rs.getInt(1),
+                            rs.getShort(2),
+                            rs.getShort(3),
+                            rs.getShort(4),
+                            rs.getBigDecimal(5),
                             rs.getTimestamp(6),
                             rs.getTimestamp(7),
-                            rs.getDouble(8),
+                            rs.getBigDecimal(8),
                             rs.getString(9),
-                            rs.getInt(10),
-                            rs.getInt(11),
+                            rs.getShort(10),
+                            rs.getShort(11),
                             rs.getString(12),
-                            rs.getDouble(13)));
-            i++;
+                            rs.getBigDecimal(13)));
         }
         return despesaEncontradas;
     }

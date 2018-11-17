@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDao;
+import java.math.BigDecimal;
 
 public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
 
@@ -38,7 +39,7 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, categoriaQuarto.getCodCategoria());
         pStmt.setString(2, categoriaQuarto.getNomCategoria());
-        pStmt.setDouble(3, categoriaQuarto.getVlrDiaria());
+        pStmt.setDouble(3, categoriaQuarto.getVlrDiaria().doubleValue());
 
         return pStmt.executeUpdate() > 0;
     }
@@ -62,14 +63,12 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
 
         List<CategoriaQuarto> categoriaQuartosEncontrados = new ArrayList<>();
         
-        int i = 0;
         while (rs.next()) {
             categoriaQuartosEncontrados
                     .add(new CategoriaQuarto(
                             rs.getString(1),
                             rs.getString(2),
-                            rs.getDouble(3)));
-            i++;
+                            BigDecimal.valueOf(rs.getDouble(3))));
         }
 
         return categoriaQuartosEncontrados;
@@ -85,14 +84,12 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
 
         List<CategoriaQuarto> categoriaQuartosEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
             categoriaQuartosEncontrados
                     .add(new CategoriaQuarto(
                             rs.getString(1), 
                             rs.getString(2),
-                            rs.getDouble(3)));
-            i++;
+                            BigDecimal.valueOf(rs.getDouble(3))));
         }
 
         return categoriaQuartosEncontrados;
@@ -108,7 +105,7 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, categoriaQuartoAtualizado.getCodCategoria());
         pStmt.setString(2, categoriaQuartoAtualizado.getNomCategoria());
-        pStmt.setDouble(3, categoriaQuartoAtualizado.getVlrDiaria());
+        pStmt.setDouble(3, categoriaQuartoAtualizado.getVlrDiaria().doubleValue());
         if (pK instanceof String) {
             pStmt.setString(4, pK.toString());
         } else {

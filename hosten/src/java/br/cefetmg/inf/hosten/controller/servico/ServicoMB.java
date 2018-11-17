@@ -31,7 +31,7 @@ public class ServicoMB implements Serializable{
     private int codServicoAlterar;
 
     public ServicoMB() {
-        servico = new Servico(null, null, null);
+        servico = new Servico();
         manterServico = new ManterServicoProxy();
         try {
             listaServicos = manterServico.listarTodos();
@@ -43,7 +43,7 @@ public class ServicoMB implements Serializable{
     public ServicoArea getAreaServico(Servico servico) {
         IManterServicoArea manterServicoArea = new ManterServicoAreaProxy();
         try {
-            areaServico = manterServicoArea.listar(servico.getCodServicoArea(), "codServicoArea").get(0);
+            areaServico = manterServicoArea.listar(servico.getServicoArea(), "codServicoArea").get(0);
         } catch (NegocioException | SQLException ex) {
             ex.printStackTrace();
             //
@@ -79,7 +79,7 @@ public class ServicoMB implements Serializable{
     public void onRowEdit(RowEditEvent event) throws IOException {
         try {
             servico = (Servico) event.getObject();
-            servico.setCodServicoArea(areaSelecionada.getCodServicoArea());
+            servico.setServicoArea(areaSelecionada);
             
             boolean testeExclusao = manterServico.alterar(String.valueOf(codServicoAlterar), servico);
             if (testeExclusao) {
@@ -118,7 +118,7 @@ public class ServicoMB implements Serializable{
 
     public String inserir() {
         try {
-            servico.setCodServicoArea(areaSelecionada.getCodServicoArea());
+            servico.setServicoArea(areaSelecionada);
             boolean testeInsercao = manterServico.inserir(servico);
 
             if (testeInsercao) {

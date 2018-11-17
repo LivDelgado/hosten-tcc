@@ -1,7 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.CategoriaQuartoJpa;
-import br.cefetmg.inf.hosten.model.persistence.jpa.domain.QuartoJpa;
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,7 +29,7 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public boolean adiciona(QuartoJpa quarto) throws SQLException {
+    public boolean adiciona(Quarto quarto) throws SQLException {
         em.getTransaction().begin();
         em.persist(quarto);
         em.getTransaction().commit();
@@ -38,16 +38,16 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public QuartoJpa buscaPorPk(Short id) throws SQLException {
+    public Quarto buscaPorPk(Short id) throws SQLException {
         em.getTransaction().begin();
-        QuartoJpa quarto = em.find(QuartoJpa.class, id);
+        Quarto quarto = em.find(Quarto.class, id);
         em.getTransaction().commit();
 
         return quarto;
     }
 
     @Override
-    public List<QuartoJpa> buscaPorColuna(Object dadoBusca, String coluna)
+    public List<Quarto> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException {
         String parametro = "";
         String qryBusca = NAMED_QUERY_BASE;
@@ -65,10 +65,10 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
 
         em.getTransaction().begin();
 
-        TypedQuery<QuartoJpa> tq = em
-                .createNamedQuery(qryBusca, QuartoJpa.class)
+        TypedQuery<Quarto> tq = em
+                .createNamedQuery(qryBusca, Quarto.class)
                 .setParameter(parametro, dadoBusca);
-        List<QuartoJpa> quartos = tq.getResultList();
+        List<Quarto> quartos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -76,11 +76,11 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public List<QuartoJpa> buscaTodos() throws SQLException {
+    public List<Quarto> buscaTodos() throws SQLException {
         em.getTransaction().begin();
 
-        TypedQuery<QuartoJpa> tq = em.createNamedQuery("Quarto.findAll", QuartoJpa.class);
-        List<QuartoJpa> quartos = tq.getResultList();
+        TypedQuery<Quarto> tq = em.createNamedQuery("Quarto.findAll", Quarto.class);
+        List<Quarto> quartos = tq.getResultList();
 
         em.getTransaction().commit();
 
@@ -88,15 +88,15 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public boolean atualiza(Short id, QuartoJpa quartoNov)
+    public boolean atualiza(Short id, Quarto quartoNov)
             throws SQLException {
         em.getTransaction().begin();
 
-        QuartoJpa quartoAnt = em.find(QuartoJpa.class, id);
+        Quarto quartoAnt = em.find(Quarto.class, id);
         quartoAnt.setIdtOcupado(quartoNov.getIdtOcupado());
 
-        CategoriaQuartoJpa cqAnt = quartoAnt.getCodCategoria();
-        CategoriaQuartoJpa cqNov = quartoNov.getCodCategoria();
+        CategoriaQuarto cqAnt = quartoAnt.getCategoria();
+        CategoriaQuarto cqNov = quartoNov.getCategoria();
         if (!cqAnt.equals(cqNov)) {
             cqAnt.removeQuarto(quartoAnt, cqNov);
         }
@@ -107,7 +107,7 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public boolean deleta(QuartoJpa quarto) throws SQLException {
+    public boolean deleta(Quarto quarto) throws SQLException {
         em.getTransaction().begin();
         em.remove(quarto);
         em.getTransaction().commit();

@@ -64,7 +64,7 @@ public class ManterQuarto implements IManterQuarto {
         if (quartosPesquisados.isEmpty()) {
             throw new NegocioException("Quarto não encontrado!");
         } else {
-            if (quartosPesquisados.get(0).isIdtOcupado()) {
+            if (quartosPesquisados.get(0).getIdtOcupado()) {
                 throw new NegocioException("Não é possível excluir o quarto"
                         + codRegistro + ". Ele está ocupado!");
             } else {
