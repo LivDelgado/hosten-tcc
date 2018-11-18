@@ -4,8 +4,6 @@ import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.rel.CargoPrograma;
 import br.cefetmg.inf.util.exception.NegocioException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.domain.Programa;
@@ -40,15 +38,14 @@ public class ManterCargo implements IManterCargo {
 
         // pesquisa para saber se há algum cargo já 
         // inserido que possui o mesmo código
-        List<Cargo> cargosPesquisados
-                = listar(cargo.getCodCargo(), "codCargo");
+        List<Cargo> cargosPesquisados = listar(cargo.getCodCargo(), "codCargo");
 
         if (cargosPesquisados.isEmpty()) {
             // não tem cargo com o mesmo código
 
             // busca se tem cargo com o mesmo nome
-            List<Cargo> cargosPesquisados1
-                    = listar(cargo.getNomCargo(), "nomCargo");
+            List<Cargo> cargosPesquisados1 = listar(cargo.getNomCargo(), "nomCargo");
+            
             if (cargosPesquisados1.isEmpty()) {
                 // não tem cargo com o mesmo nome
                 // pode inserir
@@ -58,6 +55,7 @@ public class ManterCargo implements IManterCargo {
 
                 // adiciona o cargo
                 boolean testeRegistro = objetoDAO.adiciona(cargo);
+                
                 // cria os relacionamentos
                 ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
                 for (String codPrograma : listaProgramas) {
@@ -93,15 +91,14 @@ public class ManterCargo implements IManterCargo {
         
         // pesquisa para saber se há algum cargo já 
         // inserido que possui o mesmo código
-        List<Cargo> cargosPesquisados
-                = listar(cargo.getCodCargo(), "codCargo");
+        List<Cargo> cargosPesquisados = listar(cargo.getCodCargo(), "codCargo");
 
         if (cargosPesquisados.isEmpty() || (codRegistro.equals(cargo.getCodCargo()))) {
             // não tem cargo com o mesmo código
 
             // busca se tem cargo com o mesmo nome
-            List<Cargo> cargosPesquisados1
-                    = listar(cargo.getNomCargo(), "nomCargo");
+            List<Cargo> cargosPesquisados1 = listar(cargo.getNomCargo(), "nomCargo");
+            
             if (cargosPesquisados1.isEmpty() 
                     || (registroAntigo.getNomCargo().equals(cargo.getNomCargo())) ) {
                 // não tem cargo com o mesmo nome
@@ -115,15 +112,19 @@ public class ManterCargo implements IManterCargo {
                 // atualiza o cargo
                 boolean testeRegistro = objetoDAO.atualiza(codRegistro, cargo);
                 if (testeRegistro) {
+                    
                     // atualiza os relacionamentos
                     ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
+                    
                     // deleta todos os relacionamentos com aquele cargo
                     List<CargoPrograma> listaREL = relDAO.busca(
                             cargo.getCodCargo(),
                             "codCargo");
+                    
                     if (!listaREL.isEmpty()) {
                         relDAO.deletaPorColuna(cargo.getCodCargo(), "codCargo");
                     }
+                    
                     // cria os relacionamentos
                     for (String codPrograma : listaProgramas) {
                         CargoPrograma rel = new CargoPrograma(
@@ -131,6 +132,7 @@ public class ManterCargo implements IManterCargo {
                                 cargo.getCodCargo());
                         relDAO.adiciona(rel);
                     }
+                    
                     return true;
                 } else {
                     return false;

@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -78,7 +79,11 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao {
         switch (coluna.toLowerCase()) {
 
             case "codcategoria":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof CategoriaQuarto) {
+                    pStmt.setString(1, ((CategoriaQuarto) dadoBusca).getCodCategoria());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
 
             case "nomcategoria":

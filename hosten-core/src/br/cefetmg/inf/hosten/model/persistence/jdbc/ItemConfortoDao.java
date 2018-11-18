@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
+import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
@@ -73,7 +74,11 @@ public final class ItemConfortoDao implements IItemConfortoDao {
         switch (coluna.toLowerCase()) {
 
             case "coditem":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof ItemConforto) {
+                    pStmt.setString(1, ((ItemConforto) dadoBusca).getCodItem());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
 
             case "desitem":

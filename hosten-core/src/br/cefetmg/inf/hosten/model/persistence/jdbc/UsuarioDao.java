@@ -85,18 +85,31 @@ public class UsuarioDao implements IUsuarioDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
 
         switch (coluna.toLowerCase()) {
+            
             case "codusuario":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof Usuario) {
+                    pStmt.setString(1, ((Usuario) dadoBusca).getCodUsuario());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
+                
             case "nomusuario":
                 pStmt.setString(1, dadoBusca.toString());
                 break;
+                
             case "codcargo":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof Cargo) {
+                    pStmt.setString(1, ((Cargo) dadoBusca).getCodCargo());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
+                
             case "dessenha":
                 pStmt.setString(1, dadoBusca.toString());
                 break;
+                
             case "desemail":
                 pStmt.setString(1, dadoBusca.toString());
                 break;

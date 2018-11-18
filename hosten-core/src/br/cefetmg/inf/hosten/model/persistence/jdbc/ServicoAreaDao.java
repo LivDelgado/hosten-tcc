@@ -70,7 +70,11 @@ public class ServicoAreaDao implements IServicoAreaDao {
 
         switch (coluna.toLowerCase()) {
             case "codservicoarea":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof ServicoArea) {
+                    pStmt.setString(1, ((ServicoArea) dadoBusca).getCodServicoArea());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
             case "nomservicoarea":
                 pStmt.setString(1, dadoBusca.toString());

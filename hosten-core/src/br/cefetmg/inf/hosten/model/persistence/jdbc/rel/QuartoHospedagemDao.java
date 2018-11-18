@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc.rel;
 
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
@@ -86,11 +87,19 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
         switch (coluna.toLowerCase()) {
 
             case "seqhospedagem":
-                pStmt.setInt(1, (int) dadoBusca);
+                if (dadoBusca instanceof QuartoHospedagem) {
+                    pStmt.setInt(1, ((QuartoHospedagem) dadoBusca).getId().getSeqHospedagem());
+                } else {
+                    pStmt.setInt(1, (int) dadoBusca);
+                }
                 break;
 
             case "nroquarto":
-                pStmt.setShort(1, (short) dadoBusca);
+                if (dadoBusca instanceof QuartoHospedagem) {
+                    pStmt.setShort(1, ((QuartoHospedagem) dadoBusca).getId().getNroQuarto());
+                } else {
+                    pStmt.setShort(1, (short) dadoBusca);
+                }
                 break;
 
             case "nroadultos":

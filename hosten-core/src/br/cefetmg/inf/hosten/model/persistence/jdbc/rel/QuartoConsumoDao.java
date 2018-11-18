@@ -94,15 +94,33 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
         switch (coluna.toLowerCase()) {
 
             case "seqhospedagem":
-                pStmt.setInt(1, (int) dadoBusca);
+                if (dadoBusca instanceof QuartoConsumo) {
+                    pStmt.setInt(
+                            1,
+                            ((QuartoConsumo) dadoBusca)
+                                    .getQuartoHospedagem().getId().getSeqHospedagem());
+                } else {
+                    pStmt.setInt(1, (int) dadoBusca);
+                }
                 break;
 
             case "nroquarto":
-                pStmt.setShort(1, (short) dadoBusca);
+                if (dadoBusca instanceof QuartoConsumo) {
+                    pStmt.setShort(
+                            1, 
+                            ((QuartoConsumo) dadoBusca)
+                                    .getQuartoHospedagem().getId().getNroQuarto());
+                } else {
+                    pStmt.setShort(1, (short) dadoBusca);
+                }
                 break;
 
             case "datconsumo":
-                pStmt.setDate(1, (Date) dadoBusca);
+                if (dadoBusca instanceof QuartoConsumo) {
+                    pStmt.setDate(1,((QuartoConsumo) dadoBusca).getDatConsumo());
+                } else {
+                    pStmt.setDate(1, (Date) dadoBusca);
+                }
                 break;
 
             case "qtdconsumo":
@@ -114,7 +132,11 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
                 break;
 
             case "codusuarioregistro":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof Usuario) {
+                    pStmt.setString(1, ((Usuario) dadoBusca).getCodUsuario());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
         }
         ResultSet rs = pStmt.executeQuery();

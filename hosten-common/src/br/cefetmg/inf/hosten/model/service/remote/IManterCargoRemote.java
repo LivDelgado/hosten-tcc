@@ -1,6 +1,5 @@
 package br.cefetmg.inf.hosten.model.service.remote;
 
-import br.cefetmg.inf.hosten.model.service.*;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Programa;
 import br.cefetmg.inf.util.exception.NegocioException;

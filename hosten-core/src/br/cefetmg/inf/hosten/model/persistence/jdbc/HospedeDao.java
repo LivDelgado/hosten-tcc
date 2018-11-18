@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.Hospede;
+import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -78,7 +79,11 @@ public final class HospedeDao implements IHospedeDao {
         switch (coluna.toLowerCase()) {
 
             case "codcpf":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof Hospede) {
+                    pStmt.setString(1, ((Hospede) dadoBusca).getCodCpf());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
 
             case "nomhospede":

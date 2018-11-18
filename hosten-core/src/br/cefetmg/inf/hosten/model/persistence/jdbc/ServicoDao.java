@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
+import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
@@ -77,7 +78,11 @@ public class ServicoDao implements IServicoDao {
 
         switch (coluna.toLowerCase()) {
             case "seqservico":
-                pStmt.setShort(1, (short) dadoBusca);
+                if (dadoBusca instanceof Servico) {
+                    pStmt.setShort(1, ((Servico) dadoBusca).getSeqServico());
+                } else {
+                    pStmt.setShort(1, (short) dadoBusca);
+                }
                 break;
             case "desservico":
                 pStmt.setString(1, dadoBusca.toString());
@@ -90,7 +95,11 @@ public class ServicoDao implements IServicoDao {
                                         dadoBusca.toString())));
                 break;
             case "codservicoarea":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof ServicoArea) {
+                    pStmt.setString(1, ((ServicoArea) dadoBusca).getCodServicoArea());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
         }
         ResultSet rs = pStmt.executeQuery();

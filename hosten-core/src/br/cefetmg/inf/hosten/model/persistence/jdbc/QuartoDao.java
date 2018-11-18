@@ -2,6 +2,7 @@ package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
+import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -73,12 +74,23 @@ public class QuartoDao implements IQuartoDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
 
         switch (coluna.toLowerCase()) {
+            
             case "nroquarto":
-                pStmt.setShort(1, (short) dadoBusca);
+                if (dadoBusca instanceof Quarto) {
+                    pStmt.setShort(1, ((Quarto) dadoBusca).getNroQuarto());
+                } else {
+                    pStmt.setShort(1, (short) dadoBusca);
+                }
                 break;
+                
             case "codcategoria":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof CategoriaQuarto) {
+                    pStmt.setString(1, ((CategoriaQuarto) dadoBusca).getCodCategoria());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
+                
             case "idtocupado":
                 pStmt.setBoolean(1, (boolean) dadoBusca);
                 break;

@@ -77,7 +77,11 @@ public class CargoDao implements ICargoDao {
         switch (coluna.toLowerCase()) {
 
             case "codcargo":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof Cargo) {
+                    pStmt.setString(1, ((Cargo) dadoBusca).getCodCargo());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
 
             case "nomcargo":

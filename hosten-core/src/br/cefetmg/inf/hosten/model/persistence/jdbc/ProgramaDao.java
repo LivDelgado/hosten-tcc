@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.Programa;
+import br.cefetmg.inf.hosten.model.domain.Quarto;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -71,9 +72,15 @@ public final class ProgramaDao implements IProgramaDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
 
         switch (coluna.toLowerCase()) {
+            
             case "codprograma":
-                pStmt.setString(1, dadoBusca.toString());
+                if (dadoBusca instanceof Programa) {
+                    pStmt.setString(1, ((Programa) dadoBusca).getCodPrograma());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
                 break;
+                
             case "desprograma":
                 pStmt.setString(1, dadoBusca.toString());
                 break;
