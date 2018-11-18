@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.Hospede;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedeDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.IHospedeDaoJpa;
 
-public class HospedeDaoJpa implements IHospedeDaoJpa {
+public class HospedeDaoJpa implements IHospedeDao {
 
     private static final String NAMED_QUERY_BASE = "Hospede.findBy";
 
@@ -110,9 +110,9 @@ public class HospedeDaoJpa implements IHospedeDaoJpa {
     }
 
     @Override
-    public boolean deleta(Hospede hospede) throws SQLException {
+    public boolean deleta(String codCpf) throws SQLException {
         em.getTransaction().begin();
-        em.remove(hospede);
+        em.remove(buscaPorPk(codCpf));
         em.getTransaction().commit();
 
         return true;

@@ -11,6 +11,7 @@ import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.hosten.model.persistence.adapters.CategoriaQuartoDaoAdapter;
 import br.cefetmg.inf.hosten.model.persistence.adapters.HospedagemDaoAdapter;
 import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoDaoAdapter;
+import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoEstadoDaoAdapter;
 import br.cefetmg.inf.hosten.model.persistence.adapters.QuartoHospedagemDaoAdapter;
 import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.hosten.model.service.IControlarHospedagem;
@@ -19,13 +20,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoEstadoDao;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class ControlarHospedagem implements IControlarHospedagem {
 
@@ -48,26 +50,30 @@ public class ControlarHospedagem implements IControlarHospedagem {
             IQuartoDao quartoDAO = QuartoDaoAdapter.getInstance();
             List<Quarto> listaQuarto;
 
-            listaQuarto = quartoDAO.buscaQuarto(nroQuarto, "nroQuarto");
+            listaQuarto = quartoDAO.buscaPorColuna(nroQuarto, "nroQuarto");
 
             String codCategoria = listaQuarto.get(0).getCategoria().getCodCategoria();
 
             ICategoriaQuartoDao categoriaDAO = CategoriaQuartoDaoAdapter.getInstance();
-            List<CategoriaQuarto> categorias = categoriaDAO.buscaCategoriaQuarto(codCategoria, "codCategoria");
+            List<CategoriaQuarto> categorias = categoriaDAO.buscaPorColuna(codCategoria, "codCategoria");
             double valorDiaria = categorias.get(0).getVlrDiaria().doubleValue();
 
             double valorTotal = valorDiaria * diasEstadia;
 
             // ----------------------------------------------------------------------------------------------------------------------------------------
             // realiza a operação de check-in
-            Hospedagem hosp = new Hospedagem(dataCheckIn, dataCheckOut, BigDecimal.valueOf(valorTotal));
+            Hospedagem hosp = new Hospedagem(
+                    new java.sql.Date(dataCheckIn.getTime()),
+                    new java.sql.Date(dataCheckOut.getTime()), 
+                    BigDecimal.valueOf(valorTotal));
+            
             hosp.setHospede(new Hospede(codCPF));
             IHospedagemDao hospDAO = HospedagemDaoAdapter.getInstance();
 
-            List<Hospedagem> hospEncontrada = hospDAO.busca(hosp);
+            Hospedagem hospEncontrada = hospDAO.buscaPorPk(hosp.getSeqHospedagem());
 
             IQuartoHospedagemDao quartoHosp = QuartoHospedagemDaoAdapter.getInstance();
-            int seqHospedagem = hospEncontrada.get(0).getSeqHospedagem();
+            int seqHospedagem = hospEncontrada.getSeqHospedagem();
             QuartoHospedagem objAdicionar = new QuartoHospedagem(
                     new QuartoHospedagemId(seqHospedagem, nroQuarto), nroAdultos, nroCriancas, BigDecimal.valueOf(valorDiaria));
             boolean testeAddQuarto = quartoHosp.adiciona(objAdicionar);
@@ -75,7 +81,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             // atualiza o idtOcupado do quarto pra ocupado
             Quarto quartoAtualizado = listaQuarto.get(0);
             quartoAtualizado.setIdtOcupado(true);
-            boolean testeAtualizaQuarto = quartoDAO.atualizaQuarto(nroQuarto, quartoAtualizado);
+            boolean testeAtualizaQuarto = quartoDAO.atualiza(nroQuarto, quartoAtualizado);
 
             return (testeAddQuarto && testeAtualizaQuarto);
         } catch (Exception ex) {
@@ -87,22 +93,22 @@ public class ControlarHospedagem implements IControlarHospedagem {
 
     @Override
     public int efetuarCheckOut(short nroQuarto) {
-        int intNroQuarto = nroQuarto;
 
         IQuartoDao quartoDAO = QuartoDaoAdapter.getInstance();
         int seqHospedagem = 0;
         try {
-            seqHospedagem = quartoDAO.buscaUltimoRegistroRelacionadoAoQuarto(intNroQuarto);
+            IQuartoHospedagemDao qhDao = QuartoHospedagemDaoAdapter.getInstance();
+            
+            seqHospedagem = qhDao.buscaUltimoRegistro(nroQuarto);
 
             Date dataAtual = new Date();
             Timestamp dataCheckOut = new Timestamp(dataAtual.getTime());
 
             IHospedagemDao hospDAO = HospedagemDaoAdapter.getInstance();
-            List<Hospedagem> hospBuscada
-                    = hospDAO.buscaHospedagem(seqHospedagem, "seqHospedagem");
+            List<Hospedagem> hospBuscada = hospDAO.buscaPorColuna(seqHospedagem, "seqHospedagem");
 
             Hospedagem hospedagemAtualizado = hospBuscada.get(0);
-            hospedagemAtualizado.setDatCheckout(dataCheckOut);
+            hospedagemAtualizado.setDatCheckout(new java.sql.Date(dataCheckOut.getTime()));
 
             // faz o cálculo das despesas
             IControlarDespesas controlarDespesas = new ControlarDespesas();
@@ -127,8 +133,10 @@ public class ControlarHospedagem implements IControlarHospedagem {
             
             Double valorDiaria = 0.0;
             ICategoriaQuartoDao categoriaDAO = CategoriaQuartoDaoAdapter.getInstance();
-            valorDiaria = categoriaDAO.buscaCategoriaQuarto(
-                    quartoDAO.buscaQuarto(nroQuarto, "nroQuarto").get(0).getCategoria(), 
+            valorDiaria = categoriaDAO.buscaPorColuna(
+                    quartoDAO.buscaPorColuna(
+                            nroQuarto, 
+                            "nroQuarto").get(0).getCategoria(), 
                     "codCategoria"
             ).get(0).getVlrDiaria().doubleValue();
             
@@ -140,13 +148,13 @@ public class ControlarHospedagem implements IControlarHospedagem {
             hospedagemAtualizado.setVlrPago(BigDecimal.valueOf(vlrTotal));
 
             // atualiza a data de check-out da hospedagem
-            hospDAO.atualizaHospedagemPorPk(seqHospedagem, hospedagemAtualizado);
+            hospDAO.atualiza(seqHospedagem, hospedagemAtualizado);
 
             List<Quarto> listaQuarto;
-            listaQuarto = quartoDAO.buscaQuarto(nroQuarto, "nroQuarto");
+            listaQuarto = quartoDAO.buscaPorColuna(nroQuarto, "nroQuarto");
             Quarto quartoAtualizado = listaQuarto.get(0);
             quartoAtualizado.setIdtOcupado(false);
-            quartoDAO.atualizaQuarto(nroQuarto, quartoAtualizado);
+            quartoDAO.atualiza(nroQuarto, quartoAtualizado);
 
             // retorna o seqHospedagem 
             return seqHospedagem;
@@ -158,7 +166,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
 
     @Override
     public List<QuartoEstado> listarTodos() throws NegocioException {
-        IQuartoHospedagemDao dao = QuartoHospedagemDaoAdapter.getInstance();
+        IQuartoEstadoDao dao = QuartoEstadoDaoAdapter.getInstance();
         try {
             List<QuartoEstado> lista = dao.buscaTodos();
             if (lista == null) {
@@ -172,11 +180,11 @@ public class ControlarHospedagem implements IControlarHospedagem {
 
     @Override
     public Hospedagem buscaHospedagem(int seqHospedagem) throws SQLException {
-        return (HospedagemDaoAdapter.getInstance().buscaHospedagem(seqHospedagem, "seqHospedagem").get(0));
+        return (HospedagemDaoAdapter.getInstance().buscaPorColuna(seqHospedagem, "seqHospedagem").get(0));
     }
 
     @Override
     public QuartoHospedagem buscaQuartoHospedagem(int seqHospedagem) throws SQLException{
-        return (QuartoHospedagemDaoAdapter.getInstance().busca(seqHospedagem, "seqHospedagem").get(0));
+        return (QuartoHospedagemDaoAdapter.getInstance().buscaPorColuna(seqHospedagem, "seqHospedagem").get(0));
     }
 }

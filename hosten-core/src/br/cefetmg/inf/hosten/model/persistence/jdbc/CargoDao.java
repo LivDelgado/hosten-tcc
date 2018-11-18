@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoDao;
 
-public class CargoDao implements ICargoDao{
+public class CargoDao implements ICargoDao {
 
     private static CargoDao instancia;
     private static Connection con;
@@ -29,12 +29,15 @@ public class CargoDao implements ICargoDao{
     }
 
     @Override
-    public boolean adicionaCargo(Cargo cargo) throws SQLException {
-        String qry = "INSERT INTO Cargo"
+    public boolean adiciona(Cargo cargo) throws SQLException {
+
+        String qry
+                = "INSERT INTO Cargo"
                 + "(codCargo, nomCargo, idtMaster)"
                 + " VALUES (?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, cargo.getCodCargo());
         pStmt.setString(2, cargo.getNomCargo());
         pStmt.setBoolean(3, cargo.isIdtMaster());
@@ -43,87 +46,114 @@ public class CargoDao implements ICargoDao{
     }
 
     @Override
-    public List<Cargo> buscaCargo(Object dadoBusca, String coluna)
-            throws SQLException {
-        String qry = "SELECT * FROM Cargo "
+    public Cargo buscaPorPk(String id) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Cargo "
+                + "WHERE codCargo LIKE ?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setString(1, id);
+        ResultSet rs = pStmt.executeQuery();
+
+        Cargo crg = new Cargo(
+                rs.getString(1),
+                rs.getString(2),
+                rs.getBoolean(3));
+
+        return crg;
+    }
+
+    @Override
+    public List<Cargo> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Cargo "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        }
+        switch (coluna.toLowerCase()) {
 
+            case "codcargo":
+                if (dadoBusca instanceof Cargo) {
+                    pStmt.setString(1, ((Cargo) dadoBusca).getCodCargo());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
+                break;
+
+            case "nomcargo":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+
+            case "idtmaster":
+                pStmt.setBoolean(1, (boolean) dadoBusca);
+                break;
+        }
         ResultSet rs = pStmt.executeQuery();
 
         List<Cargo> cargosEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            cargosEncontrados
-                    .add(new Cargo(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getBoolean(3)));
-            i++;
+            cargosEncontrados.add(new Cargo(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getBoolean(3)));
         }
 
         return cargosEncontrados;
     }
 
     @Override
-    public List<Cargo> buscaTodosCargos() throws SQLException {
-        Statement stmt = con.createStatement();
+    public List<Cargo> buscaTodos() throws SQLException {
 
-        String qry = "SELECT * FROM Cargo";
+        String qry
+                = "SELECT * FROM Cargo";
+
+        Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
         List<Cargo> cargosEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            cargosEncontrados
-                    .add(new Cargo(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getBoolean(3)));
-            i++;
+            cargosEncontrados.add(new Cargo(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getBoolean(3)));
         }
 
         return cargosEncontrados;
     }
 
     @Override
-    public boolean atualizaCargo(Object pK, Cargo cargoAtualizado) 
-            throws SQLException {
-        String qry = "UPDATE Cargo "
+    public boolean atualiza(String pK, Cargo cargoAtualizado) throws SQLException {
+
+        String qry
+                = "UPDATE Cargo "
                 + "SET codCargo = ?, nomCargo = ?, idtMaster = ? "
                 + "WHERE codCargo = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, cargoAtualizado.getCodCargo());
         pStmt.setString(2, cargoAtualizado.getNomCargo());
         pStmt.setBoolean(3, cargoAtualizado.isIdtMaster());
-        if (pK instanceof String) {
-            pStmt.setString(4, pK.toString());
-        } else {
-            pStmt.setInt(4, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(4, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deletaCargo(Object pK) throws SQLException {
-        String qry = "DELETE FROM Cargo "
+    public boolean deleta(String pK) throws SQLException {
+
+        String qry
+                = "DELETE FROM Cargo "
                 + "WHERE codCargo = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(1, pK);
 
         return pStmt.executeUpdate() > 0;
     }

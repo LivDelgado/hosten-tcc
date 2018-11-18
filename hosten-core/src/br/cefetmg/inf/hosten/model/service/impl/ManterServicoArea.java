@@ -46,8 +46,7 @@ public class ManterServicoArea implements IManterServicoArea {
                 // pode inserir
 
                 // adiciona a área
-                boolean testeRegistro = objetoDAO
-                        .adicionaServicoArea(servicoArea);
+                boolean testeRegistro = objetoDAO.adiciona(servicoArea);
                 return testeRegistro;
             } else {
                 // tem área com o mesmo nome
@@ -88,8 +87,7 @@ public class ManterServicoArea implements IManterServicoArea {
                     || (registroAntigo.getNomServicoArea().equals(servicoArea.getNomServicoArea()))) {
                 // não tem área com o mesmo nome
                 // pode alterar
-                boolean testeRegistro = objetoDAO
-                        .atualizaServicoArea(codRegistro, servicoArea);
+                boolean testeRegistro = objetoDAO.atualiza(codRegistro, servicoArea);
                 return testeRegistro;
             } else {
                 // tem área com o mesmo nome
@@ -112,8 +110,7 @@ public class ManterServicoArea implements IManterServicoArea {
 
         // confere se há algum serviço naquela área
         IServicoDao servicoDAO = ServicoDaoAdapter.getInstance();
-        List<Servico> listaServicos = servicoDAO
-                .buscaServico(codRegistro, "codServicoArea");
+        List<Servico> listaServicos = servicoDAO.buscaPorColuna(codRegistro, "codServicoArea");
         if (!listaServicos.isEmpty()) {
             throw new NegocioException(
                     "Não é possível excluir essa área de serviço. Há "
@@ -121,7 +118,7 @@ public class ManterServicoArea implements IManterServicoArea {
         }
 
         // deleta a categoria
-        return objetoDAO.deletaServicoArea(codRegistro);
+        return objetoDAO.deleta(codRegistro);
     }
 
     @Override
@@ -131,15 +128,14 @@ public class ManterServicoArea implements IManterServicoArea {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            return objetoDAO.buscaServicoArea(dadoBusca, coluna);
+            return objetoDAO.buscaPorColuna(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhuma área de serviço buscada!");
         }
     }
 
     @Override
-    public List<ServicoArea> listarTodos()
-            throws NegocioException, SQLException {
-        return objetoDAO.buscaTodosServicoAreas();
+    public List<ServicoArea> listarTodos() throws NegocioException, SQLException {
+        return objetoDAO.buscaTodos();
     }
 }

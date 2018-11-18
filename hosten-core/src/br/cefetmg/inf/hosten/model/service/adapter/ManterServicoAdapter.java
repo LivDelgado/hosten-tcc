@@ -32,12 +32,12 @@ public class ManterServicoAdapter implements IManterServicoRemote {
     }
 
     @Override
-    public boolean alterar(String codRegistro, Servico servico) throws NegocioException, SQLException, RemoteException {
+    public boolean alterar(short codRegistro, Servico servico) throws NegocioException, SQLException, RemoteException {
         return manterServico.alterar(codRegistro, servico);
     }
 
     @Override
-    public boolean excluir(String codRegistro) throws NegocioException, SQLException, RemoteException {
+    public boolean excluir(short codRegistro) throws NegocioException, SQLException, RemoteException {
         return manterServico.excluir(codRegistro);
     }
 }

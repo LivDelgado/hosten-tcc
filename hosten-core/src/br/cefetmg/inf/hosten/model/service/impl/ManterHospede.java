@@ -53,7 +53,7 @@ public class ManterHospede implements IManterHospede {
                 if (hospedesPesquisados2.isEmpty()) {
                     // não tem hóspede com o mesmo telefone
                     // pode inserir
-                    boolean testeRegistro = objetoDAO.adicionaHospede(hospede);
+                    boolean testeRegistro = objetoDAO.adiciona(hospede);
                     return testeRegistro;
                 } else {
                     // tem hóspede com o mesmo telefone
@@ -112,8 +112,7 @@ public class ManterHospede implements IManterHospede {
                         || (registroAntigo.getDesTelefone().equals(hospede.getDesTelefone()))) {
                     // não tem hóspede com o mesmo telefone
                     // pode alterar
-                    boolean testeRegistro = objetoDAO
-                            .atualizaHospede(codRegistro, hospede);
+                    boolean testeRegistro = objetoDAO.atualiza(codRegistro, hospede);
                     return testeRegistro;
                 } else {
                     // tem hóspede com o mesmo telefone
@@ -137,7 +136,7 @@ public class ManterHospede implements IManterHospede {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            return objetoDAO.buscaHospede(dadoBusca, coluna);
+            return objetoDAO.buscaPorColuna(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum hóspede buscado!");
         }
@@ -146,6 +145,6 @@ public class ManterHospede implements IManterHospede {
     @Override
     public List<Hospede> listarTodos()
             throws NegocioException, SQLException {
-        return objetoDAO.buscaTodosHospedes();
+        return objetoDAO.buscaTodos();
     }
 }

@@ -1,5 +1,6 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc.rel;
 
+import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
@@ -9,10 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
-import java.sql.Statement;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
 import java.math.BigDecimal;
+import java.sql.Statement;
 
 public class QuartoHospedagemDao implements IQuartoHospedagemDao {
 
@@ -32,112 +32,164 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
 
     @Override
     public boolean adiciona(QuartoHospedagem quartoHospedagem) throws SQLException {
-        String qry = "INSERT INTO "
-                + "QuartoHospedagem("
-                + "seqHospedagem, "
-                + "nroQuarto, "
-                + "nroAdultos, nroCriancas, "
-                + "vlrDiaria) "
+
+        String qry
+                = "INSERT INTO QuartoHospedagem"
+                + "(seqHospedagem, nroQuarto, nroAdultos, nroCriancas, vlrDiaria) "
                 + "VALUES(?,?,?,?,?)";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setInt(1, quartoHospedagem.getId().getSeqHospedagem());
         pStmt.setShort(2, quartoHospedagem.getId().getNroQuarto());
         pStmt.setShort(3, quartoHospedagem.getNroAdultos());
         pStmt.setShort(4, quartoHospedagem.getNroCriancas());
         pStmt.setBigDecimal(5, quartoHospedagem.getVlrDiaria());
+
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public List<QuartoHospedagem> busca(Object dadoBusca, String coluna)
-            throws SQLException {
-        String qry = "SELECT * "
+    public QuartoHospedagem buscaPorPk(int seqHospedagem, short nroQuarto) throws SQLException {
+
+        String qry
+                = "SELECT * FROM QuartoHospedagem "
+                + "WHERE seqHospedagem = ? AND nroQuarto = ?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+
+        pStmt.setInt(1, seqHospedagem);
+        pStmt.setShort(2, nroQuarto);
+
+        ResultSet rs = pStmt.executeQuery();
+
+        QuartoHospedagem qh = new QuartoHospedagem(
+                new QuartoHospedagemId(
+                        rs.getInt(1),
+                        rs.getShort(2)),
+                rs.getShort(3),
+                rs.getShort(4),
+                rs.getBigDecimal(5));
+
+        return qh;
+    }
+
+    @Override
+    public List<QuartoHospedagem> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+
+        String qry
+                = "SELECT * "
                 + "FROM QuartoHospedagem "
                 + "WHERE " + coluna + " = ?";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        }
 
+        switch (coluna.toLowerCase()) {
+
+            case "seqhospedagem":
+                if (dadoBusca instanceof QuartoHospedagem) {
+                    pStmt.setInt(1, ((QuartoHospedagem) dadoBusca).getId().getSeqHospedagem());
+                } else {
+                    pStmt.setInt(1, (int) dadoBusca);
+                }
+                break;
+
+            case "nroquarto":
+                if (dadoBusca instanceof QuartoHospedagem) {
+                    pStmt.setShort(1, ((QuartoHospedagem) dadoBusca).getId().getNroQuarto());
+                } else {
+                    pStmt.setShort(1, (short) dadoBusca);
+                }
+                break;
+
+            case "nroadultos":
+                pStmt.setShort(1, (short) dadoBusca);
+                break;
+
+            case "nrocriancas":
+                pStmt.setShort(1, (short) dadoBusca);
+                break;
+
+            case "vlrdiaria":
+                pStmt.setBigDecimal(1, (BigDecimal) dadoBusca);
+                break;
+        }
         ResultSet rs = pStmt.executeQuery();
 
         List<QuartoHospedagem> quartoHospedagemEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            quartoHospedagemEncontrados
-                    .add(new QuartoHospedagem(
-                            new QuartoHospedagemId(
-                                    rs.getInt(1),
-                                    rs.getShort(2)),
-                            rs.getShort(3),
-                            rs.getShort(4),
-                            rs.getBigDecimal(5)));
+            quartoHospedagemEncontrados.add(new QuartoHospedagem(
+                    new QuartoHospedagemId(
+                            rs.getInt(1),
+                            rs.getShort(2)),
+                    rs.getShort(3),
+                    rs.getShort(4),
+                    rs.getBigDecimal(5)));
         }
+
         return quartoHospedagemEncontrados;
     }
 
     @Override
-    public List<QuartoEstado> buscaTodos() throws SQLException {
+    public List<QuartoHospedagem> buscaTodos() throws SQLException {
+
         String qry
-                = "SELECT \n"
-                + "	A.seqHospedagem, \n"
-                + "	B.nroQuarto,\n"
-                + "	A.nroAdultos,\n"
-                + "	A.nroCriancas,\n"
-                + "	A.vlrDiaria,\n"
-                + "	B.idtOcupado,\n"
-                + "	A.datCheckOut\n"
-                + "FROM \n"
-                + "	Quarto B\n"
-                + "	LEFT JOIN (\n"
-                + "                SELECT D.seqhospedagem, nroquarto, nroadultos, nrocriancas, vlrdiaria, datcheckin, datcheckout, vlrpago, codcpf\n"
-                + "                FROM QuartoHospedagem D\n"
-                + "                JOIN Hospedagem E on D.seqhospedagem = E.seqhospedagem\n"
-                + "                WHERE datcheckout = NULL OR datcheckout > (SELECT NOW())\n"
-                + "        ) A ON A.nroQuarto = B.nroQuarto\n"
-                + "ORDER BY nroquarto;";
+                = "SELECT * FROM QuartoHospedagem";
+
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
-        List<QuartoEstado> quartoEstadoEncontrados = new ArrayList<>();
+        List<QuartoHospedagem> quartoHospedagemEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            quartoEstadoEncontrados
-                    .add(new QuartoEstado(
+            quartoHospedagemEncontrados.add(new QuartoHospedagem(
+                    new QuartoHospedagemId(
                             rs.getInt(1),
-                            rs.getShort(2),
-                            rs.getShort(3),
-                            rs.getShort(4),
-                            rs.getBigDecimal(5),
-                            rs.getBoolean(6),
-                            rs.getTimestamp(7)));
+                            rs.getShort(2)),
+                    rs.getShort(3),
+                    rs.getShort(4),
+                    rs.getBigDecimal(5)));
         }
-        return quartoEstadoEncontrados;
+
+        return quartoHospedagemEncontrados;
     }
 
     @Override
-    public boolean deletaPorPk(int seqHospedagem, int nroQuarto) throws SQLException {
-        String qry = "DELETE FROM QuartoHospedagem "
+    public boolean deleta(int seqHospedagem, short nroQuarto) throws SQLException {
+
+        String qry
+                = "DELETE FROM QuartoHospedagem "
                 + "WHERE seqHospedagem = ? AND "
                 + "nroQuarto = ? ";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
+
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deleta(QuartoHospedagem quartoHospedagem) throws SQLException {
-        String qry = "DELETE FROM QuartoHospedagem "
-                + "WHERE seqHospedagem = ? AND "
-                + "nroQuarto = ? ";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quartoHospedagem.getId().getSeqHospedagem());
-        pStmt.setInt(2, quartoHospedagem.getId().getNroQuarto());
-        return pStmt.executeUpdate() > 0;
-    }
+    public int buscaUltimoRegistro(short nroQuarto) throws SQLException {
 
+        String qry
+                = "SELECT A.seqHospedagem "
+                + "FROM Hospedagem A "
+                + "JOIN QuartoHospedagem B ON A.seqHospedagem = B.seqHospedagem "
+                + "WHERE B.nroQuarto = ? "
+                + "ORDER BY A.datCheckIn DESC "
+                + "LIMIT 1";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setInt(1, nroQuarto);
+        ResultSet rs = pStmt.executeQuery();
+
+        if (rs.next()) {
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
+    }
 }

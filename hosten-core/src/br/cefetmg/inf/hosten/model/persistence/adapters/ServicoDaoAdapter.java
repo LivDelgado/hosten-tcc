@@ -8,58 +8,47 @@ import br.cefetmg.inf.hosten.model.persistence.interfaces.IServicoDao;
 
 public class ServicoDaoAdapter implements IServicoDao {
 
+    private final IServicoDao dao;
     private static IServicoDao instancia;
+
+    private ServicoDaoAdapter() {
+        dao = ServicoDao.getInstance();
+    }
 
     public static synchronized IServicoDao getInstance() {
         if (instancia == null) {
-            instancia = ServicoDao.getInstance();
+            instancia = new ServicoDaoAdapter();
         }
         return instancia;
     }
 
     @Override
-    public boolean adicionaServico(Servico servico) throws SQLException {
-        return instancia.adicionaServico(servico);
+    public boolean adiciona(Servico servico) throws SQLException {
+        return dao.adiciona(servico);
     }
 
     @Override
-    public List<Servico> buscaServico(Object dadoBusca, String coluna) throws SQLException {
-        return instancia.buscaServico(dadoBusca, coluna);
+    public Servico buscaPorPk(short id) throws SQLException {
+        return dao.buscaPorPk(id);
     }
 
     @Override
-    public List<Servico> buscaTodosServicos() throws SQLException {
-        return instancia.buscaTodosServicos();
+    public List<Servico> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+        return dao.buscaPorColuna(dadoBusca, coluna);
     }
 
     @Override
-    public boolean atualizaServicoPorPk(Object pK, Servico servicoAtualizado) 
-            throws SQLException {
-        return instancia.atualizaServicoPorPk(pK, servicoAtualizado);
+    public List<Servico> buscaTodos() throws SQLException {
+        return dao.buscaTodos();
     }
 
     @Override
-    public boolean atualizaServico(
-            Servico servicoAntigo, 
-            Servico servicoAtualizado) 
-            throws SQLException {
-        return instancia.atualizaServico(servicoAntigo, servicoAtualizado);
+    public boolean atualiza(short pK, Servico servicoAtualizado) throws SQLException {
+        return dao.atualiza(pK, servicoAtualizado);
     }
 
     @Override
-    public boolean deletaServicoPorPk(Object pK) throws SQLException {
-        return instancia.deletaServicoPorPk(pK);
-    }
-
-    @Override
-    public boolean deletaServico(Servico servicoAntigo) throws SQLException {
-        return instancia.deletaServico(servicoAntigo);
-    }
-
-    @Override
-    public boolean deletaServicoPorAtributos(
-            String desServicoAntigo, 
-            String codServicoAreaAntigo) throws SQLException {
-        return instancia.deletaServicoPorAtributos(desServicoAntigo, codServicoAreaAntigo);
+    public boolean deleta(short pK) throws SQLException {
+        return dao.deleta(pK);
     }
 }

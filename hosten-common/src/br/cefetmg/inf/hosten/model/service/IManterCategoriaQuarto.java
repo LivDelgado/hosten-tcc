@@ -8,21 +8,15 @@ import java.util.List;
 
 public interface IManterCategoriaQuarto {
 
-    public boolean inserir(CategoriaQuarto categoriaQuarto, List<ItemConforto> itensCategoria) 
-            throws NegocioException, SQLException;
+    public boolean inserir(CategoriaQuarto categoriaQuarto, List<ItemConforto> itensCategoria) throws NegocioException, SQLException;
 
-    public List<CategoriaQuarto> listar(Object dadoBusca, String coluna)
-            throws NegocioException, SQLException;
-    
-    public List<CategoriaQuarto> listarTodos()
-            throws NegocioException, SQLException;
-    
-    public List<ItemConforto> listarItensRelacionados(String codCategoria)
-            throws NegocioException, SQLException;
+    public List<CategoriaQuarto> listar(Object dadoBusca, String coluna) throws NegocioException, SQLException;
 
-    public boolean alterar(String codRegistro, CategoriaQuarto categoriaQuarto, List<ItemConforto> itensCategoria) 
-            throws NegocioException, SQLException;
+    public List<CategoriaQuarto> listarTodos() throws NegocioException, SQLException;
 
-    public boolean excluir(String codRegistro) 
-            throws NegocioException, SQLException;
+    public List<ItemConforto> listarItensRelacionados(String codCategoria) throws NegocioException, SQLException;
+
+    public boolean alterar(String codRegistro, CategoriaQuarto categoriaQuarto, List<ItemConforto> itensCategoria) throws NegocioException, SQLException;
+
+    public boolean excluir(String codRegistro) throws NegocioException, SQLException;
 }

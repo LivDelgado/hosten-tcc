@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.Cargo;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.ICargoDaoJpa;
 
-public class CargoDaoJpa implements ICargoDaoJpa {
+public class CargoDaoJpa implements ICargoDao {
 
     private static final String NAMED_QUERY_BASE = "Cargo.findBy";
 
@@ -100,9 +100,9 @@ public class CargoDaoJpa implements ICargoDaoJpa {
     }
 
     @Override
-    public boolean deleta(Cargo cargo) throws SQLException {
+    public boolean deleta(String codCargo) throws SQLException {
         em.getTransaction().begin();
-        em.remove(cargo);
+        em.remove(buscaPorPk(codCargo));
         em.getTransaction().commit();
 
         return true;

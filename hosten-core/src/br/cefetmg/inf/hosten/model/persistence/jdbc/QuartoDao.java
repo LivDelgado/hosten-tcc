@@ -2,6 +2,7 @@ package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
+import br.cefetmg.inf.hosten.model.domain.ServicoArea;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,13 +31,16 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public boolean adicionaQuarto(Quarto quarto) throws SQLException {
-        String qry = "INSERT INTO Quarto"
-                + "(nroQuarto, codCategoria, idtOcupado)"
-                + " VALUES (?,?,?)";
+    public boolean adiciona(Quarto quarto) throws SQLException {
+
+        String qry
+                = "INSERT INTO Quarto"
+                + "(nroQuarto, codCategoria, idtOcupado) "
+                + "VALUES (?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quarto.getNroQuarto());
+
+        pStmt.setShort(1, quarto.getNroQuarto());
         pStmt.setString(2, quarto.getCategoria().getCodCategoria());
         pStmt.setBoolean(3, quarto.getIdtOcupado());
 
@@ -44,27 +48,59 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public List<Quarto> buscaQuarto(
-            Object dadoBusca,
-            String coluna) throws SQLException {
-        String qry = "SELECT * FROM Quarto "
-                + "WHERE " + coluna + " "
-                + "= ?";
+    public Quarto buscaPorPk(short id) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Quarto "
+                + "WHERE nroQuarto = ?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setShort(1, id);
+        ResultSet rs = pStmt.executeQuery();
+
+        Quarto qrt = new Quarto(rs.getShort(1), rs.getBoolean(3));
+        qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
+
+        return qrt;
+    }
+
+    @Override
+    public List<Quarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Quarto "
+                + "WHERE " + coluna + " = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        switch (coluna.toLowerCase()) {
+            
+            case "nroquarto":
+                if (dadoBusca instanceof Quarto) {
+                    pStmt.setShort(1, ((Quarto) dadoBusca).getNroQuarto());
+                } else {
+                    pStmt.setShort(1, (short) dadoBusca);
+                }
+                break;
+                
+            case "codcategoria":
+                if (dadoBusca instanceof CategoriaQuarto) {
+                    pStmt.setString(1, ((CategoriaQuarto) dadoBusca).getCodCategoria());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
+                break;
+                
+            case "idtocupado":
+                pStmt.setBoolean(1, (boolean) dadoBusca);
+                break;
         }
-
         ResultSet rs = pStmt.executeQuery();
 
         List<Quarto> quartoEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            Quarto qrt = new Quarto(
-                    (short) rs.getInt(1), rs.getBoolean(3));
+            Quarto qrt = new Quarto(rs.getShort(1), rs.getBoolean(3));
             qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
 
             quartoEncontrados.add(qrt);
@@ -74,19 +110,19 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public List<Quarto> buscaTodosQuartos() throws SQLException {
-        Statement stmt = con.createStatement();
+    public List<Quarto> buscaTodos() throws SQLException {
 
         String qry = "SELECT * FROM Quarto";
+
+        Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
         List<Quarto> quartosEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            Quarto qrt = new Quarto(
-                    (short) rs.getInt(1), rs.getBoolean(3));
+            Quarto qrt = new Quarto(rs.getShort(1), rs.getBoolean(3));
             qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
-            
+
             quartosEncontrados.add(qrt);
         }
 
@@ -94,50 +130,32 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public boolean atualizaQuarto(Object pK, Quarto quartoAtualizado) 
-            throws SQLException {
-        String qry = "UPDATE Quarto "
+    public boolean atualiza(short pK, Quarto quartoAtualizado) throws SQLException {
+
+        String qry
+                = "UPDATE Quarto "
                 + "SET nroQuarto = ?, codCategoria = ?, idtOcupado = ? "
                 + "WHERE nroQuarto = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quartoAtualizado.getNroQuarto());
+
+        pStmt.setShort(1, quartoAtualizado.getNroQuarto());
         pStmt.setString(2, quartoAtualizado.getCategoria().getCodCategoria());
         pStmt.setBoolean(3, quartoAtualizado.getIdtOcupado());
-        pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        pStmt.setShort(4, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deletaQuarto(Object pK) throws SQLException {
-        String qry = "DELETE FROM Quarto "
-                + "WHERE nroQuarto = ?";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+    public boolean deleta(short pK) throws SQLException {
 
-        return pStmt.executeUpdate() > 0;
-    }
-    
-    @Override
-    public int buscaUltimoRegistroRelacionadoAoQuarto(int nroQuarto)
-            throws SQLException {
-        String qry = "SELECT A.seqHospedagem "
-                + "FROM Hospedagem A "
-                + "JOIN QuartoHospedagem B ON A.seqHospedagem = B.seqHospedagem "
-                + "WHERE B.nroQuarto = ? "
-                + "ORDER BY A.datCheckIn DESC "
-                + "LIMIT 1";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, nroQuarto);
-        ResultSet rs = pStmt.executeQuery();
+        String qry
+                = "DELETE FROM Quarto WHERE nroQuarto = ?";
         
-        if (rs.next())
-            return rs.getInt(1);
-        else
-            return 0;
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setShort(1, pK);
+
+        return pStmt.executeUpdate() > 0;
     }
 }

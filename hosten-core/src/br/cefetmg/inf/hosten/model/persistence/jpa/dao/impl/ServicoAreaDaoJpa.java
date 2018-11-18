@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IServicoAreaDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.IServicoAreaDaoJpa;
 
-public class ServicoAreaDaoJpa implements IServicoAreaDaoJpa {
+public class ServicoAreaDaoJpa implements IServicoAreaDao {
 
     private static final String NAMED_QUERY_BASE = "ServicoArea.findBy";
 
@@ -100,9 +100,9 @@ public class ServicoAreaDaoJpa implements IServicoAreaDaoJpa {
     }
 
     @Override
-    public boolean deleta(ServicoArea servicoArea) throws SQLException {
+    public boolean deleta(String codServicoArea) throws SQLException {
         em.getTransaction().begin();
-        em.remove(servicoArea);
+        em.remove(buscaPorPk(codServicoArea));
         em.getTransaction().commit();
 
         return true;

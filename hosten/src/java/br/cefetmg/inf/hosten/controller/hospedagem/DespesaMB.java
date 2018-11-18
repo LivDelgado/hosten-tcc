@@ -99,7 +99,7 @@ public class DespesaMB implements Serializable {
                         new QuartoHospedagem(
                                 seqHospedagem,
                                 nroQuarto),
-                        datConsumo),
+                        new java.sql.Date(datConsumo.getTime())),
                 qtdConsumo,
                 servicoSelecionado,
                 new Usuario(codUsuarioRegistro));
@@ -135,7 +135,7 @@ public class DespesaMB implements Serializable {
                                 despesa.getSeqHospedagem(),
                                 despesa.getNroQuarto()),
                         //                despesa.getDatConsumo(),
-                        datConsumo),
+                        new java.sql.Date(datConsumo.getTime())),
                 //                
                  despesa.getQtdConsumo(),
                  new Servico(despesa.getSeqServico()),

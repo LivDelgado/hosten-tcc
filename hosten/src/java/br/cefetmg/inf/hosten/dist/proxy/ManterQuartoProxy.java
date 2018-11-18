@@ -50,7 +50,7 @@ public class ManterQuartoProxy implements IManterQuarto {
     }
 
     @Override
-    public boolean alterar(String codRegistro, Quarto quarto) throws NegocioException, SQLException {
+    public boolean alterar(short codRegistro, Quarto quarto) throws NegocioException, SQLException {
         try {
             return manterQuarto.alterar(codRegistro, quarto);
         } catch (RemoteException ex) {
@@ -60,7 +60,7 @@ public class ManterQuartoProxy implements IManterQuarto {
     }
 
     @Override
-    public boolean excluir(String codRegistro) throws NegocioException, SQLException {
+    public boolean excluir(short codRegistro) throws NegocioException, SQLException {
         try {
             return manterQuarto.excluir(codRegistro);
         } catch (RemoteException ex) {
@@ -70,7 +70,7 @@ public class ManterQuartoProxy implements IManterQuarto {
     }
 
     @Override
-    public int buscaUltimoRegistroRelacionadoAoQuarto(int nroQuarto) throws NegocioException, SQLException {
+    public int buscaUltimoRegistroRelacionadoAoQuarto(short nroQuarto) throws NegocioException, SQLException {
         try {
             return manterQuarto.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
         } catch (RemoteException ex) {

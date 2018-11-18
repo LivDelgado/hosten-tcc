@@ -2,6 +2,7 @@ package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDao;
 import br.cefetmg.inf.util.SenhaUtils;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.io.UnsupportedEncodingException;
@@ -10,9 +11,8 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.IUsuarioDaoJpa;
 
-public class UsuarioDaoJpa implements IUsuarioDaoJpa {
+public class UsuarioDaoJpa implements IUsuarioDao {
 
     private static final String NAMED_QUERY_BASE = "Usuario.findBy";
 
@@ -32,9 +32,14 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public boolean adiciona(Usuario usuario) throws SQLException {
+    public boolean adiciona(Usuario usuario) 
+            throws SQLException, 
+            NoSuchAlgorithmException,
+            UnsupportedEncodingException {
+        
         em.getTransaction().begin();
         em.persist(usuario);
+        usuario.setDesSenha(SenhaUtils.stringParaSHA256(usuario.getDesSenha()));
         em.getTransaction().commit();
 
         return true;
@@ -120,9 +125,9 @@ public class UsuarioDaoJpa implements IUsuarioDaoJpa {
     }
 
     @Override
-    public boolean deleta(Usuario usuario) throws SQLException {
+    public boolean deleta(String id) throws SQLException {
         em.getTransaction().begin();
-        em.remove(usuario);
+        em.remove(buscaPorPk(id));
         em.getTransaction().commit();
 
         return true;

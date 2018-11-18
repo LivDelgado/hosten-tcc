@@ -33,17 +33,17 @@ public class ManterQuartoAdapter implements IManterQuartoRemote {
     }
 
     @Override
-    public boolean alterar(String codRegistro, Quarto quarto) throws NegocioException, SQLException, RemoteException {
+    public boolean alterar(short codRegistro, Quarto quarto) throws NegocioException, SQLException, RemoteException {
         return manterQuarto.alterar(codRegistro, quarto);
     }
 
     @Override
-    public boolean excluir(String codRegistro) throws NegocioException, SQLException, RemoteException {
+    public boolean excluir(short codRegistro) throws NegocioException, SQLException, RemoteException {
         return manterQuarto.excluir(codRegistro);
     }
 
     @Override
-    public int buscaUltimoRegistroRelacionadoAoQuarto(int nroQuarto) throws NegocioException, SQLException, RemoteException {
+    public int buscaUltimoRegistroRelacionadoAoQuarto(short nroQuarto) throws NegocioException, SQLException, RemoteException {
         return manterQuarto.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
     }
 }

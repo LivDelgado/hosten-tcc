@@ -9,11 +9,16 @@ import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.ICategoriaItemConf
 
 public class CategoriaItemConfortoDaoAdapter implements ICategoriaItemConfortoDao {
 
+    private final ICategoriaItemConfortoDao dao;
     private static ICategoriaItemConfortoDao instancia;
+
+    public CategoriaItemConfortoDaoAdapter() {
+        dao = CategoriaItemConfortoDao.getInstance();
+    }
 
     public static synchronized ICategoriaItemConfortoDao getInstance() {
         if (instancia == null) {
-            instancia = CategoriaItemConfortoDao.getInstance();
+            instancia = new CategoriaItemConfortoDaoAdapter();
         }
         return instancia;
     }
@@ -21,24 +26,24 @@ public class CategoriaItemConfortoDaoAdapter implements ICategoriaItemConfortoDa
     @Override
     public boolean adiciona(CategoriaItemConforto categoriaItemConforto)
             throws SQLException {
-        return instancia.adiciona(categoriaItemConforto);
+        return dao.adiciona(categoriaItemConforto);
     }
 
     @Override
     public List<CategoriaItemConforto> busca(String cod, String coluna) 
             throws SQLException {
-        return instancia.busca(cod, coluna);
+        return dao.busca(cod, coluna);
     }
     
     @Override
     public List<ItemConforto> buscaItensConfortoRelacionados(String codCategoria) 
             throws SQLException {
-        return instancia.buscaItensConfortoRelacionados(codCategoria);
+        return dao.buscaItensConfortoRelacionados(codCategoria);
     }
 
     @Override
     public boolean deletaPorColuna(String dadoBusca, String coluna) 
             throws SQLException {
-        return instancia.deletaPorColuna(dadoBusca, coluna);
+        return dao.deletaPorColuna(dadoBusca, coluna);
     }
 }

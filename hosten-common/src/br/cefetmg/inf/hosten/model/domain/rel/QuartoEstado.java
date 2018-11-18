@@ -57,7 +57,8 @@ public class QuartoEstado implements Serializable {
     public QuartoEstado() {
     }
 
-    public QuartoEstado(Integer seqhospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Boolean idtOcupado, Date datCheckout) {
+    public QuartoEstado(long id, Integer seqhospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Boolean idtOcupado, Date datCheckout) {
+        this.id = id;
         this.seqhospedagem = seqhospedagem;
         this.nroQuarto = nroQuarto;
         this.nroAdultos = nroAdultos;

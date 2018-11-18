@@ -8,9 +8,9 @@ import br.cefetmg.inf.hosten.model.service.IControlarDespesas;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IDespesaDao;
+import java.sql.Date;
 
 public class ControlarDespesas implements IControlarDespesas {
 
@@ -30,7 +30,7 @@ public class ControlarDespesas implements IControlarDespesas {
     }
 
     @Override
-    public List<Despesa> listar(int seqHospedagem, int nroQuarto) throws NegocioException, SQLException {
+    public List<Despesa> listar(int seqHospedagem, short nroQuarto) throws NegocioException, SQLException {
         IDespesaDao DespesaDAO = DespesaDaoAdapter.getInstance();
         List<Despesa> despesaEncontradas = null;
         if (seqHospedagem > 0 && nroQuarto > 0) {
@@ -50,7 +50,10 @@ public class ControlarDespesas implements IControlarDespesas {
         IQuartoConsumoDao quartoConsumoDAO = QuartoConsumoDaoAdapter.getInstance();
         if (quartoConsumo != null) {
             try {
-                quartoConsumoDAO.deleta(quartoConsumo);
+                quartoConsumoDAO.deleta(
+                        quartoConsumo.getQuartoHospedagem().getId().getSeqHospedagem(),
+                        quartoConsumo.getQuartoHospedagem().getId().getNroQuarto(), 
+                        (Date) quartoConsumo.getDatConsumo());
                 return true;
             } catch (SQLException e) {
             }
@@ -58,29 +61,5 @@ public class ControlarDespesas implements IControlarDespesas {
             throw new NegocioException("O QuartoConsumo passado é inválido");
         }
         return false;
-    }
-
-    @Override
-    public Map<String, Object> retornaDespesa(
-            int seqHospedagem, int nroQuarto) 
-            throws NegocioException, SQLException {
-        
-        IDespesaDao DespesaDAO 
-                = DespesaDaoAdapter.getInstance();
-        
-        Map<String, Object> despesaEncontradas = null;
-        if (seqHospedagem > 0 && nroQuarto > 0) {
-            try {
-                despesaEncontradas 
-                        = DespesaDAO
-                                .retornaDespesa(
-                                        seqHospedagem, nroQuarto);
-            } catch (SQLException e) {
-            }
-        } else {
-            throw new NegocioException(
-                    "O 'seqHospedagem', e / ou o 'nroQuarto' é(são) inválido(s)");
-        }
-        return despesaEncontradas;
     }
 }

@@ -7,17 +7,13 @@ import java.util.List;
 
 public interface IManterServico {
 
-    public boolean inserir(Servico servico) 
-            throws NegocioException, SQLException;
+    public boolean inserir(Servico servico) throws NegocioException, SQLException;
 
-    public List<Servico> listar(Object dadoBusca, String coluna)
-            throws NegocioException, SQLException;
-    public List<Servico> listarTodos()
-            throws NegocioException, SQLException;
+    public List<Servico> listar(Object dadoBusca, String coluna) throws NegocioException, SQLException;
 
-    public boolean alterar(String codRegistro, Servico servico)
-            throws NegocioException, SQLException;
+    public List<Servico> listarTodos() throws NegocioException, SQLException;
 
-    public boolean excluir(String codRegistro) 
-            throws NegocioException, SQLException;
+    public boolean alterar(short codRegistro, Servico servico) throws NegocioException, SQLException;
+
+    public boolean excluir(short codRegistro) throws NegocioException, SQLException;
 }

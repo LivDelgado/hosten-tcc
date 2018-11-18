@@ -44,8 +44,7 @@ public class ManterItemConforto implements IManterItemConforto {
             if (itensPesquisados1.isEmpty()) {
                 // não tem item com a mesma descrição
                 // pode inserir
-                boolean testeRegistro = objetoDAO
-                        .adicionaItemConforto(itemConforto);
+                boolean testeRegistro = objetoDAO.adiciona(itemConforto);
                 return testeRegistro;
             } else {
                 // tem item com a mesma descrição
@@ -85,9 +84,7 @@ public class ManterItemConforto implements IManterItemConforto {
                     || (registroAntigo.getDesItem().equals(itemConforto.getDesItem()))) {
                 // não tem item com a mesma descrição
                 // pode alterar
-                boolean testeRegistro
-                        = objetoDAO
-                                .atualizaItemConforto(codRegistro, itemConforto);
+                boolean testeRegistro = objetoDAO.atualiza(codRegistro, itemConforto);
                 return testeRegistro;
             } else {
                 // tem item com a mesma descrição
@@ -108,7 +105,7 @@ public class ManterItemConforto implements IManterItemConforto {
         ICategoriaItemConfortoDao relDAO = CategoriaItemConfortoDaoAdapter.getInstance();
         List<CategoriaItemConforto> rel = relDAO.busca(codRegistro, "codItem");
         if (rel.isEmpty()) {
-            return objetoDAO.deletaItemConforto(codRegistro);
+            return objetoDAO.deleta(codRegistro);
         } else {
             throw new NegocioException(
                     "Não é possível excluir esse item: "
@@ -123,7 +120,7 @@ public class ManterItemConforto implements IManterItemConforto {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            return objetoDAO.buscaItemConforto(dadoBusca, coluna);
+            return objetoDAO.buscaPorColuna(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum item buscado!");
         }
@@ -132,6 +129,6 @@ public class ManterItemConforto implements IManterItemConforto {
     @Override
     public List<ItemConforto> listarTodos()
             throws NegocioException, SQLException {
-        return objetoDAO.buscaTodosItemConfortos();
+        return objetoDAO.buscaTodos();
     }
 }

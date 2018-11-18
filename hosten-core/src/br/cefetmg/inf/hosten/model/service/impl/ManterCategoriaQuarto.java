@@ -62,8 +62,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
                 }
 
                 // adiciona a categoria
-                boolean testeRegistro = objetoDAO
-                        .adicionaCategoriaQuarto(categoriaQuarto);
+                boolean testeRegistro = objetoDAO.adiciona(categoriaQuarto);
 
                 // cria os relacionamentos
                 ICategoriaItemConfortoDao relDAO = CategoriaItemConfortoDao
@@ -125,7 +124,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
                 }
 
                 // atualiza a categoria
-                boolean testeRegistro = objetoDAO.atualizaCategoriaQuarto(codRegistro, categoriaQuarto);
+                boolean testeRegistro = objetoDAO.atualiza(codRegistro, categoriaQuarto);
                 if (testeRegistro) {
                     // atualiza os relacionamentos
                     ICategoriaItemConfortoDao relDAO = CategoriaItemConfortoDaoAdapter.getInstance();
@@ -165,8 +164,8 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
 
         // confere se há algum quarto na categoria
         IQuartoDao quartoDAO = QuartoDaoAdapter.getInstance();
-        List<Quarto> listaQuartos = quartoDAO
-                .buscaQuarto(codRegistro, "codCategoria");
+        List<Quarto> listaQuartos = quartoDAO.buscaPorColuna(codRegistro, "codCategoria");
+        
         if (!listaQuartos.isEmpty()) {
             throw new NegocioException(
                     "Não é possível excluir essa categoria. Há "
@@ -183,9 +182,9 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
             // Deleta tanto o relacionamento com os itens quanto a categoria em si
             return relDAO.deletaPorColuna(
                     categoriasPesquisadas.get(0).getCodCategoria(), "codCategoria")
-                    && objetoDAO.deletaCategoriaQuarto(codRegistro);
+                    && objetoDAO.deleta(codRegistro);
         }
-        return objetoDAO.deletaCategoriaQuarto(codRegistro);
+        return objetoDAO.deleta(codRegistro);
     }
 
     @Override
@@ -195,7 +194,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
         * confere se foi digitado um dado busca e se a coluna é válida
         */
         if (dadoBusca != null) {
-            return objetoDAO.buscaCategoriaQuarto(dadoBusca, coluna);
+            return objetoDAO.buscaPorColuna(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhuma categoria buscada!");
         }
@@ -204,7 +203,7 @@ public class ManterCategoriaQuarto implements IManterCategoriaQuarto {
     @Override
     public List<CategoriaQuarto> listarTodos()
             throws NegocioException, SQLException {
-        return objetoDAO.buscaTodosCategoriaQuartos();
+        return objetoDAO.buscaTodos();
     }
 
     @Override

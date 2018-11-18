@@ -1,8 +1,8 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
+import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
-import br.cefetmg.inf.util.bd.BdUtils;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,8 +32,10 @@ public class ServicoDao implements IServicoDao {
     }
 
     @Override
-    public boolean adicionaServico(Servico servico) throws SQLException {
-        String qry = "INSERT INTO Servico"
+    public boolean adiciona(Servico servico) throws SQLException {
+
+        String qry
+                = "INSERT INTO Servico"
                 + "(desServico, vlrUnit, codServicoArea)"
                 + " VALUES (?,?,?)";
 
@@ -46,28 +48,71 @@ public class ServicoDao implements IServicoDao {
     }
 
     @Override
-    public List<Servico> buscaServico(Object dadoBusca, String coluna) throws SQLException {
-        String qry = "SELECT * FROM Servico "
-                + "WHERE " + coluna + " "
-                + "= ?";
+    public Servico buscaPorPk(short id) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Servico "
+                + "WHERE seqServico = ?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setShort(1, id);
+        ResultSet rs = pStmt.executeQuery();
+
+        Servico s = new Servico(
+                rs.getShort(1),
+                rs.getString(2),
+                BigDecimal.valueOf(rs.getDouble(3)));
+        s.setServicoArea(new ServicoArea(rs.getString(4)));
+
+        return s;
+    }
+
+    @Override
+    public List<Servico> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Servico "
+                + "WHERE " + coluna + " = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        switch (coluna.toLowerCase()) {
+            case "seqservico":
+                if (dadoBusca instanceof Servico) {
+                    pStmt.setShort(1, ((Servico) dadoBusca).getSeqServico());
+                } else {
+                    pStmt.setShort(1, (short) dadoBusca);
+                }
+                break;
+            case "desservico":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+            case "vlrunit":
+                pStmt.setBigDecimal(
+                        1,
+                        BigDecimal.valueOf(
+                                Double.parseDouble(
+                                        dadoBusca.toString())));
+                break;
+            case "codservicoarea":
+                if (dadoBusca instanceof ServicoArea) {
+                    pStmt.setString(1, ((ServicoArea) dadoBusca).getCodServicoArea());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
+                break;
         }
-
         ResultSet rs = pStmt.executeQuery();
 
         List<Servico> servicoEncontrados = new ArrayList<>();
 
         while (rs.next()) {
             Servico s = new Servico(
+                    rs.getShort(1),
                     rs.getString(2),
                     BigDecimal.valueOf(rs.getDouble(3)));
             s.setServicoArea(new ServicoArea(rs.getString(4)));
-            
+
             servicoEncontrados.add(s);
         }
 
@@ -75,7 +120,7 @@ public class ServicoDao implements IServicoDao {
     }
 
     @Override
-    public List<Servico> buscaTodosServicos() throws SQLException {
+    public List<Servico> buscaTodos() throws SQLException {
         Statement stmt = con.createStatement();
 
         String qry = "SELECT * FROM Servico";
@@ -85,6 +130,7 @@ public class ServicoDao implements IServicoDao {
 
         while (rs.next()) {
             Servico s = new Servico(
+                    rs.getShort(1),
                     rs.getString(2),
                     BigDecimal.valueOf(rs.getDouble(3)));
             s.setServicoArea(new ServicoArea(rs.getString(4)));
@@ -96,86 +142,28 @@ public class ServicoDao implements IServicoDao {
     }
 
     @Override
-    public boolean atualizaServicoPorPk(Object pK, Servico servicoAtualizado)
+    public boolean atualiza(short pK, Servico servicoAtualizado)
             throws SQLException {
         String qry = "UPDATE Servico "
                 + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, servicoAtualizado.getDesServico());
-        pStmt.setDouble(2, servicoAtualizado.getVlrUnit().doubleValue());
+        pStmt.setBigDecimal(2, servicoAtualizado.getVlrUnit());
         pStmt.setString(3, servicoAtualizado.getServicoArea().getCodServicoArea());
-        pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        pStmt.setShort(4, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean atualizaServico(
-            Servico servicoAntigo,
-            Servico servicoAtualizado)
-            throws SQLException {
-        String qry = "UPDATE Servico "
-                + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
-                + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, servicoAtualizado.getDesServico());
-        pStmt.setDouble(2, servicoAtualizado.getVlrUnit().doubleValue());
-        pStmt.setString(3, servicoAtualizado.getServicoArea().getCodServicoArea());
-        pStmt.setString(4, servicoAntigo.getDesServico());
-        pStmt.setDouble(5, servicoAntigo.getVlrUnit().doubleValue());
-        pStmt.setString(6, servicoAntigo.getServicoArea().getCodServicoArea());
-
-        return pStmt.executeUpdate() > 0;
-    }
-
-    @Override
-    public boolean deletaServicoPorPk(Object pK) throws SQLException {
+    public boolean deleta(short pK) throws SQLException {
         String qry = "DELETE FROM Servico "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+
+        pStmt.setShort(1, pK);
 
         return pStmt.executeUpdate() > 0;
-    }
-
-    @Override
-    public boolean deletaServico(Servico servicoAntigo) throws SQLException {
-        String qry = "DELETE FROM Servico "
-                + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, servicoAntigo.getDesServico());
-        pStmt.setDouble(2, servicoAntigo.getVlrUnit().doubleValue());
-        pStmt.setString(3, servicoAntigo.getServicoArea().getCodServicoArea());
-
-        return pStmt.executeUpdate() > 0;
-    }
-
-    @Override
-    public boolean deletaServicoPorAtributos(
-            String desServicoAntigo,
-            String codServicoAreaAntigo) throws SQLException {
-        String qry = "SELECT * FROM Servico "
-                + "WHERE desServico = ? AND codServicoArea = ?";
-        PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, desServicoAntigo);
-        pStmt.setString(2, codServicoAreaAntigo);
-        ResultSet rs = pStmt.executeQuery();
-
-        if (BdUtils.contaLinhasResultSet(rs) == 1) {
-            qry = "DELETE FROM Servico "
-                    + "WHERE desServico = ? AND codServicoArea = ?";
-            pStmt = con.prepareStatement(qry);
-            pStmt.setString(1, desServicoAntigo);
-            pStmt.setString(2, codServicoAreaAntigo);
-
-            return pStmt.executeUpdate() > 0;
-        }
-        return false;
     }
 }

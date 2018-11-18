@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.ICategoriaQuartoDaoJpa;
 
-public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
+public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDao {
 
     private static final String NAMED_QUERY_BASE = "CategoriaQuarto.findBy";
 
@@ -107,9 +107,9 @@ public class CategoriaQuartoDaoJpa implements ICategoriaQuartoDaoJpa {
     }
 
     @Override
-    public boolean deleta(CategoriaQuarto categoriaQuarto) throws SQLException {
+    public boolean deleta(String codCategoria) throws SQLException {
         em.getTransaction().begin();
-        em.remove(categoriaQuarto);
+        em.remove(buscaPorPk(codCategoria));
         em.getTransaction().commit();
 
         return true;

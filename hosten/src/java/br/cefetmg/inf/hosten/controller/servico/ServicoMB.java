@@ -28,7 +28,7 @@ public class ServicoMB implements Serializable{
     private ServicoArea areaServico;
     private ServicoArea areaSelecionada;
     
-    private int codServicoAlterar;
+    private short codServicoAlterar;
 
     public ServicoMB() {
         servico = new Servico();
@@ -73,7 +73,7 @@ public class ServicoMB implements Serializable{
 
 
     public void onRowInit(RowEditEvent event) {
-        codServicoAlterar = (int) event.getComponent().getAttributes().get("servicoEditar");
+        codServicoAlterar = (short) event.getComponent().getAttributes().get("servicoEditar");
     }
 
     public void onRowEdit(RowEditEvent event) throws IOException {
@@ -81,7 +81,7 @@ public class ServicoMB implements Serializable{
             servico = (Servico) event.getObject();
             servico.setServicoArea(areaSelecionada);
             
-            boolean testeExclusao = manterServico.alterar(String.valueOf(codServicoAlterar), servico);
+            boolean testeExclusao = manterServico.alterar(codServicoAlterar, servico);
             if (testeExclusao) {
                 ContextUtils.mostrarMensagem("Alteração efetuada", "Registro alterado com sucesso!", true);
             } else {
@@ -101,7 +101,7 @@ public class ServicoMB implements Serializable{
         this.servico = servico;
 
         try {
-            boolean testeExclusao = manterServico.excluir(String.valueOf(servico.getSeqServico()));
+            boolean testeExclusao = manterServico.excluir(servico.getSeqServico());
             if (testeExclusao) {
                 ContextUtils.mostrarMensagem("Exclusão efetuada", "Registro excluído com sucesso!", true);
                 return "sucesso";

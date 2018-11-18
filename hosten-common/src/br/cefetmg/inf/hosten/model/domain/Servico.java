@@ -56,7 +56,8 @@ public class Servico implements Serializable {
         this.seqServico = seqServico;
     }
 
-    public Servico(String desServico, BigDecimal vlrUnit) {
+    public Servico(Short seqServico, String desServico, BigDecimal vlrUnit) {
+        this.seqServico = seqServico;
         this.desServico = desServico;
         this.vlrUnit = vlrUnit;
     }

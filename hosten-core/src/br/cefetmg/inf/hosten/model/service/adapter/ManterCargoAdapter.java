@@ -1,28 +1,12 @@
 package br.cefetmg.inf.hosten.model.service.adapter;
 
 import br.cefetmg.inf.hosten.model.service.impl.*;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoDao;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.ProgramaDao;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.UsuarioDao;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.CargoProgramaDao;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
-import br.cefetmg.inf.hosten.model.domain.Usuario;
-import br.cefetmg.inf.hosten.model.domain.rel.CargoPrograma;
 import br.cefetmg.inf.util.exception.NegocioException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.domain.Programa;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CargoDaoAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.CargoProgramaDaoAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.ProgramaDaoAdapter;
-import br.cefetmg.inf.hosten.model.persistence.adapters.UsuarioDaoAdapter;
 import br.cefetmg.inf.hosten.model.service.IManterCargo;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.ICargoProgramaDao;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoDao;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IProgramaDao;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDao;
 import br.cefetmg.inf.hosten.model.service.remote.IManterCargoRemote;
 import java.rmi.RemoteException;
 

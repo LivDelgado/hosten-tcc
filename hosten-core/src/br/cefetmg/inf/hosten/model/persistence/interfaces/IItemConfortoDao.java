@@ -6,17 +6,15 @@ import java.util.List;
 
 public interface IItemConfortoDao {
 
-    boolean adicionaItemConforto(ItemConforto itemConforto)
-            throws SQLException;
+    boolean adiciona(ItemConforto itemConforto) throws SQLException;
 
-    List<ItemConforto> buscaItemConforto(Object dadoBusca, String coluna)
-            throws SQLException;
+    ItemConforto buscaPorPk(String id) throws SQLException;
 
-    List<ItemConforto> buscaTodosItemConfortos()
-            throws SQLException;
+    List<ItemConforto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    boolean atualizaItemConforto(Object pK, ItemConforto itemConfortoAtualizado)
-            throws SQLException;
+    List<ItemConforto> buscaTodos() throws SQLException;
 
-    boolean deletaItemConforto(Object pK) throws SQLException;
+    boolean atualiza(String id, ItemConforto itemConfortoAtualizado) throws SQLException;
+
+    boolean deleta(String itemConforto) throws SQLException;
 }

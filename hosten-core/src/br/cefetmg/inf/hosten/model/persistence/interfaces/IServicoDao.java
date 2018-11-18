@@ -6,28 +6,19 @@ import java.util.List;
 
 public interface IServicoDao {
 
-    boolean adicionaServico(Servico servico)
+    boolean adiciona(Servico servico)
             throws SQLException;
 
-    List<Servico> buscaServico(Object dadoBusca, String coluna)
+    Servico buscaPorPk(short id) throws SQLException;
+
+    List<Servico> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException;
 
-    List<Servico> buscaTodosServicos()
+    List<Servico> buscaTodos()
             throws SQLException;
 
-    boolean atualizaServicoPorPk(Object pK, Servico servicoAtualizado)
+    boolean atualiza(short id, Servico servicoAtualizado)
             throws SQLException;
-    
-    boolean atualizaServico(
-            Servico servicoAntigo, 
-            Servico servicoAtualizado) throws SQLException;
 
-    boolean deletaServicoPorPk(Object pK) throws SQLException;
-    
-    boolean deletaServico(Servico servicoAntigo) throws SQLException;
-    
-    boolean deletaServicoPorAtributos(
-            String desServicoAntigo, 
-            String codServicoAreaAntigo) 
-            throws SQLException;
+    boolean deleta(short id) throws SQLException;
 }

@@ -6,17 +6,15 @@ import java.util.List;
 
 public interface IServicoAreaDao {
 
-    boolean adicionaServicoArea(ServicoArea servicoArea)
-            throws SQLException;
+    boolean adiciona(ServicoArea servicoArea) throws SQLException;
 
-    List<ServicoArea> buscaServicoArea(Object dadoBusca, String coluna)
-            throws SQLException;
+    ServicoArea buscaPorPk(String id) throws SQLException;
 
-    List<ServicoArea> buscaTodosServicoAreas()
-            throws SQLException;
+    List<ServicoArea> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    boolean atualizaServicoArea(Object pK, ServicoArea servicoAreaAtualizado)
-            throws SQLException;
+    List<ServicoArea> buscaTodos() throws SQLException;
 
-    boolean deletaServicoArea(Object pK) throws SQLException; 
+    boolean atualiza(String id, ServicoArea servicoAreaAtualizado) throws SQLException;
+
+    boolean deleta(String id) throws SQLException;
 }

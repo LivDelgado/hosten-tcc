@@ -1,6 +1,7 @@
 package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.Hospede;
+import br.cefetmg.inf.hosten.model.domain.ItemConforto;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedeDao;
 
-public final class HospedeDao implements IHospedeDao{
+public final class HospedeDao implements IHospedeDao {
 
     private static Connection con;
     private static HospedeDao instancia;
@@ -29,12 +30,15 @@ public final class HospedeDao implements IHospedeDao{
     }
 
     @Override
-    public boolean adicionaHospede(Hospede hospede) throws SQLException {
-        String qry = "INSERT INTO Hospede"
+    public boolean adiciona(Hospede hospede) throws SQLException {
+
+        String qry
+                = "INSERT INTO Hospede"
                 + "(codCPF, nomHospede, desTelefone, desEmail)"
                 + " VALUES (?,?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, hospede.getCodCpf());
         pStmt.setString(2, hospede.getNomHospede());
         pStmt.setString(3, hospede.getDesTelefone());
@@ -44,91 +48,121 @@ public final class HospedeDao implements IHospedeDao{
     }
 
     @Override
-    public List<Hospede> buscaHospede(
-            Object dadoBusca, 
-            String coluna) throws SQLException {
-        String qry = "SELECT * FROM Hospede "
+    public Hospede buscaPorPk(String id) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Hospede "
+                + "WHERE codCpf LIKE ?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setString(1, id);
+        ResultSet rs = pStmt.executeQuery();
+
+        Hospede h = new Hospede(
+                rs.getString(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4));
+        return h;
+    }
+
+    @Override
+    public List<Hospede> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+
+        String qry
+                = "SELECT * FROM Hospede "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        }
+        switch (coluna.toLowerCase()) {
 
+            case "codcpf":
+                if (dadoBusca instanceof Hospede) {
+                    pStmt.setString(1, ((Hospede) dadoBusca).getCodCpf());
+                } else {
+                    pStmt.setString(1, dadoBusca.toString());
+                }
+                break;
+
+            case "nomhospede":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+
+            case "destelefone":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+
+            case "desemail":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+        }
         ResultSet rs = pStmt.executeQuery();
 
         List<Hospede> hospedesEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            hospedesEncontrados
-                    .add(new Hospede(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4)));
-            i++;
+            hospedesEncontrados.add(new Hospede(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4)));
         }
+
         return hospedesEncontrados;
     }
 
     @Override
-    public List<Hospede> buscaTodosHospedes() throws SQLException {
-        Statement stmt = con.createStatement();
+    public List<Hospede> buscaTodos() throws SQLException {
 
-        String qry = "SELECT * FROM Hospede";
+        String qry
+                = "SELECT * FROM Hospede";
+
+        Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
         List<Hospede> hospedesEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
-            hospedesEncontrados
-                    .add(new Hospede(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4)));
-            i++;
+            hospedesEncontrados.add(new Hospede(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4)));
         }
 
         return hospedesEncontrados;
     }
 
     @Override
-    public boolean atualizaHospede(
-            Object pK, 
-            Hospede hospedeAtualizado) throws SQLException {
-        String qry = "UPDATE Hospede "
+    public boolean atualiza(String pK, Hospede hospedeAtualizado) throws SQLException {
+
+        String qry
+                = "UPDATE Hospede "
                 + "SET codCPF = ?, nomHospede = ?, desTelefone = ?, desEmail = ? "
                 + "WHERE codCPF = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, hospedeAtualizado.getCodCpf());
         pStmt.setString(2, hospedeAtualizado.getNomHospede());
         pStmt.setString(3, hospedeAtualizado.getDesTelefone());
         pStmt.setString(4, hospedeAtualizado.getDesEmail());
-        if (pK instanceof String) {
-            pStmt.setString(5, pK.toString());
-        } else {
-            pStmt.setInt(5, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(5, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deletaHospede(Object pK) throws SQLException {
-        String qry = "DELETE FROM Hospede "
+    public boolean deleta(String pK) throws SQLException {
+
+        String qry
+                = "DELETE FROM Hospede "
                 + "WHERE codCPF = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(1, pK);
 
         return pStmt.executeUpdate() > 0;
     }

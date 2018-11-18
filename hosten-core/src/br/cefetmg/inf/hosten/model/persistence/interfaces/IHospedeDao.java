@@ -6,17 +6,15 @@ import java.util.List;
 
 public interface IHospedeDao {
 
-    boolean adicionaHospede(Hospede hospede)
-            throws SQLException;
+    boolean adiciona(Hospede hospede) throws SQLException;
 
-    List<Hospede> buscaHospede(Object dadoBusca, String coluna)
-            throws SQLException;
+    Hospede buscaPorPk(String id) throws SQLException;
 
-    List<Hospede> buscaTodosHospedes()
-            throws SQLException;
+    List<Hospede> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    boolean atualizaHospede(Object pK, Hospede hospedeAtualizado)
-            throws SQLException;
+    List<Hospede> buscaTodos() throws SQLException;
 
-    boolean deletaHospede(Object pK) throws SQLException; 
+    boolean atualiza(String id, Hospede hospedeAtualizado) throws SQLException;
+
+    boolean deleta(String hospede) throws SQLException;
 }

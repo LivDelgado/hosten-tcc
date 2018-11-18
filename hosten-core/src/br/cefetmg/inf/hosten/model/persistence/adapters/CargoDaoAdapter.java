@@ -1,50 +1,54 @@
 package br.cefetmg.inf.hosten.model.persistence.adapters;
 
 import br.cefetmg.inf.hosten.model.domain.Cargo;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoDao;
 import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.ICargoDao;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoDao;
 
 public class CargoDaoAdapter implements ICargoDao{
 
+    private final ICargoDao dao;
     private static ICargoDao instancia;
+
+    private CargoDaoAdapter() {
+        dao = CargoDao.getInstance();
+    }
 
     public static synchronized ICargoDao getInstance() {
         if (instancia == null) {
-            //
-            //
-                instancia = CargoDao.getInstance();
-            //
-            //
+            instancia = new CargoDaoAdapter();
         }
         return instancia;
     }
 
     @Override
-    public boolean adicionaCargo(Cargo cargo) throws SQLException {
-        return instancia.adicionaCargo(cargo);
+    public boolean adiciona(Cargo cargo) throws SQLException {
+        return dao.adiciona(cargo);
     }
 
     @Override
-    public List<Cargo> buscaCargo(Object dadoBusca, String coluna)
-            throws SQLException {
-        return instancia.buscaCargo(dadoBusca, coluna);
+    public Cargo buscaPorPk(String id) throws SQLException {
+        return dao.buscaPorPk(id);
     }
 
     @Override
-    public List<Cargo> buscaTodosCargos() throws SQLException {
-        return instancia.buscaTodosCargos();
+    public List<Cargo> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+        return dao.buscaPorColuna(dadoBusca, coluna);
     }
 
     @Override
-    public boolean atualizaCargo(Object pK, Cargo cargoAtualizado) 
-            throws SQLException {
-        return instancia.atualizaCargo(pK, cargoAtualizado);
+    public List<Cargo> buscaTodos() throws SQLException {
+        return dao.buscaTodos();
     }
 
     @Override
-    public boolean deletaCargo(Object pK) throws SQLException {
-        return instancia.deletaCargo(pK);
+    public boolean atualiza(String pK, Cargo cargoAtualizado) throws SQLException {
+        return dao.atualiza(pK, cargoAtualizado);
+    }
+
+    @Override
+    public boolean deleta(String pK) throws SQLException {
+        return dao.deleta(pK);
     }
 }

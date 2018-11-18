@@ -3,14 +3,16 @@ package br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.impl;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoConsumoId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.QuartoHospedagemDao;
 import br.cefetmg.inf.util.bd.BdUtils;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.IQuartoConsumoDaoJpa;
 
-public class QuartoConsumoDaoJpa implements IQuartoConsumoDaoJpa {
+public class QuartoConsumoDaoJpa implements IQuartoConsumoDao {
 
     private static final String NAMED_QUERY_BASE = "QuartoConsumo.findBy";
 
@@ -39,7 +41,10 @@ public class QuartoConsumoDaoJpa implements IQuartoConsumoDaoJpa {
     }
 
     @Override
-    public QuartoConsumo buscaPorPk(QuartoHospedagem qh, Date datConsumo) throws SQLException {
+    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
+        IQuartoHospedagemDao qhDao = QuartoHospedagemDao.getInstance();
+        QuartoHospedagem qh = qhDao.buscaPorPk(seqHospedagem, nroQuarto);
+        
         em.getTransaction().begin();
 
         QuartoConsumoId qcId = new QuartoConsumoId(qh, datConsumo);
@@ -101,9 +106,9 @@ public class QuartoConsumoDaoJpa implements IQuartoConsumoDaoJpa {
     }
 
     @Override
-    public boolean deleta(QuartoConsumo quartoConsumo) throws SQLException {
+    public boolean deleta(int seqHospedage, short nroQuarto, Date datConsumo) throws SQLException {
         em.getTransaction().begin();
-        em.remove(quartoConsumo);
+        em.remove(buscaPorPk(seqHospedage, nroQuarto, datConsumo));
         em.getTransaction().commit();
 
         return true;

@@ -2,14 +2,14 @@ package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.IHospedagemDaoJpa;
 
-public class HospedagemDaoJpa implements IHospedagemDaoJpa {
+public class HospedagemDaoJpa implements IHospedagemDao {
 
     private static final String NAMED_QUERY_BASE = "Hospedagem.findBy";
 
@@ -38,7 +38,7 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public Hospedagem buscaPorPk(Integer id) throws SQLException {
+    public Hospedagem buscaPorPk(int id) throws SQLException {
         em.getTransaction().begin();
         Hospedagem hospedagem = em.find(Hospedagem.class, id);
         em.getTransaction().commit();
@@ -96,7 +96,7 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public boolean atualiza(Integer id, Hospedagem hospedagemNov)
+    public boolean atualiza(int id, Hospedagem hospedagemNov)
             throws SQLException {
         em.getTransaction().begin();
 
@@ -120,9 +120,9 @@ public class HospedagemDaoJpa implements IHospedagemDaoJpa {
     }
 
     @Override
-    public boolean deleta(Hospedagem hospedagem) throws SQLException {
+    public boolean deleta(int seqHospedagem) throws SQLException {
         em.getTransaction().begin();
-        em.remove(hospedagem);
+        em.remove(buscaPorPk(seqHospedagem));
         em.getTransaction().commit();
 
         return true;

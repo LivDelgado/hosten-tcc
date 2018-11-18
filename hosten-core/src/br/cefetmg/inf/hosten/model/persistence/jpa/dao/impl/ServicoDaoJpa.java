@@ -2,14 +2,14 @@ package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IServicoDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.IServicoDaoJpa;
 
-public class ServicoDaoJpa implements IServicoDaoJpa {
+public class ServicoDaoJpa implements IServicoDao {
 
     private static final String NAMED_QUERY_BASE = "Servico.findBy";
 
@@ -38,7 +38,7 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public Servico buscaPorPk(Short id) throws SQLException {
+    public Servico buscaPorPk(short id) throws SQLException {
         em.getTransaction().begin();
         Servico servico = em.find(Servico.class, id);
         em.getTransaction().commit();
@@ -92,7 +92,7 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public boolean atualiza(Short id, Servico servNov)
+    public boolean atualiza(short id, Servico servNov)
             throws SQLException {
         em.getTransaction().begin();
 
@@ -112,9 +112,9 @@ public class ServicoDaoJpa implements IServicoDaoJpa {
     }
 
     @Override
-    public boolean deleta(Servico servico) throws SQLException {
+    public boolean deleta(short seqServico) throws SQLException {
         em.getTransaction().begin();
-        em.remove(em.getReference(Servico.class, servico.getSeqServico()));
+        em.remove(buscaPorPk(seqServico));
         em.getTransaction().commit();
 
         return true;
