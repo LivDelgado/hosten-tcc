@@ -33,7 +33,7 @@ public class ManterQuarto implements IManterQuarto {
 
         if (quartosPesquisados.isEmpty()) {
             // pode inserir
-            boolean testeRegistro = objetoDAO.adicionaQuarto(quarto);
+            boolean testeRegistro = objetoDAO.adiciona(quarto);
             return testeRegistro;
         } else {
             // tem quarto com o mesmo número
@@ -42,25 +42,23 @@ public class ManterQuarto implements IManterQuarto {
     }
 
     @Override
-    public boolean alterar(String codRegistro, Quarto quarto)
+    public boolean alterar(short codRegistro, Quarto quarto)
             throws NegocioException, SQLException {
         // testa tamanho dos campos
         if (quarto.getNroQuarto() <= 0 || quarto.getNroQuarto() > 32767) {
             throw new NegocioException("Número do quarto inválido.");
         }
 
-        boolean testeRegistro = objetoDAO.atualizaQuarto(codRegistro, quarto);
+        boolean testeRegistro = objetoDAO.atualiza(codRegistro, quarto);
 
         return testeRegistro;
     }
 
     @Override
-    public boolean excluir(String codRegistro)
-            throws NegocioException, SQLException {
+    public boolean excluir(short codRegistro) throws NegocioException, SQLException {
         //
         // confere se o quarto está ocupado
-        List<Quarto> quartosPesquisados
-                = listar(Integer.parseInt(codRegistro), "nroQuarto");
+        List<Quarto> quartosPesquisados = listar(codRegistro, "nroQuarto");
         if (quartosPesquisados.isEmpty()) {
             throw new NegocioException("Quarto não encontrado!");
         } else {
@@ -72,9 +70,7 @@ public class ManterQuarto implements IManterQuarto {
                 // testa se o nroQuarto está sendo usado em QuartoHospedagem
                 //
                 IQuartoHospedagemDao relDAO = QuartoHospedagemDaoAdapter.getInstance();
-                List<QuartoHospedagem> listaREL = relDAO.busca(
-                        codRegistro,
-                        "nroQuarto");
+                List<QuartoHospedagem> listaREL = relDAO.buscaPorColuna(codRegistro, "nroQuarto");
                 if (!listaREL.isEmpty()) {
                     throw new NegocioException(
                             "Não é possível excluir o quarto"
@@ -82,20 +78,19 @@ public class ManterQuarto implements IManterQuarto {
                             + ". Há registros de hospedagem "
                             + "relacionados a ele!");
                 } else {
-                    return objetoDAO.deletaQuarto(codRegistro);
+                    return objetoDAO.deleta(codRegistro);
                 }
             }
         }
     }
 
     @Override
-    public List<Quarto> listar(Object dadoBusca, String coluna)
-            throws NegocioException, SQLException {
+    public List<Quarto> listar(Object dadoBusca, String coluna) throws NegocioException, SQLException {
         //
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            return objetoDAO.buscaQuarto(dadoBusca, coluna);
+            return objetoDAO.buscaPorColuna(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum quarto buscado!");
         }
@@ -104,13 +99,14 @@ public class ManterQuarto implements IManterQuarto {
     @Override
     public List<Quarto> listarTodos()
             throws NegocioException, SQLException {
-        return objetoDAO.buscaTodosQuartos();
+        return objetoDAO.buscaTodos();
     }
 
     @Override
-    public int buscaUltimoRegistroRelacionadoAoQuarto(int nroQuarto) throws NegocioException, SQLException {
+    public int buscaUltimoRegistroRelacionadoAoQuarto(short nroQuarto) throws NegocioException, SQLException {
         if (nroQuarto > 0) {
-            return objetoDAO.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
+            IQuartoHospedagemDao qhDao = QuartoHospedagemDaoAdapter.getInstance();
+            return qhDao.buscaUltimoRegistro(nroQuarto);
         } else {
             throw new NegocioException("Número do quarto inválido!");
         }

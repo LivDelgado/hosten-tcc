@@ -2,14 +2,14 @@ package br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.impl;
 
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDaoJpa;
 
-public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
+public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDao {
 
     private static final String NAMED_QUERY_BASE = "QuartoHospedagem.findBy";
 
@@ -98,16 +98,16 @@ public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
     }
 
     @Override
-    public boolean deleta(QuartoHospedagem qh) throws SQLException {
+    public boolean deleta(int seqHospedagem, short nroQuarto) throws SQLException {
         em.getTransaction().begin();
-        em.remove(qh);
+        em.remove(buscaPorPk(seqHospedagem, nroQuarto));
         em.getTransaction().commit();
 
         return true;
     }
 
     @Override
-    public int buscaUltimoRegistro(int nroQuarto) throws SQLException {
+    public int buscaUltimoRegistro(short nroQuarto) throws SQLException {
         int seqHospedagem = em
                 .createNamedQuery("QuartoHospedagem.fetchUltimoRegistroQuarto",
                         QuartoHospedagem.class)

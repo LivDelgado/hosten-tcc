@@ -1,53 +1,54 @@
 package br.cefetmg.inf.hosten.model.persistence.adapters;
 
 import br.cefetmg.inf.hosten.model.domain.Quarto;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.QuartoDao;
 import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDao;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.QuartoDao;
 
 public class QuartoDaoAdapter implements IQuartoDao {
 
+    private final IQuartoDao dao;
     private static IQuartoDao instancia;
+
+    private QuartoDaoAdapter() {
+        dao = QuartoDao.getInstance();
+    }
 
     public static synchronized IQuartoDao getInstance() {
         if (instancia == null) {
-            instancia = QuartoDao.getInstance();
+            instancia = new QuartoDaoAdapter();
         }
         return instancia;
     }
 
     @Override
-    public boolean adicionaQuarto(Quarto quarto) throws SQLException {
-        return instancia.adicionaQuarto(quarto);
+    public boolean adiciona(Quarto quarto) throws SQLException {
+        return dao.adiciona(quarto);
     }
 
     @Override
-    public List<Quarto> buscaQuarto(
-            Object dadoBusca,
-            String coluna) throws SQLException {
-        return instancia.buscaQuarto(dadoBusca, coluna);
+    public Quarto buscaPorPk(short id) throws SQLException {
+        return dao.buscaPorPk(id);
     }
 
     @Override
-    public List<Quarto> buscaTodosQuartos() throws SQLException {
-        return instancia.buscaTodosQuartos();
+    public List<Quarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+        return dao.buscaPorColuna(dadoBusca, coluna);
     }
 
     @Override
-    public boolean atualizaQuarto(Object pK, Quarto quartoAtualizado) 
-            throws SQLException {
-        return instancia.atualizaQuarto(pK, quartoAtualizado);
+    public List<Quarto> buscaTodos() throws SQLException {
+        return dao.buscaTodos();
     }
 
     @Override
-    public boolean deletaQuarto(Object pK) throws SQLException {
-        return instancia.deletaQuarto(pK);
+    public boolean atualiza(short pK, Quarto quartoAtualizado) throws SQLException {
+        return dao.atualiza(pK, quartoAtualizado);
     }
-    
+
     @Override
-    public int buscaUltimoRegistroRelacionadoAoQuarto(int nroQuarto)
-            throws SQLException {
-        return instancia.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
+    public boolean deleta(short pK) throws SQLException {
+        return dao.deleta(pK);
     }
 }

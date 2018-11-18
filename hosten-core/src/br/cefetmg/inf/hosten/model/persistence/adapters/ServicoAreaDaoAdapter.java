@@ -6,43 +6,49 @@ import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IServicoAreaDao;
 
-public class ServicoAreaDaoAdapter implements IServicoAreaDao{
+public class ServicoAreaDaoAdapter implements IServicoAreaDao {
 
+    private final IServicoAreaDao dao;
     private static IServicoAreaDao instancia;
+
+    private ServicoAreaDaoAdapter() {
+        dao = ServicoAreaDao.getInstance();
+    }
 
     public static synchronized IServicoAreaDao getInstance() {
         if (instancia == null) {
-            instancia = ServicoAreaDao.getInstance();
+            instancia = new ServicoAreaDaoAdapter();
         }
         return instancia;
     }
 
     @Override
-    public boolean adicionaServicoArea(ServicoArea servicoArea) 
-            throws SQLException {
-        return instancia.adicionaServicoArea(servicoArea);
+    public boolean adiciona(ServicoArea servicoArea) throws SQLException {
+        return dao.adiciona(servicoArea);
     }
 
     @Override
-    public List<ServicoArea> buscaServicoArea(Object dadoBusca, String coluna) 
-            throws SQLException {
-        return instancia.buscaServicoArea(dadoBusca, coluna);
+    public ServicoArea buscaPorPk(String id) throws SQLException {
+        return dao.buscaPorPk(id);
     }
 
     @Override
-    public List<ServicoArea> buscaTodosServicoAreas() throws SQLException {
-        return instancia.buscaTodosServicoAreas();
+    public List<ServicoArea> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+        return dao.buscaPorColuna(dadoBusca, coluna);
     }
 
     @Override
-    public boolean atualizaServicoArea(
-            Object pK, 
-            ServicoArea servicoAreaAtualizado) throws SQLException {
-        return instancia.atualizaServicoArea(pK, servicoAreaAtualizado);
+    public List<ServicoArea> buscaTodos() throws SQLException {
+        return dao.buscaTodos();
     }
 
     @Override
-    public boolean deletaServicoArea(Object pK) throws SQLException {
-        return instancia.deletaServicoArea(pK);
+    public boolean atualiza(String pK, ServicoArea servicoAreaAtualizado) throws SQLException {
+        return dao.atualiza(pK, servicoAreaAtualizado);
+    }
+
+    @Override
+    public boolean deleta(String pK) throws SQLException {
+        return dao.deleta(pK);
     }
 }

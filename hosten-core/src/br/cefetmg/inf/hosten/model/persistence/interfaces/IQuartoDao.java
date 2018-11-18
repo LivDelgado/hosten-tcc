@@ -8,13 +8,13 @@ public interface IQuartoDao {
 
     boolean adiciona(Quarto quarto) throws SQLException;
 
-    Quarto buscaPorPk(Short id) throws SQLException;
+    Quarto buscaPorPk(short id) throws SQLException;
 
     List<Quarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
     List<Quarto> buscaTodos() throws SQLException;
 
-    boolean atualiza(Short id, Quarto quartoAtualizado) throws SQLException;
+    boolean atualiza(short id, Quarto quartoAtualizado) throws SQLException;
 
-    boolean deleta(Short id) throws SQLException;
+    boolean deleta(short id) throws SQLException;
 }

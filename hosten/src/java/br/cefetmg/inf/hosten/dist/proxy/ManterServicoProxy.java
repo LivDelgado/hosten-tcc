@@ -49,7 +49,7 @@ public class ManterServicoProxy implements IManterServico {
     }
 
     @Override
-    public boolean alterar(String codRegistro, Servico servico) throws NegocioException, SQLException {
+    public boolean alterar(short codRegistro, Servico servico) throws NegocioException, SQLException {
         try {
             return manterServico.alterar(codRegistro, servico);
         } catch (RemoteException ex) {
@@ -59,7 +59,7 @@ public class ManterServicoProxy implements IManterServico {
     }
 
     @Override
-    public boolean excluir(String codRegistro) throws NegocioException, SQLException {
+    public boolean excluir(short codRegistro) throws NegocioException, SQLException {
         try {
             return manterServico.excluir(codRegistro);
         } catch (RemoteException ex) {

@@ -33,7 +33,7 @@ public class ControlarDespesasProxy implements IControlarDespesas {
     }
 
     @Override
-    public List<Despesa> listar(int seqHospedagem, int nroQuarto) throws NegocioException, SQLException {
+    public List<Despesa> listar(int seqHospedagem, short nroQuarto) throws NegocioException, SQLException {
         try {
             return controlarDespesas.listar(seqHospedagem, nroQuarto);
         } catch (RemoteException ex) {
@@ -50,16 +50,5 @@ public class ControlarDespesasProxy implements IControlarDespesas {
             Logger.getLogger(ControlarDespesasProxy.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    }
-
-    @Override
-    public Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) 
-            throws NegocioException, SQLException {
-        try {
-            return controlarDespesas.retornaDespesa(seqHospedagem, nroQuarto);
-        } catch (RemoteException ex) {
-            Logger.getLogger(ControlarDespesasProxy.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
 }

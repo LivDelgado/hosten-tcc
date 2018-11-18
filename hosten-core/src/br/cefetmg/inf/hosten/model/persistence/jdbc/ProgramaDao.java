@@ -41,6 +41,20 @@ public final class ProgramaDao implements IProgramaDao {
 
         return pStmt.executeUpdate() > 0;
     }
+    
+    @Override
+    public Programa buscaPorPk(String id) throws SQLException {
+        String qry = 
+                "SELECT * FROM Programa "
+                + "WHERE codPrograma LIKE ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setString(1, id);
+        ResultSet rs = pStmt.executeQuery();
+
+        Programa prog = new Programa(rs.getString(1), rs.getString(2));
+
+        return prog;
+    }
 
     @Override
     public List<Programa> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
@@ -110,4 +124,5 @@ public final class ProgramaDao implements IProgramaDao {
         pStmt.setString(1, pK);
         return pStmt.executeUpdate() > 0;
     }
+    
 }

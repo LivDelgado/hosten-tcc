@@ -9,7 +9,7 @@ public interface IServicoDao {
     boolean adiciona(Servico servico)
             throws SQLException;
 
-    Servico buscaPorPk(Short id) throws SQLException;
+    Servico buscaPorPk(short id) throws SQLException;
 
     List<Servico> buscaPorColuna(Object dadoBusca, String coluna)
             throws SQLException;
@@ -17,8 +17,8 @@ public interface IServicoDao {
     List<Servico> buscaTodos()
             throws SQLException;
 
-    boolean atualiza(Short id, Servico servicoAtualizado)
+    boolean atualiza(short id, Servico servicoAtualizado)
             throws SQLException;
 
-    boolean deleta(Short id) throws SQLException;
+    boolean deleta(short id) throws SQLException;
 }

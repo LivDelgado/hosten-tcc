@@ -1,4 +1,4 @@
- package br.cefetmg.inf.hosten.controller.quarto;
+package br.cefetmg.inf.hosten.controller.quarto;
 
 import br.cefetmg.inf.hosten.controller.context.ContextUtils;
 import br.cefetmg.inf.hosten.dist.proxy.ManterCategoriaQuartoProxy;
@@ -18,17 +18,17 @@ import org.primefaces.event.RowEditEvent;
 
 @ViewScoped
 @Named(value = "quartoMB")
-public class QuartoMB implements Serializable{
-    
+public class QuartoMB implements Serializable {
+
     private IManterQuarto manterQuarto;
 
     private Quarto quarto;
     private List<Quarto> listaQuartos;
-    
+
     private CategoriaQuarto categoriaQuarto;
     private CategoriaQuarto categoriaSelecionada;
-    
-    private int nroQuartoAlterar;
+
+    private short nroQuartoAlterar;
 
     public QuartoMB() {
         quarto = new Quarto();
@@ -72,15 +72,15 @@ public class QuartoMB implements Serializable{
     }
 
     public void onRowInit(RowEditEvent event) {
-        nroQuartoAlterar = (int) event.getComponent().getAttributes().get("quartoEditar");
+        nroQuartoAlterar = (short) event.getComponent().getAttributes().get("quartoEditar");
     }
 
     public void onRowEdit(RowEditEvent event) throws IOException {
         try {
             quarto = (Quarto) event.getObject();
             quarto.setCategoria(categoriaSelecionada);
-            
-            boolean testeExclusao = manterQuarto.alterar(String.valueOf(nroQuartoAlterar), quarto);
+
+            boolean testeExclusao = manterQuarto.alterar(nroQuartoAlterar, quarto);
             if (testeExclusao) {
                 ContextUtils.mostrarMensagem("Alteração efetuada", "Registro alterado com sucesso!", true);
             } else {
@@ -100,7 +100,7 @@ public class QuartoMB implements Serializable{
         this.quarto = quarto;
 
         try {
-            boolean testeExclusao = manterQuarto.excluir(String.valueOf(quarto.getNroQuarto()));
+            boolean testeExclusao = manterQuarto.excluir(quarto.getNroQuarto());
             if (testeExclusao) {
                 ContextUtils.mostrarMensagem("Exclusão efetuada", "Registro excluído com sucesso!", true);
                 return "sucesso";
@@ -118,7 +118,7 @@ public class QuartoMB implements Serializable{
     public String inserir() {
         try {
             quarto.setCategoria(categoriaSelecionada);
-            
+
             boolean testeInsercao = manterQuarto.inserir(quarto);
             if (testeInsercao) {
                 ContextUtils.mostrarMensagem("Inserção efetuada", "Registro inserido com sucesso!", true);
@@ -140,6 +140,5 @@ public class QuartoMB implements Serializable{
     public void setCategoriaSelecionada(CategoriaQuarto categoriaSelecionada) {
         this.categoriaSelecionada = categoriaSelecionada;
     }
-    
-    
+
 }

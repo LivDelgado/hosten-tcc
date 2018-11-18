@@ -9,7 +9,6 @@ import br.cefetmg.inf.util.exception.NegocioException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class ControlarDespesasAdapter implements IControlarDespesasRemote {
     private final IControlarDespesas controlarDespesas;
@@ -24,17 +23,12 @@ public class ControlarDespesasAdapter implements IControlarDespesasRemote {
     }
 
     @Override
-    public List<Despesa> listar(int seqHospedagem, int nroQuarto) throws NegocioException, SQLException, RemoteException {
+    public List<Despesa> listar(int seqHospedagem, short nroQuarto) throws NegocioException, SQLException, RemoteException {
         return controlarDespesas.listar(seqHospedagem, nroQuarto);
     }
 
     @Override
     public boolean excluir(QuartoConsumo quartoConsumo) throws NegocioException, SQLException, RemoteException {
         return controlarDespesas.excluir(quartoConsumo);
-    }
-
-    @Override
-    public Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) throws NegocioException, SQLException, RemoteException {
-        return controlarDespesas.retornaDespesa(seqHospedagem, nroQuarto);
     }
 }

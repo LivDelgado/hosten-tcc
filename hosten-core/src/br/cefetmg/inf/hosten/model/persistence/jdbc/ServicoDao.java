@@ -2,7 +2,6 @@ package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.ServicoArea;
-import br.cefetmg.inf.util.bd.BdUtils;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,7 +45,7 @@ public class ServicoDao implements IServicoDao {
     }
 
     @Override
-    public Servico buscaPorPk(Short id) throws SQLException {
+    public Servico buscaPorPk(short id) throws SQLException {
         String qry
                 = "SELECT * FROM Servico "
                 + "WHERE seqServico "
@@ -58,6 +57,7 @@ public class ServicoDao implements IServicoDao {
         ResultSet rs = pStmt.executeQuery();
 
         Servico s = new Servico(
+                rs.getShort(1),
                 rs.getString(2),
                 BigDecimal.valueOf(rs.getDouble(3)));
         s.setServicoArea(new ServicoArea(rs.getString(4)));
@@ -118,22 +118,22 @@ public class ServicoDao implements IServicoDao {
     }
 
     @Override
-    public boolean atualiza(Short pK, Servico servicoAtualizado)
+    public boolean atualiza(short pK, Servico servicoAtualizado)
             throws SQLException {
         String qry = "UPDATE Servico "
                 + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, servicoAtualizado.getDesServico());
-        pStmt.setDouble(2, servicoAtualizado.getVlrUnit().doubleValue());
+        pStmt.setBigDecimal(2, servicoAtualizado.getVlrUnit());
         pStmt.setString(3, servicoAtualizado.getServicoArea().getCodServicoArea());
-        pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        pStmt.setShort(4, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deleta(Short pK) throws SQLException {
+    public boolean deleta(short pK) throws SQLException {
         String qry = "DELETE FROM Servico "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);

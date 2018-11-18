@@ -44,7 +44,7 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public Quarto buscaPorPk(Short id) throws SQLException {
+    public Quarto buscaPorPk(short id) throws SQLException {
         String qry
                 = "SELECT * FROM Quarto "
                 + "WHERE nroQuarto = ?";
@@ -100,7 +100,7 @@ public class QuartoDao implements IQuartoDao {
 
         while (rs.next()) {
             Quarto qrt = new Quarto(
-                    (short) rs.getInt(1), rs.getBoolean(3));
+                    rs.getShort(1), rs.getBoolean(3));
             qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
 
             quartosEncontrados.add(qrt);
@@ -110,7 +110,7 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public boolean atualiza(Short pK, Quarto quartoAtualizado)
+    public boolean atualiza(short pK, Quarto quartoAtualizado)
             throws SQLException {
         String qry = "UPDATE Quarto "
                 + "SET nroQuarto = ?, codCategoria = ?, idtOcupado = ? "
@@ -120,13 +120,13 @@ public class QuartoDao implements IQuartoDao {
         pStmt.setInt(1, quartoAtualizado.getNroQuarto());
         pStmt.setString(2, quartoAtualizado.getCategoria().getCodCategoria());
         pStmt.setBoolean(3, quartoAtualizado.getIdtOcupado());
-        pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        pStmt.setShort(4, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deleta(Short pK) throws SQLException {
+    public boolean deleta(short pK) throws SQLException {
 
         String qry = "DELETE FROM Quarto "
                 + "WHERE nroQuarto = ?";

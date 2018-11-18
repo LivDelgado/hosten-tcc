@@ -42,11 +42,37 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, quartoConsumo.getQuartoHospedagem().getId().getSeqHospedagem());
         pStmt.setInt(2, quartoConsumo.getQuartoHospedagem().getId().getNroQuarto());
-        pStmt.setTimestamp(3, (Timestamp) quartoConsumo.getDatConsumo());
+        pStmt.setDate(3, quartoConsumo.getDatConsumo());
         pStmt.setInt(4, quartoConsumo.getQtdConsumo());
         pStmt.setInt(5, quartoConsumo.getServico().getSeqServico());
         pStmt.setString(6, quartoConsumo.getUsuarioRegistro().getCodUsuario());
         return pStmt.executeUpdate() > 0;
+    }
+    
+    @Override
+    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
+        String qry = 
+                "SELECT * "
+                + "FROM QuartoConsumo "
+                + "WHERE seqHospedage = ?"
+                + " AND nroQuarto = ? AND datConsumo = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setInt(1, seqHospedagem);
+        pStmt.setShort(2, nroQuarto);
+        pStmt.setDate(3, datConsumo);
+        ResultSet rs = pStmt.executeQuery();
+
+        QuartoConsumo qc = new QuartoConsumo(
+                            new QuartoConsumoId(
+                                    new QuartoHospedagem(
+                                            rs.getInt(1),
+                                            rs.getShort(2)),
+                                    rs.getDate(3)),
+                            rs.getShort(4),
+                            new Servico(rs.getShort(5)),
+                            new Usuario(rs.getString(6)));
+        
+        return qc;
     }
 
     @Override
@@ -109,19 +135,13 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
     }
 
     @Override
-    public boolean deleta(int seqHospedagem, int nroQuarto,
-            Timestamp datConsumo) throws SQLException {
+    public boolean deleta(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
         String qry = "DELETE FROM QuartoConsumo "
                 + "WHERE seqHospedagem = ? AND nroQuarto = ? AND datConsumo = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
-        pStmt.setTimestamp(3, datConsumo);
+        pStmt.setDate(3, datConsumo);
         return pStmt.executeUpdate() > 0;
-    }
-
-    @Override
-    public QuartoConsumo buscaPorPk(QuartoHospedagem qh, java.util.Date datConsumo) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

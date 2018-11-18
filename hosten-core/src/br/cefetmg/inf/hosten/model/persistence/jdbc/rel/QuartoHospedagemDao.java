@@ -123,7 +123,7 @@ public class QuartoHospedagemDao implements IQuartoHospedagemDao {
     }
 
     @Override
-    public boolean deleta(int seqHospedagem, int nroQuarto) throws SQLException {
+    public boolean deleta(int seqHospedagem, short nroQuarto) throws SQLException {
         String qry = "DELETE FROM QuartoHospedagem "
                 + "WHERE seqHospedagem = ? AND "
                 + "nroQuarto = ? ";

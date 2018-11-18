@@ -1,65 +1,69 @@
 package br.cefetmg.inf.hosten.model.persistence.adapters;
 
 import br.cefetmg.inf.hosten.model.domain.Usuario;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.UsuarioDao;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IUsuarioDao;
+import br.cefetmg.inf.hosten.model.persistence.jdbc.UsuarioDao;
 
 public class UsuarioDaoAdapter implements IUsuarioDao {
 
+    private final IUsuarioDao dao;
     private static IUsuarioDao instancia;
+
+    private UsuarioDaoAdapter() {
+        dao = UsuarioDao.getInstance();
+    }
 
     public static synchronized IUsuarioDao getInstance() {
         if (instancia == null) {
-            instancia = UsuarioDao.getInstance();
+            instancia = new UsuarioDaoAdapter();
         }
         return instancia;
     }
 
     @Override
-    public boolean adicionaUsuario(Usuario usuario)
+    public boolean adiciona(Usuario usuario)
             throws SQLException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException {
-        return instancia.adicionaUsuario(usuario);
+        return dao.adiciona(usuario);
+    }
+    
+    @Override
+    public Usuario buscaPorPk(String id) throws SQLException {
+        return dao.buscaPorPk(id);
     }
 
     @Override
-    public List<Usuario> buscaUsuario(Object dadoBusca, String coluna)
+    public List<Usuario> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+        return dao.buscaPorColuna(dadoBusca, coluna);
+    }
+
+    @Override
+    public List<Usuario> buscaTodos() throws SQLException {
+        return dao.buscaTodos();
+    }
+
+    @Override
+    public boolean atualiza(String pK, Usuario usuarioAtualizado)
             throws SQLException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException {
-        return instancia.buscaUsuario(dadoBusca, coluna);
+        return dao.atualiza(pK, usuarioAtualizado);
     }
 
     @Override
-    public List<Usuario> buscaTodosUsuarios()
-            throws SQLException,
-            NoSuchAlgorithmException,
-            UnsupportedEncodingException {
-        return instancia.buscaTodosUsuarios();
-    }
-
-    @Override
-    public boolean atualizaUsuario(Object pK, Usuario usuarioAtualizado)
-            throws SQLException,
-            NoSuchAlgorithmException,
-            UnsupportedEncodingException {
-        return instancia.atualizaUsuario(pK, usuarioAtualizado);
-    }
-
-    @Override
-    public boolean deletaUsuario(Object pK) throws SQLException {
-        return instancia.deletaUsuario(pK);
+    public boolean deleta(String pK) throws SQLException {
+        return dao.deleta(pK);
     }
 
     @Override
     public Usuario usuarioLogin(String email, String senha)
             throws SQLException,
             NoSuchAlgorithmException, UnsupportedEncodingException {
-        return instancia.usuarioLogin(email, senha);
+        return dao.usuarioLogin(email, senha);
     }
 }

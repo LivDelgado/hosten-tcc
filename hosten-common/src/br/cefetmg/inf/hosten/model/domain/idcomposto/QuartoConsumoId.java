@@ -2,7 +2,7 @@ package br.cefetmg.inf.hosten.model.domain.idcomposto;
 
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;

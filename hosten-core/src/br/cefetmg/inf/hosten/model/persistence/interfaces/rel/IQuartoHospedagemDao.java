@@ -14,7 +14,7 @@ public interface IQuartoHospedagemDao {
 
     List<QuartoHospedagem> buscaTodos() throws SQLException;
 
-    boolean deleta(int seqHospedagem, int nroQuarto) throws SQLException;
+    boolean deleta(int seqHospedagem, short nroQuarto) throws SQLException;
 
     int buscaUltimoRegistro(short nroQuarto) throws SQLException;
 }

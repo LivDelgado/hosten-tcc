@@ -2,14 +2,14 @@ package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.CategoriaQuarto;
 import br.cefetmg.inf.hosten.model.domain.Quarto;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDaoJpa;
 
-public class QuartoDaoJpa implements IQuartoDaoJpa {
+public class QuartoDaoJpa implements IQuartoDao {
 
     private static final String NAMED_QUERY_BASE = "Quarto.findBy";
 
@@ -38,7 +38,7 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public Quarto buscaPorPk(Short id) throws SQLException {
+    public Quarto buscaPorPk(short id) throws SQLException {
         em.getTransaction().begin();
         Quarto quarto = em.find(Quarto.class, id);
         em.getTransaction().commit();
@@ -88,7 +88,7 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public boolean atualiza(Short id, Quarto quartoNov)
+    public boolean atualiza(short id, Quarto quartoNov)
             throws SQLException {
         em.getTransaction().begin();
 
@@ -107,9 +107,9 @@ public class QuartoDaoJpa implements IQuartoDaoJpa {
     }
 
     @Override
-    public boolean deleta(Quarto quarto) throws SQLException {
+    public boolean deleta(short nroQuarto) throws SQLException {
         em.getTransaction().begin();
-        em.remove(quarto);
+        em.remove(buscaPorPk(nroQuarto));
         em.getTransaction().commit();
 
         return true;

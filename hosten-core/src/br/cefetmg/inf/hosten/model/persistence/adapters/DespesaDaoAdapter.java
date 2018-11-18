@@ -9,23 +9,22 @@ import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IDespesaDao;
 
 public class DespesaDaoAdapter implements IDespesaDao {
     
+    private final IDespesaDao dao;
     private static IDespesaDao instancia;
+
+    public DespesaDaoAdapter() {
+        dao = DespesaDao.getInstance();
+    }
     
     public static synchronized IDespesaDao getInstance() {
         if (instancia == null) {
-            instancia  = DespesaDao.getInstance();
+            instancia  = new DespesaDaoAdapter();
         }
         return instancia;
     }
     
     @Override
-    public List<Despesa> busca(int seqHospedagem, int nroQuarto) throws SQLException {
-        return instancia.busca(seqHospedagem, nroQuarto);
-    }
-    
-    @Override
-    public Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) 
-            throws SQLException {
-        return instancia.retornaDespesa(seqHospedagem, nroQuarto);
+    public List<Despesa> busca(int seqHospedagem, short nroQuarto) throws SQLException {
+        return dao.busca(seqHospedagem, nroQuarto);
     }
 }

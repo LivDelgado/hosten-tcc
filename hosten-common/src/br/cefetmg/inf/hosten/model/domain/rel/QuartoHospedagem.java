@@ -8,7 +8,7 @@ import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoConsumoId;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;

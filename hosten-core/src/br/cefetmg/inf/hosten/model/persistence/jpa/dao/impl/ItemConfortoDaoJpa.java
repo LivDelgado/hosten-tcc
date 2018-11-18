@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.ItemConforto;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IItemConfortoDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IItemConfortoDaoJpa;
 
-public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
+public class ItemConfortoDaoJpa implements IItemConfortoDao {
 
     private static final String NAMED_QUERY_BASE = "ItemConforto.findBy";
 
@@ -98,9 +98,9 @@ public class ItemConfortoDaoJpa implements IItemConfortoDaoJpa {
     }
 
     @Override
-    public boolean deleta(ItemConforto itemConforto) throws SQLException {
+    public boolean deleta(String codItem) throws SQLException {
         em.getTransaction().begin();
-        em.remove(itemConforto);
+        em.remove(buscaPorPk(codItem));
         em.getTransaction().commit();
 
         return true;

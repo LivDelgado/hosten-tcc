@@ -1,9 +1,5 @@
 package br.cefetmg.inf.hosten.model.service.impl;
 
-import br.cefetmg.inf.hosten.model.persistence.jdbc.CargoDao;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.ProgramaDao;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.UsuarioDao;
-import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.CargoProgramaDao;
 import br.cefetmg.inf.hosten.model.domain.Cargo;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.rel.CargoPrograma;
@@ -61,7 +57,7 @@ public class ManterCargo implements IManterCargo {
                 }
 
                 // adiciona o cargo
-                boolean testeRegistro = objetoDAO.adicionaCargo(cargo);
+                boolean testeRegistro = objetoDAO.adiciona(cargo);
                 // cria os relacionamentos
                 ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
                 for (String codPrograma : listaProgramas) {
@@ -117,7 +113,7 @@ public class ManterCargo implements IManterCargo {
                 }
 
                 // atualiza o cargo
-                boolean testeRegistro = objetoDAO.atualizaCargo(codRegistro, cargo);
+                boolean testeRegistro = objetoDAO.atualiza(codRegistro, cargo);
                 if (testeRegistro) {
                     // atualiza os relacionamentos
                     ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
@@ -155,11 +151,9 @@ public class ManterCargo implements IManterCargo {
         // testar se tem usuario com esse cargo
         IUsuarioDao dao = UsuarioDaoAdapter.getInstance();
         List<Usuario> listaUsuarios = null;
-        try {
-            listaUsuarios = dao.buscaUsuario(codRegistro, "codCargo");
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            throw new NegocioException("Erro! Não foi possível excluir o cargo");
-        }
+        
+        listaUsuarios = dao.buscaPorColuna(codRegistro, "codCargo");
+        
         if (listaUsuarios.isEmpty()) {
             ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
             // deleta todos os relacionamentos com aquele cargo
@@ -167,7 +161,7 @@ public class ManterCargo implements IManterCargo {
             if (!listaREL.isEmpty()) {
                 relDAO.deletaPorColuna(codRegistro, "codCargo");
             }
-            return objetoDAO.deletaCargo(codRegistro);
+            return objetoDAO.deleta(codRegistro);
         } else {
             throw new NegocioException(
                     "Não é possível excluir o cargo"
@@ -182,7 +176,7 @@ public class ManterCargo implements IManterCargo {
         // confere se foi digitado um dado busca e se a coluna é válida
         //
         if (dadoBusca != null) {
-            return objetoDAO.buscaCargo(dadoBusca, coluna);
+            return objetoDAO.buscaPorColuna(dadoBusca, coluna);
         } else {
             throw new NegocioException("Nenhum cargo buscado!");
         }
@@ -191,7 +185,7 @@ public class ManterCargo implements IManterCargo {
     @Override
     public List<Cargo> listarTodos()
             throws NegocioException, SQLException {
-        return objetoDAO.buscaTodosCargos();
+        return objetoDAO.buscaTodos();
     }
 
     @Override
@@ -211,6 +205,6 @@ public class ManterCargo implements IManterCargo {
     public List<Programa> listarTodosProgramas() 
             throws NegocioException, SQLException {
         IProgramaDao programaDAO = ProgramaDaoAdapter.getInstance();
-        return programaDAO.buscaTodosProgramas();
+        return programaDAO.buscaTodos();
     }
 }

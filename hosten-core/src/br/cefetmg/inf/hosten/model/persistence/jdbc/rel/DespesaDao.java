@@ -27,7 +27,7 @@ public class DespesaDao implements IDespesaDao {
     }
     
     @Override
-    public List<Despesa> busca(int seqHospedagem, int nroQuarto) throws SQLException {
+    public List<Despesa> busca(int seqHospedagem, short nroQuarto) throws SQLException {
         String qry = "SELECT * "
                 + "FROM Despesa "
                 + "WHERE "

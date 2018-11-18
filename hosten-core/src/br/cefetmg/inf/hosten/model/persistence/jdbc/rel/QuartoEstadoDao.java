@@ -65,5 +65,4 @@ public class QuartoEstadoDao implements IQuartoEstadoDao {
         }
         return quartoEstadoEncontrados;
     }
-
 }

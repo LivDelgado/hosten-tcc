@@ -2,7 +2,6 @@ package br.cefetmg.inf.hosten.model.persistence.jdbc;
 
 import br.cefetmg.inf.hosten.model.domain.Hospedagem;
 import br.cefetmg.inf.hosten.model.domain.Hospede;
-import br.cefetmg.inf.util.bd.BdUtils;
 import br.cefetmg.inf.util.bd.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDao;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 
 public final class HospedagemDao implements IHospedagemDao {
 
@@ -49,7 +48,7 @@ public final class HospedagemDao implements IHospedagemDao {
     }
 
     @Override
-    public Hospedagem buscaPorPk(Integer id) throws SQLException {
+    public Hospedagem buscaPorPk(int id) throws SQLException {
         String qry = "SELECT * FROM Hospedagem "
                 + "WHERE seqHospedagem "
                 + "= ?";
@@ -109,9 +108,9 @@ public final class HospedagemDao implements IHospedagemDao {
 
         while (rs.next()) {
             Hospedagem h = new Hospedagem(
-                    new Date(rs.getTimestamp(2).getTime()),
-                    new Date(rs.getTimestamp(3).getTime()),
-                    BigDecimal.valueOf(rs.getDouble(4)));
+                    new Date(rs.getDate(2).getTime()),
+                    new Date(rs.getDate(3).getTime()),
+                    rs.getBigDecimal(4));
             h.setSeqHospedagem(rs.getInt(1));
             h.setHospede(new Hospede(rs.getString(5)));
 
@@ -122,23 +121,23 @@ public final class HospedagemDao implements IHospedagemDao {
     }
 
     @Override
-    public boolean atualiza(Integer pK, Hospedagem hospedagemAtualizado) throws SQLException {
+    public boolean atualiza(int pK, Hospedagem hospedagemAtualizado) throws SQLException {
         String qry = "UPDATE Hospedagem "
                 + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, "
                 + "codCPF = ? "
                 + "WHERE seqHospedagem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setTimestamp(1, new Timestamp(hospedagemAtualizado.getDatCheckin().getTime()));
-        pStmt.setTimestamp(2, new Timestamp(hospedagemAtualizado.getDatCheckout().getTime()));
-        pStmt.setDouble(3, hospedagemAtualizado.getVlrPago().doubleValue());
+        pStmt.setDate(1, new Date(hospedagemAtualizado.getDatCheckin().getTime()));
+        pStmt.setDate(2, new Date(hospedagemAtualizado.getDatCheckout().getTime()));
+        pStmt.setBigDecimal(3, hospedagemAtualizado.getVlrPago());
         pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCpf());
-        pStmt.setInt(5, Integer.parseInt(pK.toString()));
+        pStmt.setInt(5, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deleta(Integer pK) throws SQLException {
+    public boolean deleta(int pK) throws SQLException {
         String qry = "DELETE FROM Hospedagem "
                 + "WHERE seqHospedagem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);

@@ -1,13 +1,13 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.impl;
 
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoEstadoDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoEstadoDaoJpa;
 
-public class QuartoEstadoDaoJpa implements IQuartoEstadoDaoJpa {
+public class QuartoEstadoDaoJpa implements IQuartoEstadoDao {
 
     private static QuartoEstadoDaoJpa instancia;
 

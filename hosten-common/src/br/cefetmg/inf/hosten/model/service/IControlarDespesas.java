@@ -8,15 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface IControlarDespesas {
-    boolean inserir(QuartoConsumo quartoConsumo) 
-            throws NegocioException, SQLException;
 
-    List<Despesa> listar(int seqHospedagem, int nroQuarto)
-            throws NegocioException, SQLException;
+    boolean inserir(QuartoConsumo quartoConsumo) throws NegocioException, SQLException;
 
-    boolean excluir(QuartoConsumo quartoConsumo) 
-            throws NegocioException, SQLException;
-    
-    Map<String, Object> retornaDespesa(int seqHospedagem, int nroQuarto) 
-            throws NegocioException, SQLException;
+    List<Despesa> listar(int seqHospedagem, short nroQuarto) throws NegocioException, SQLException;
+
+    boolean excluir(QuartoConsumo quartoConsumo) throws NegocioException, SQLException;
 }

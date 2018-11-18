@@ -1,14 +1,14 @@
 package br.cefetmg.inf.hosten.model.persistence.jpa.dao.impl;
 
 import br.cefetmg.inf.hosten.model.domain.Programa;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IProgramaDao;
 import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.interfaces.IProgramaDaoJpa;
 
-public class ProgramaDaoJpa implements IProgramaDaoJpa {
+public class ProgramaDaoJpa implements IProgramaDao {
 
     private static final String NAMED_QUERY_BASE = "Programa.findBy";
 
@@ -100,9 +100,9 @@ public class ProgramaDaoJpa implements IProgramaDaoJpa {
     }
 
     @Override
-    public boolean deleta(Programa programa) throws SQLException {
+    public boolean deleta(String codPrograma) throws SQLException {
         em.getTransaction().begin();
-        em.remove(programa);
+        em.remove(buscaPorPk(codPrograma));
         em.getTransaction().commit();
 
         return true;

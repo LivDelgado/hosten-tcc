@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IDespesaDao {
 
-    List<Despesa> busca(int seqHospedagem, int nroQuarto) throws SQLException;
+    List<Despesa> busca(int seqHospedagem, short nroQuarto) throws SQLException;
 }
