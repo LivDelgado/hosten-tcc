@@ -32,7 +32,9 @@ public class ServicoDao implements IServicoDao {
 
     @Override
     public boolean adiciona(Servico servico) throws SQLException {
-        String qry = "INSERT INTO Servico"
+
+        String qry
+                = "INSERT INTO Servico"
                 + "(desServico, vlrUnit, codServicoArea)"
                 + " VALUES (?,?,?)";
 
@@ -46,14 +48,13 @@ public class ServicoDao implements IServicoDao {
 
     @Override
     public Servico buscaPorPk(short id) throws SQLException {
+
         String qry
                 = "SELECT * FROM Servico "
-                + "WHERE seqServico "
-                + "= ?";
+                + "WHERE seqServico = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
-
         pStmt.setShort(1, id);
-
         ResultSet rs = pStmt.executeQuery();
 
         Servico s = new Servico(
@@ -67,17 +68,31 @@ public class ServicoDao implements IServicoDao {
 
     @Override
     public List<Servico> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
-        String qry = "SELECT * FROM Servico "
-                + "WHERE " + coluna + " "
-                + "= ?";
+
+        String qry
+                = "SELECT * FROM Servico "
+                + "WHERE " + coluna + " = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        switch (coluna.toLowerCase()) {
+            case "seqservico":
+                pStmt.setShort(1, (short) dadoBusca);
+                break;
+            case "desservico":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+            case "vlrunit":
+                pStmt.setBigDecimal(
+                        1,
+                        BigDecimal.valueOf(
+                                Double.parseDouble(
+                                        dadoBusca.toString())));
+                break;
+            case "codservicoarea":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
         }
-
         ResultSet rs = pStmt.executeQuery();
 
         List<Servico> servicoEncontrados = new ArrayList<>();

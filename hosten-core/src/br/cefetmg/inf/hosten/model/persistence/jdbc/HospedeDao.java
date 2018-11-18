@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedeDao;
 
-public final class HospedeDao implements IHospedeDao{
+public final class HospedeDao implements IHospedeDao {
 
     private static Connection con;
     private static HospedeDao instancia;
@@ -30,11 +30,14 @@ public final class HospedeDao implements IHospedeDao{
 
     @Override
     public boolean adiciona(Hospede hospede) throws SQLException {
-        String qry = "INSERT INTO Hospede"
+
+        String qry
+                = "INSERT INTO Hospede"
                 + "(codCPF, nomHospede, desTelefone, desEmail)"
                 + " VALUES (?,?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, hospede.getCodCpf());
         pStmt.setString(2, hospede.getNomHospede());
         pStmt.setString(3, hospede.getDesTelefone());
@@ -42,69 +45,86 @@ public final class HospedeDao implements IHospedeDao{
 
         return pStmt.executeUpdate() > 0;
     }
-    
+
     @Override
     public Hospede buscaPorPk(String id) throws SQLException {
-        String qry = "SELECT * FROM Hospede "
+
+        String qry
+                = "SELECT * FROM Hospede "
                 + "WHERE codCpf LIKE ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
-
         pStmt.setString(1, id);
-
         ResultSet rs = pStmt.executeQuery();
 
         Hospede h = new Hospede(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4));
+                rs.getString(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4));
         return h;
     }
 
     @Override
     public List<Hospede> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
-        String qry = "SELECT * FROM Hospede "
+
+        String qry
+                = "SELECT * FROM Hospede "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        }
+        switch (coluna.toLowerCase()) {
 
+            case "codcpf":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+
+            case "nomhospede":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+
+            case "destelefone":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+
+            case "desemail":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+        }
         ResultSet rs = pStmt.executeQuery();
 
         List<Hospede> hospedesEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            hospedesEncontrados
-                    .add(new Hospede(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4)));
+            hospedesEncontrados.add(new Hospede(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4)));
         }
+
         return hospedesEncontrados;
     }
 
     @Override
     public List<Hospede> buscaTodos() throws SQLException {
-        Statement stmt = con.createStatement();
 
-        String qry = "SELECT * FROM Hospede";
+        String qry
+                = "SELECT * FROM Hospede";
+
+        Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
         List<Hospede> hospedesEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            hospedesEncontrados
-                    .add(new Hospede(
-                            rs.getString(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getString(4)));
+            hospedesEncontrados.add(new Hospede(
+                    rs.getString(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4)));
         }
 
         return hospedesEncontrados;
@@ -112,10 +132,14 @@ public final class HospedeDao implements IHospedeDao{
 
     @Override
     public boolean atualiza(String pK, Hospede hospedeAtualizado) throws SQLException {
-        String qry = "UPDATE Hospede "
+
+        String qry
+                = "UPDATE Hospede "
                 + "SET codCPF = ?, nomHospede = ?, desTelefone = ?, desEmail = ? "
                 + "WHERE codCPF = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, hospedeAtualizado.getCodCpf());
         pStmt.setString(2, hospedeAtualizado.getNomHospede());
         pStmt.setString(3, hospedeAtualizado.getDesTelefone());
@@ -127,8 +151,11 @@ public final class HospedeDao implements IHospedeDao{
 
     @Override
     public boolean deleta(String pK) throws SQLException {
-        String qry = "DELETE FROM Hospede "
+
+        String qry
+                = "DELETE FROM Hospede "
                 + "WHERE codCPF = ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, pK);
 

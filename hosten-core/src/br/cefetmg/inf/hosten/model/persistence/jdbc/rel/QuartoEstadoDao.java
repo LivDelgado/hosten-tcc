@@ -29,40 +29,27 @@ public class QuartoEstadoDao implements IQuartoEstadoDao {
 
     @Override
     public List<QuartoEstado> buscaTodos() throws SQLException {
+
         String qry
-                = "SELECT \n"
-                + "	A.seqHospedagem, \n"
-                + "	B.nroQuarto,\n"
-                + "	A.nroAdultos,\n"
-                + "	A.nroCriancas,\n"
-                + "	A.vlrDiaria,\n"
-                + "	B.idtOcupado,\n"
-                + "	A.datCheckOut\n"
-                + "FROM \n"
-                + "	Quarto B\n"
-                + "	LEFT JOIN (\n"
-                + "                SELECT D.seqhospedagem, nroquarto, nroadultos, nrocriancas, vlrdiaria, datcheckin, datcheckout, vlrpago, codcpf\n"
-                + "                FROM QuartoHospedagem D\n"
-                + "                JOIN Hospedagem E on D.seqhospedagem = E.seqhospedagem\n"
-                + "                WHERE datcheckout = NULL OR datcheckout > (SELECT NOW())\n"
-                + "        ) A ON A.nroQuarto = B.nroQuarto\n"
-                + "ORDER BY nroquarto;";
+                = "SELECT * FROM QuartoEstado";
+
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
-        List<br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado> quartoEstadoEncontrados = new ArrayList<>();
+        List<QuartoEstado> quartoEstadoEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            quartoEstadoEncontrados
-                    .add(new br.cefetmg.inf.hosten.model.domain.rel.QuartoEstado(
-                            rs.getInt(1),
-                            rs.getShort(2),
-                            rs.getShort(3),
-                            rs.getShort(4),
-                            rs.getBigDecimal(5),
-                            rs.getBoolean(6),
-                            rs.getTimestamp(7)));
+            quartoEstadoEncontrados.add(new QuartoEstado(
+                    rs.getLong(1),
+                    rs.getInt(2),
+                    rs.getShort(3),
+                    rs.getShort(4),
+                    rs.getShort(5),
+                    rs.getBigDecimal(6),
+                    rs.getBoolean(7),
+                    rs.getDate(8)));
         }
+        
         return quartoEstadoEncontrados;
     }
 }

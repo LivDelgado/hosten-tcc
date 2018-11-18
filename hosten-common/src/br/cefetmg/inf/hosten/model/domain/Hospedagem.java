@@ -4,7 +4,7 @@ import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -66,12 +66,11 @@ public class Hospedagem implements Serializable {
         this.vlrPago = vlrPago;
     }
 
-    public Hospedagem(Integer seqHospedagem, Date datCheckin, Date datCheckout, BigDecimal vlrPago, Hospede hospede) {
+    public Hospedagem(Integer seqHospedagem, Date datCheckin, Date datCheckout, BigDecimal vlrPago) {
         this.seqHospedagem = seqHospedagem;
         this.datCheckin = datCheckin;
         this.datCheckout = datCheckout;
         this.vlrPago = vlrPago;
-        this.hospede = hospede;
     }
 
     public Integer getSeqHospedagem() {

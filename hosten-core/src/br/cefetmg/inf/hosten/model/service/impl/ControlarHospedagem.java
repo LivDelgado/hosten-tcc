@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDao;
@@ -28,6 +27,7 @@ import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IQuartoDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoEstadoDao;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class ControlarHospedagem implements IControlarHospedagem {
 
@@ -62,7 +62,11 @@ public class ControlarHospedagem implements IControlarHospedagem {
 
             // ----------------------------------------------------------------------------------------------------------------------------------------
             // realiza a operação de check-in
-            Hospedagem hosp = new Hospedagem(dataCheckIn, dataCheckOut, BigDecimal.valueOf(valorTotal));
+            Hospedagem hosp = new Hospedagem(
+                    new java.sql.Date(dataCheckIn.getTime()),
+                    new java.sql.Date(dataCheckOut.getTime()), 
+                    BigDecimal.valueOf(valorTotal));
+            
             hosp.setHospede(new Hospede(codCPF));
             IHospedagemDao hospDAO = HospedagemDaoAdapter.getInstance();
 
@@ -104,7 +108,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             List<Hospedagem> hospBuscada = hospDAO.buscaPorColuna(seqHospedagem, "seqHospedagem");
 
             Hospedagem hospedagemAtualizado = hospBuscada.get(0);
-            hospedagemAtualizado.setDatCheckout(dataCheckOut);
+            hospedagemAtualizado.setDatCheckout(new java.sql.Date(dataCheckOut.getTime()));
 
             // faz o cálculo das despesas
             IControlarDespesas controlarDespesas = new ControlarDespesas();

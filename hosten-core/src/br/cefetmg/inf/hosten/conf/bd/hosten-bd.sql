@@ -298,23 +298,35 @@ FROM
 
 -- View Quarto Estado
 CREATE OR REPLACE VIEW QuartoEstado AS
-SELECT 
-    Row_number() OVER () AS id,
-    A.seqHospedagem,
-    A.nroQuarto,
-    A.nroAdultos,
-    A.nroCriancas,
-    D.vlrDiaria,
-    C.idtOcupado,
-    B.datCheckOut
-FROM
-    QuartoHospedagem A
-    JOIN Hospedagem B
-        ON A.seqHospedagem = B.seqHospedagem
-    JOIN Quarto C
-        ON A.nroQuarto = C.nroQuarto
-    JOIN Categoria D
-        ON C.codCategoria = D.codCategoria;
+SELECT
+Row_number() OVER () AS id,
+A.seqHospedagem, 
+B.nroQuarto,
+A.nroAdultos,
+A.nroCriancas,
+A.vlrDiaria,
+B.idtOcupado,
+A.datCheckOut
+FROM Quarto B
+	LEFT JOIN 
+        (SELECT 
+            D.seqhospedagem, 
+            nroquarto, 
+            nroadultos, 
+            nrocriancas, 
+            vlrdiaria, 
+            datcheckin, 
+            datcheckout, 
+            vlrpago, 
+            codcpf
+            FROM QuartoHospedagem D
+                JOIN Hospedagem E 
+                    ON D.seqhospedagem = E.seqhospedagem
+            WHERE 
+                datcheckout = NULL 
+                OR datcheckout > (SELECT NOW())) A 
+	    ON A.nroQuarto = B.nroQuarto
+ORDER BY nroquarto;
 
 -- Insert section -------------------------------------------------
 

@@ -31,9 +31,11 @@ public final class ProgramaDao implements IProgramaDao {
     @Override
     public boolean adiciona(Programa programa) throws SQLException {
 
-        String qry = "INSERT INTO Programa"
+        String qry
+                = "INSERT INTO Programa"
                 + "(codPrograma, desPrograma) "
                 + "VALUES (?,?)";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
         pStmt.setString(1, programa.getCodPrograma());
@@ -41,12 +43,14 @@ public final class ProgramaDao implements IProgramaDao {
 
         return pStmt.executeUpdate() > 0;
     }
-    
+
     @Override
     public Programa buscaPorPk(String id) throws SQLException {
-        String qry = 
-                "SELECT * FROM Programa "
+
+        String qry
+                = "SELECT * FROM Programa "
                 + "WHERE codPrograma LIKE ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, id);
         ResultSet rs = pStmt.executeQuery();
@@ -58,26 +62,28 @@ public final class ProgramaDao implements IProgramaDao {
 
     @Override
     public List<Programa> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
-        String qry = "SELECT * FROM Programa "
+
+        String qry
+                = "SELECT * FROM Programa "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
+
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        switch (coluna.toLowerCase()) {
+            case "codprograma":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
+            case "desprograma":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
         }
-
         ResultSet rs = pStmt.executeQuery();
 
         List<Programa> programasEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            programasEncontrados
-                    .add(new Programa(
-                            rs.getString(1),
-                            rs.getString(2)));
+            programasEncontrados.add(new Programa(rs.getString(1), rs.getString(2)));
         }
 
         return programasEncontrados;
@@ -85,44 +91,49 @@ public final class ProgramaDao implements IProgramaDao {
 
     @Override
     public List<Programa> buscaTodos() throws SQLException {
-        Statement stmt = con.createStatement();
 
-        String qry = "SELECT * FROM Programa";
+        String qry
+                = "SELECT * FROM Programa";
+
+        Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
         List<Programa> programasEncontrados = new ArrayList<>();
 
         while (rs.next()) {
-            programasEncontrados
-                    .add(new Programa(
-                            rs.getString(1),
-                            rs.getString(2)));
+            programasEncontrados.add(new Programa(rs.getString(1), rs.getString(2)));
         }
 
         return programasEncontrados;
     }
 
     @Override
-    public boolean atualiza(String pK, Programa programaAtualizado) throws SQLException {
-        String qry = "UPDATE Programa "
+    public boolean atualiza(String id, Programa programaAtualizado) throws SQLException {
+        
+        String qry
+                = "UPDATE Programa "
                 + "SET codPrograma = ?, desPrograma = ? "
                 + "WHERE codPrograma LIKE ?";
+        
         PreparedStatement pStmt = con.prepareStatement(qry);
 
         pStmt.setString(1, programaAtualizado.getCodPrograma());
         pStmt.setString(2, programaAtualizado.getDesPrograma());
-        pStmt.setString(3, pK);
+        pStmt.setString(3, id);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deleta(String pK) throws SQLException {
-        String qry = "DELETE FROM Programa "
+    public boolean deleta(String id) throws SQLException {
+        
+        String qry
+                = "DELETE FROM Programa "
                 + "WHERE codPrograma LIKE ?";
+        
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, pK);
+        pStmt.setString(1, id);
+        
         return pStmt.executeUpdate() > 0;
     }
-    
 }

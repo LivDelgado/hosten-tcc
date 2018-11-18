@@ -34,14 +34,17 @@ public final class HospedagemDao implements IHospedagemDao {
 
     @Override
     public boolean adiciona(Hospedagem hospedagem) throws SQLException {
-        String qry = "INSERT INTO Hospedagem"
-                + "(datCheckIn, datCheckOut, vlrPago, codCPF)"
-                + " VALUES (?,?,?,?)";
+
+        String qry
+                = "INSERT INTO Hospedagem"
+                + "(datCheckIn, datCheckOut, vlrPago, codCPF) "
+                + "VALUES (?,?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setTimestamp(1, new Timestamp(hospedagem.getDatCheckin().getTime()));
-        pStmt.setTimestamp(2, new Timestamp(hospedagem.getDatCheckout().getTime()));
-        pStmt.setDouble(3, hospedagem.getVlrPago().doubleValue());
+        
+        pStmt.setDate(1, hospedagem.getDatCheckin());
+        pStmt.setDate(2, hospedagem.getDatCheckout());
+        pStmt.setBigDecimal(3, hospedagem.getVlrPago());
         pStmt.setString(4, hospedagem.getHospede().getCodCpf());
 
         return pStmt.executeUpdate() > 0;
@@ -49,35 +52,55 @@ public final class HospedagemDao implements IHospedagemDao {
 
     @Override
     public Hospedagem buscaPorPk(int id) throws SQLException {
-        String qry = "SELECT * FROM Hospedagem "
-                + "WHERE seqHospedagem "
-                + "= ?";
+        
+        String qry 
+                = "SELECT * FROM Hospedagem "
+                + "WHERE seqHospedagem = ?";
+        
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, id);
         ResultSet rs = pStmt.executeQuery();
 
         Hospedagem h = new Hospedagem(
                 rs.getInt(1),
-                new Date(rs.getTimestamp(2).getTime()),
-                new Date(rs.getTimestamp(3).getTime()),
-                BigDecimal.valueOf(rs.getDouble(4)),
-                new Hospede(rs.getString(5)));
+                rs.getDate(2),
+                rs.getDate(3),
+                rs.getBigDecimal(4));
+        h.setHospede(new Hospede(rs.getString(5)));
 
         return h;
     }
 
     @Override
-    public List<Hospedagem> buscaPorColuna(Object dadoBusca, String coluna)
-            throws SQLException {
-        String qry = "SELECT * FROM Hospedagem "
-                + "WHERE " + coluna + " "
-                + "= ?";
+    public List<Hospedagem> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+        
+        String qry 
+                = "SELECT * FROM Hospedagem "
+                + "WHERE " + coluna + " = ?";
+        
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        switch (coluna.toLowerCase()) {
+            
+            case "seqhospedagem":
+                pStmt.setInt(1, (int) dadoBusca);
+                break;
+                
+            case "datcheckin":
+                pStmt.setDate(1, (Date) dadoBusca);
+                break;
+                
+            case "datcheckout":
+                pStmt.setDate(1, (Date) dadoBusca);
+                break;
+                
+            case "vlrpago":
+                pStmt.setBigDecimal(1, (BigDecimal) dadoBusca);
+                break;
+                
+            case "codcpf":
+                pStmt.setString(1, dadoBusca.toString());
+                break;
         }
         ResultSet rs = pStmt.executeQuery();
 
@@ -85,10 +108,10 @@ public final class HospedagemDao implements IHospedagemDao {
 
         while (rs.next()) {
             Hospedagem h = new Hospedagem(
-                    new Date(rs.getTimestamp(2).getTime()),
-                    new Date(rs.getTimestamp(3).getTime()),
-                    BigDecimal.valueOf(rs.getDouble(4)));
-            h.setSeqHospedagem(rs.getInt(1));
+                    rs.getInt(1),
+                    rs.getDate(2),
+                    rs.getDate(3),
+                    rs.getBigDecimal(4));
             h.setHospede(new Hospede(rs.getString(5)));
 
             hospedagemEncontrados.add(h);
@@ -99,19 +122,21 @@ public final class HospedagemDao implements IHospedagemDao {
 
     @Override
     public List<Hospedagem> buscaTodos() throws SQLException {
+        
+        String qry 
+                = "SELECT * FROM Hospedagem";
+        
         Statement stmt = con.createStatement();
-
-        String qry = "SELECT * FROM Hospedagem";
         ResultSet rs = stmt.executeQuery(qry);
 
         List<Hospedagem> hospedagemsEncontrados = new ArrayList<>();
 
         while (rs.next()) {
             Hospedagem h = new Hospedagem(
-                    new Date(rs.getDate(2).getTime()),
-                    new Date(rs.getDate(3).getTime()),
+                    rs.getInt(1),
+                    rs.getDate(2),
+                    rs.getDate(3),
                     rs.getBigDecimal(4));
-            h.setSeqHospedagem(rs.getInt(1));
             h.setHospede(new Hospede(rs.getString(5)));
 
             hospedagemsEncontrados.add(h);
@@ -121,27 +146,33 @@ public final class HospedagemDao implements IHospedagemDao {
     }
 
     @Override
-    public boolean atualiza(int pK, Hospedagem hospedagemAtualizado) throws SQLException {
-        String qry = "UPDATE Hospedagem "
-                + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, "
-                + "codCPF = ? "
+    public boolean atualiza(int id, Hospedagem hospedagemAtualizado) throws SQLException {
+        
+        String qry 
+                = "UPDATE Hospedagem "
+                + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
                 + "WHERE seqHospedagem = ?";
+        
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setDate(1, new Date(hospedagemAtualizado.getDatCheckin().getTime()));
-        pStmt.setDate(2, new Date(hospedagemAtualizado.getDatCheckout().getTime()));
+        
+        pStmt.setDate(1, hospedagemAtualizado.getDatCheckin());
+        pStmt.setDate(1, hospedagemAtualizado.getDatCheckout());
         pStmt.setBigDecimal(3, hospedagemAtualizado.getVlrPago());
         pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCpf());
-        pStmt.setInt(5, pK);
+        pStmt.setInt(5, id);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deleta(int pK) throws SQLException {
-        String qry = "DELETE FROM Hospedagem "
+    public boolean deleta(int id) throws SQLException {
+        
+        String qry 
+                = "DELETE FROM Hospedagem "
                 + "WHERE seqHospedagem = ?";
+        
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, pK);
+        pStmt.setInt(1, id);
 
         return pStmt.executeUpdate() > 0;
     }

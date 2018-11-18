@@ -11,32 +11,33 @@ import java.sql.Connection;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IDespesaDao;
 
 public class DespesaDao implements IDespesaDao {
-    
+
     private final Connection con;
     private static DespesaDao instancia;
-    
+
     private DespesaDao() {
         con = new ConnectionFactory().getConnection();
     }
-    
+
     public static synchronized DespesaDao getInstance() {
         if (instancia == null) {
-            instancia  = new DespesaDao();
+            instancia = new DespesaDao();
         }
         return instancia;
     }
-    
+
     @Override
     public List<Despesa> busca(int seqHospedagem, short nroQuarto) throws SQLException {
-        String qry = "SELECT * "
-                + "FROM Despesa "
-                + "WHERE "
-                + "seqHospedagem = ? AND "
-                + "nroQuarto = ?";
+
+        String qry
+                = "SELECT * FROM Despesa "
+                + "WHERE seqHospedagem = ? AND nroQuarto = ?";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setInt(1, seqHospedagem);
-        pStmt.setInt(2, nroQuarto);
+        pStmt.setShort(2, nroQuarto);
+
         ResultSet rs = pStmt.executeQuery();
 
         List<Despesa> despesaEncontradas = new ArrayList<>();
@@ -56,24 +57,23 @@ public class DespesaDao implements IDespesaDao {
         Short qtdConsumo, 
         String desServico, 
         BigDecimal vlrUnit
-        */
+         */
         while (rs.next()) {
-            despesaEncontradas
-                    .add(new Despesa(
-                            rs.getInt(1),
-                            rs.getInt(1),
-                            rs.getShort(2),
-                            rs.getShort(3),
-                            rs.getShort(4),
-                            rs.getBigDecimal(5),
-                            rs.getTimestamp(6),
-                            rs.getTimestamp(7),
-                            rs.getBigDecimal(8),
-                            rs.getString(9),
-                            rs.getShort(10),
-                            rs.getShort(11),
-                            rs.getString(12),
-                            rs.getBigDecimal(13)));
+            despesaEncontradas.add(new Despesa(
+                    rs.getLong(1),
+                    rs.getInt(1),
+                    rs.getShort(2),
+                    rs.getShort(3),
+                    rs.getShort(4),
+                    rs.getBigDecimal(5),
+                    rs.getDate(6),
+                    rs.getDate(7),
+                    rs.getBigDecimal(8),
+                    rs.getString(9),
+                    rs.getShort(10),
+                    rs.getShort(11),
+                    rs.getString(12),
+                    rs.getBigDecimal(13)));
         }
         return despesaEncontradas;
     }
