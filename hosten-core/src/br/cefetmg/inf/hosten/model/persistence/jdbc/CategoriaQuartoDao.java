@@ -12,7 +12,7 @@ import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.ICategoriaQuartoDao;
 import java.math.BigDecimal;
 
-public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
+public final class CategoriaQuartoDao implements ICategoriaQuartoDao {
 
     private static Connection con;
     private static CategoriaQuartoDao instancia;
@@ -30,8 +30,7 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
     }
 
     @Override
-    public boolean adicionaCategoriaQuarto(CategoriaQuarto categoriaQuarto)
-            throws SQLException {
+    public boolean adiciona(CategoriaQuarto categoriaQuarto) throws SQLException {
         String qry = "INSERT INTO Categoria"
                 + "(codCategoria, nomCategoria, vlrDiaria)"
                 + " VALUES (?,?,?)";
@@ -45,9 +44,23 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
     }
 
     @Override
-    public List<CategoriaQuarto> buscaCategoriaQuarto(
-            Object dadoBusca, 
-            String coluna) throws SQLException {
+    public CategoriaQuarto buscaPorPk(String id) throws SQLException {
+        String qry = "SELECT * FROM Categoria "
+                + "WHERE codCategoria LIKE ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setString(1, id);
+        ResultSet rs = pStmt.executeQuery();
+
+        CategoriaQuarto cq = new CategoriaQuarto(
+                rs.getString(1),
+                rs.getString(2),
+                BigDecimal.valueOf(rs.getDouble(3)));
+
+        return cq;
+    }
+
+    @Override
+    public List<CategoriaQuarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
         String qry = "SELECT * FROM Categoria "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
@@ -62,7 +75,7 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
         ResultSet rs = pStmt.executeQuery();
 
         List<CategoriaQuarto> categoriaQuartosEncontrados = new ArrayList<>();
-        
+
         while (rs.next()) {
             categoriaQuartosEncontrados
                     .add(new CategoriaQuarto(
@@ -75,11 +88,10 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
     }
 
     @Override
-    public List<CategoriaQuarto> buscaTodosCategoriaQuartos() 
-            throws SQLException {
-        Statement stmt = con.createStatement();
+    public List<CategoriaQuarto> buscaTodos() throws SQLException {
 
         String qry = "SELECT * FROM Categoria";
+        Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(qry);
 
         List<CategoriaQuarto> categoriaQuartosEncontrados = new ArrayList<>();
@@ -87,7 +99,7 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
         while (rs.next()) {
             categoriaQuartosEncontrados
                     .add(new CategoriaQuarto(
-                            rs.getString(1), 
+                            rs.getString(1),
                             rs.getString(2),
                             BigDecimal.valueOf(rs.getDouble(3))));
         }
@@ -96,35 +108,27 @@ public final class CategoriaQuartoDao implements ICategoriaQuartoDao{
     }
 
     @Override
-    public boolean atualizaCategoriaQuarto(
-            Object pK, 
-            CategoriaQuarto categoriaQuartoAtualizado) throws SQLException {
+    public boolean atualiza(String pK, CategoriaQuarto categoriaQuartoAtualizado) throws SQLException {
+
         String qry = "UPDATE Categoria "
                 + "SET codCategoria = ?, nomCategoria = ?, vlrDiaria = ? "
                 + "WHERE codCategoria = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, categoriaQuartoAtualizado.getCodCategoria());
         pStmt.setString(2, categoriaQuartoAtualizado.getNomCategoria());
         pStmt.setDouble(3, categoriaQuartoAtualizado.getVlrDiaria().doubleValue());
-        if (pK instanceof String) {
-            pStmt.setString(4, pK.toString());
-        } else {
-            pStmt.setInt(4, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(4, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deletaCategoriaQuarto(Object pK) throws SQLException {
+    public boolean deleta(String pK) throws SQLException {
         String qry = "DELETE FROM Categoria "
                 + "WHERE codCategoria = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(1, pK);
 
         return pStmt.executeUpdate() > 0;
     }

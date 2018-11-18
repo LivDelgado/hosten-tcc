@@ -4,7 +4,7 @@ import br.cefetmg.inf.util.bd.BdUtils;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.IDespesaDaoJpa;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IDespesaDaoJpa;
 
 public class DespesaDaoJpa implements IDespesaDaoJpa {
 

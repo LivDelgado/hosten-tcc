@@ -33,7 +33,7 @@ public class UsuarioDao implements IUsuarioDao {
     }
 
     @Override
-    public boolean adicionaUsuario(Usuario usuario)
+    public boolean adiciona(Usuario usuario)
             throws SQLException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException {
@@ -51,25 +51,39 @@ public class UsuarioDao implements IUsuarioDao {
 
         return pStmt.executeUpdate() > 0;
     }
+    
+    @Override
+    public Usuario buscaPorPk(String id) throws SQLException {
+        String qry = 
+                "SELECT * FROM Usuario "
+                + "WHERE  codUsuario "
+                + "LIKE ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+
+        pStmt.setString(1, id);
+
+        ResultSet rs = pStmt.executeQuery();
+
+        Usuario user = new Usuario(
+                rs.getString(1),
+                rs.getString(2),
+                rs.getString(4),
+                rs.getString(5));
+
+        user.setCargo(new Cargo(rs.getString(3)));
+
+        return user;
+    }
 
     @Override
-    public List<Usuario> buscaUsuario(Object dadoBusca, String coluna)
-            throws SQLException,
-            NoSuchAlgorithmException,
-            UnsupportedEncodingException {
+    public List<Usuario> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
 
         String qry = "SELECT * FROM Usuario "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
-        PreparedStatement pStmt = con.prepareStatement(qry,
-                ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_UPDATABLE);
+        PreparedStatement pStmt = con.prepareStatement(qry);
 
-        if (dadoBusca instanceof String) {
-            pStmt.setString(1, dadoBusca.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        }
+        pStmt.setString(1, dadoBusca.toString());
 
         ResultSet rs = pStmt.executeQuery();
 
@@ -81,9 +95,9 @@ public class UsuarioDao implements IUsuarioDao {
                     rs.getString(2),
                     rs.getString(4),
                     rs.getString(5));
-            
+
             user.setCargo(new Cargo(rs.getString(3)));
-            
+
             usuarioEncontrados.add(user);
         }
 
@@ -91,12 +105,9 @@ public class UsuarioDao implements IUsuarioDao {
     }
 
     @Override
-    public List<Usuario> buscaTodosUsuarios()
-            throws SQLException,
-            NoSuchAlgorithmException,
-            UnsupportedEncodingException {
-        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_UPDATABLE);
+    public List<Usuario> buscaTodos() throws SQLException {
+
+        Statement stmt = con.createStatement();
 
         String qry = "SELECT * FROM Usuario";
         ResultSet rs = stmt.executeQuery(qry);
@@ -119,40 +130,35 @@ public class UsuarioDao implements IUsuarioDao {
     }
 
     @Override
-    public boolean atualizaUsuario(Object pK, Usuario usuarioAtualizado)
+    public boolean atualiza(String id, Usuario userNov)
             throws SQLException,
             NoSuchAlgorithmException,
             UnsupportedEncodingException {
+
         String qry = "UPDATE Usuario "
                 + "SET codUsuario = ?, nomUsuario = ?, codCargo = ?, "
                 + "desSenha= ?, desEmail = ? "
                 + "WHERE codUsuario = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, usuarioAtualizado.getCodUsuario());
-        pStmt.setString(2, usuarioAtualizado.getNomUsuario());
-        pStmt.setString(3, usuarioAtualizado.getCargo().getCodCargo());
+
+        pStmt.setString(1, userNov.getCodUsuario());
+        pStmt.setString(2, userNov.getNomUsuario());
+        pStmt.setString(3, userNov.getCargo().getCodCargo());
         pStmt.setString(4, SenhaUtils
-                .stringParaSHA256(usuarioAtualizado.getDesSenha()));
-        pStmt.setString(5, usuarioAtualizado.getDesEmail());
-        if (pK instanceof String) {
-            pStmt.setString(6, pK.toString());
-        } else {
-            pStmt.setInt(6, Integer.parseInt(pK.toString()));
-        }
+                .stringParaSHA256(userNov.getDesSenha()));
+        pStmt.setString(5, userNov.getDesEmail());
+        pStmt.setString(6, id);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deletaUsuario(Object pK) throws SQLException {
+    public boolean deleta(String id) throws SQLException {
         String qry = "DELETE FROM Usuario "
                 + "WHERE codUsuario = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+
+        pStmt.setString(1, id);
 
         return pStmt.executeUpdate() > 0;
     }
@@ -167,14 +173,14 @@ public class UsuarioDao implements IUsuarioDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, email);
         ResultSet rs = pStmt.executeQuery();
-        
+
         String senhaEncontrada = "";
-        while (rs.next())
-             senhaEncontrada = rs.getString(1);
+        while (rs.next()) {
+            senhaEncontrada = rs.getString(1);
+        }
 
         if (SenhaUtils.verificaSenha(senha, senhaEncontrada)) {
-            List<Usuario> usuariosEncontrado
-                    = buscaUsuario(email, "desEmail");
+            List<Usuario> usuariosEncontrado = buscaPorColuna(email, "desEmail");
             return usuariosEncontrado.get(0);
         }
         // Retorna null caso o email não bata com a senha

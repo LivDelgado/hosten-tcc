@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.IHospedeDaoJpa;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedeDaoJpa;
 
 public class HospedeDaoJpa implements IHospedeDaoJpa {
 

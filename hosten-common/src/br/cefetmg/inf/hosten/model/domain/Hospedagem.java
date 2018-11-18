@@ -66,6 +66,14 @@ public class Hospedagem implements Serializable {
         this.vlrPago = vlrPago;
     }
 
+    public Hospedagem(Integer seqHospedagem, Date datCheckin, Date datCheckout, BigDecimal vlrPago, Hospede hospede) {
+        this.seqHospedagem = seqHospedagem;
+        this.datCheckin = datCheckin;
+        this.datCheckout = datCheckout;
+        this.vlrPago = vlrPago;
+        this.hospede = hospede;
+    }
+
     public Integer getSeqHospedagem() {
         return seqHospedagem;
     }

@@ -29,12 +29,13 @@ public final class ProgramaDao implements IProgramaDao {
     }
 
     @Override
-    public boolean adicionaPrograma(Programa programa) throws SQLException {
+    public boolean adiciona(Programa programa) throws SQLException {
+
         String qry = "INSERT INTO Programa"
                 + "(codPrograma, desPrograma) "
                 + "VALUES (?,?)";
-
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, programa.getCodPrograma());
         pStmt.setString(2, programa.getDesPrograma());
 
@@ -42,9 +43,7 @@ public final class ProgramaDao implements IProgramaDao {
     }
 
     @Override
-    public List<Programa> buscaPrograma(
-            Object dadoBusca, 
-            String coluna) throws SQLException {
+    public List<Programa> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
         String qry = "SELECT * FROM Programa "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
@@ -60,20 +59,18 @@ public final class ProgramaDao implements IProgramaDao {
 
         List<Programa> programasEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
             programasEncontrados
                     .add(new Programa(
                             rs.getString(1),
                             rs.getString(2)));
-            i++;
         }
 
         return programasEncontrados;
     }
 
     @Override
-    public List<Programa> buscaTodosProgramas() throws SQLException {
+    public List<Programa> buscaTodos() throws SQLException {
         Statement stmt = con.createStatement();
 
         String qry = "SELECT * FROM Programa";
@@ -81,48 +78,36 @@ public final class ProgramaDao implements IProgramaDao {
 
         List<Programa> programasEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
             programasEncontrados
                     .add(new Programa(
                             rs.getString(1),
                             rs.getString(2)));
-            i++;
         }
 
         return programasEncontrados;
     }
 
     @Override
-    public boolean atualizaPrograma(
-            Object pK, 
-            Programa programaAtualizado) throws SQLException {
+    public boolean atualiza(String pK, Programa programaAtualizado) throws SQLException {
         String qry = "UPDATE Programa "
                 + "SET codPrograma = ?, desPrograma = ? "
                 + "WHERE codPrograma LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setString(1, programaAtualizado.getCodPrograma());
         pStmt.setString(2, programaAtualizado.getDesPrograma());
-        if (pK instanceof String) {
-            pStmt.setString(3, pK.toString());
-        } else {
-            pStmt.setInt(3, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(3, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deletaPrograma(Object pK) throws SQLException {
+    public boolean deleta(String pK) throws SQLException {
         String qry = "DELETE FROM Programa "
                 + "WHERE codPrograma LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
-
+        pStmt.setString(1, pK);
         return pStmt.executeUpdate() > 0;
     }
 }

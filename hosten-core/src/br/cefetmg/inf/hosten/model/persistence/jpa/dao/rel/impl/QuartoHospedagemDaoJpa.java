@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.IQuartoHospedagemDaoJpa;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDaoJpa;
 
 public class QuartoHospedagemDaoJpa implements IQuartoHospedagemDaoJpa {
 

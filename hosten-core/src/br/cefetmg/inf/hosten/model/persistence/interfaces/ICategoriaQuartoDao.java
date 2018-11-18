@@ -6,18 +6,15 @@ import java.util.List;
 
 public interface ICategoriaQuartoDao {
 
-    boolean adicionaCategoriaQuarto(CategoriaQuarto categoriaQuarto)
-            throws SQLException;
+    boolean adiciona(CategoriaQuarto categoriaQuarto) throws SQLException;
 
-    List<CategoriaQuarto> buscaCategoriaQuarto(Object dadoBusca, String coluna)
-            throws SQLException;
+    CategoriaQuarto buscaPorPk(String id) throws SQLException;
 
-    List<CategoriaQuarto> buscaTodosCategoriaQuartos()
-            throws SQLException;
+    List<CategoriaQuarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    boolean atualizaCategoriaQuarto(Object pK, CategoriaQuarto categoriaQuartoAtualizado)
-            throws SQLException;
+    List<CategoriaQuarto> buscaTodos() throws SQLException;
 
-    boolean deletaCategoriaQuarto(Object pK) throws SQLException;
+    boolean atualiza(String id, CategoriaQuarto categoriaQuartoAtualizado) throws SQLException;
 
+    boolean deleta(String categoriaQuarto) throws SQLException;
 }

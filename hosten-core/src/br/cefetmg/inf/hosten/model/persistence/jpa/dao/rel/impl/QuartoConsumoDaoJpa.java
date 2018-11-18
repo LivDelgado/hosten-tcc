@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
-import br.cefetmg.inf.hosten.model.persistence.jpa.dao.rel.IQuartoConsumoDaoJpa;
+import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDaoJpa;
 
 public class QuartoConsumoDaoJpa implements IQuartoConsumoDaoJpa {
 

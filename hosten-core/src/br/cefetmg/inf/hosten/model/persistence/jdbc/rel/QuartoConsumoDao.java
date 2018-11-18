@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
 import java.sql.Date;
+import java.sql.Statement;
 
 public class QuartoConsumoDao implements IQuartoConsumoDao {
 
@@ -49,15 +50,14 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
     }
 
     @Override
-    public List<QuartoConsumo> busca(Object dadoBusca, String coluna)
-            throws SQLException {
+    public List<QuartoConsumo> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
+
         String qry = "SELECT * "
                 + "FROM QuartoConsumo "
                 + "WHERE " + coluna + " = ?";
 
-        PreparedStatement pStmt = con.prepareStatement(qry, 
-                ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_UPDATABLE);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        
         if (dadoBusca instanceof String) {
             pStmt.setString(1, dadoBusca.toString());
         } else {
@@ -73,8 +73,33 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
                     .add(new QuartoConsumo(
                             new QuartoConsumoId(
                                     new QuartoHospedagem(
-                                            rs.getInt(1), 
-                                            rs.getShort(2)), 
+                                            rs.getInt(1),
+                                            rs.getShort(2)),
+                                    rs.getDate(3)),
+                            rs.getShort(4),
+                            new Servico(rs.getShort(5)),
+                            new Usuario(rs.getString(6))));
+        }
+        return quartoConsumoEncontrados;
+    }
+    
+    @Override
+    public List<QuartoConsumo> buscaTodos() throws SQLException {
+        String qry = "SELECT * FROM QuartoConsumo";
+
+        Statement stmt = con.createStatement();
+
+        ResultSet rs = stmt.executeQuery(qry);
+
+        List<QuartoConsumo> quartoConsumoEncontrados = new ArrayList<>();
+
+        while (rs.next()) {
+            quartoConsumoEncontrados
+                    .add(new QuartoConsumo(
+                            new QuartoConsumoId(
+                                    new QuartoHospedagem(
+                                            rs.getInt(1),
+                                            rs.getShort(2)),
                                     rs.getDate(3)),
                             rs.getShort(4),
                             new Servico(rs.getShort(5)),
@@ -84,7 +109,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
     }
 
     @Override
-    public boolean deletaPorPk(int seqHospedagem, int nroQuarto,
+    public boolean deleta(int seqHospedagem, int nroQuarto,
             Timestamp datConsumo) throws SQLException {
         String qry = "DELETE FROM QuartoConsumo "
                 + "WHERE seqHospedagem = ? AND nroQuarto = ? AND datConsumo = ?";
@@ -96,13 +121,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
     }
 
     @Override
-    public boolean deleta(QuartoConsumo quartoConsumo) throws SQLException {
-        String qry = "DELETE FROM QuartoConsumo "
-                + "WHERE seqHospedagem = ? AND nroQuarto = ? AND datConsumo = ?";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, quartoConsumo.getQuartoHospedagem().getId().getSeqHospedagem());
-        pStmt.setInt(2, quartoConsumo.getQuartoHospedagem().getId().getNroQuarto());
-        pStmt.setDate(3, new Date(quartoConsumo.getDatConsumo().getTime()));
-        return pStmt.executeUpdate() > 0;
+    public QuartoConsumo buscaPorPk(QuartoHospedagem qh, java.util.Date datConsumo) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

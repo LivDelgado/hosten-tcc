@@ -6,20 +6,15 @@ import java.util.List;
 
 public interface IQuartoDao {
 
-    boolean adicionaQuarto(Quarto quarto)
-            throws SQLException;
+    boolean adiciona(Quarto quarto) throws SQLException;
 
-    List<Quarto> buscaQuarto(Object dadoBusca, String coluna)
-            throws SQLException;
+    Quarto buscaPorPk(Short id) throws SQLException;
 
-    List<Quarto> buscaTodosQuartos()
-            throws SQLException;
+    List<Quarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    boolean atualizaQuarto(Object pK, Quarto quartoAtualizado)
-            throws SQLException;
+    List<Quarto> buscaTodos() throws SQLException;
 
-    boolean deletaQuarto(Object pK) throws SQLException;
-    
-    int buscaUltimoRegistroRelacionadoAoQuarto(int nroQuarto)
-            throws SQLException;
+    boolean atualiza(Short id, Quarto quartoAtualizado) throws SQLException;
+
+    boolean deleta(Short id) throws SQLException;
 }

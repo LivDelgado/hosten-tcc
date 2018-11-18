@@ -30,7 +30,7 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public boolean adicionaQuarto(Quarto quarto) throws SQLException {
+    public boolean adiciona(Quarto quarto) throws SQLException {
         String qry = "INSERT INTO Quarto"
                 + "(nroQuarto, codCategoria, idtOcupado)"
                 + " VALUES (?,?,?)";
@@ -44,9 +44,25 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public List<Quarto> buscaQuarto(
-            Object dadoBusca,
-            String coluna) throws SQLException {
+    public Quarto buscaPorPk(Short id) throws SQLException {
+        String qry
+                = "SELECT * FROM Quarto "
+                + "WHERE nroQuarto = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+
+        pStmt.setShort(1, id);
+
+        ResultSet rs = pStmt.executeQuery();
+
+        Quarto qrt = new Quarto(
+                (short) rs.getInt(1), rs.getBoolean(3));
+        qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
+        
+        return qrt;
+    }
+
+    @Override
+    public List<Quarto> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
         String qry = "SELECT * FROM Quarto "
                 + "WHERE " + coluna + " "
                 + "= ?";
@@ -74,7 +90,7 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public List<Quarto> buscaTodosQuartos() throws SQLException {
+    public List<Quarto> buscaTodos() throws SQLException {
         Statement stmt = con.createStatement();
 
         String qry = "SELECT * FROM Quarto";
@@ -86,7 +102,7 @@ public class QuartoDao implements IQuartoDao {
             Quarto qrt = new Quarto(
                     (short) rs.getInt(1), rs.getBoolean(3));
             qrt.setCategoria(new CategoriaQuarto(rs.getString(2)));
-            
+
             quartosEncontrados.add(qrt);
         }
 
@@ -94,12 +110,13 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public boolean atualizaQuarto(Object pK, Quarto quartoAtualizado) 
+    public boolean atualiza(Short pK, Quarto quartoAtualizado)
             throws SQLException {
         String qry = "UPDATE Quarto "
                 + "SET nroQuarto = ?, codCategoria = ?, idtOcupado = ? "
                 + "WHERE nroQuarto = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
+
         pStmt.setInt(1, quartoAtualizado.getNroQuarto());
         pStmt.setString(2, quartoAtualizado.getCategoria().getCodCategoria());
         pStmt.setBoolean(3, quartoAtualizado.getIdtOcupado());
@@ -109,35 +126,14 @@ public class QuartoDao implements IQuartoDao {
     }
 
     @Override
-    public boolean deletaQuarto(Object pK) throws SQLException {
+    public boolean deleta(Short pK) throws SQLException {
+
         String qry = "DELETE FROM Quarto "
                 + "WHERE nroQuarto = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+
+        pStmt.setShort(1, pK);
 
         return pStmt.executeUpdate() > 0;
-    }
-    
-    @Override
-    public int buscaUltimoRegistroRelacionadoAoQuarto(int nroQuarto)
-            throws SQLException {
-        String qry = "SELECT A.seqHospedagem "
-                + "FROM Hospedagem A "
-                + "JOIN QuartoHospedagem B ON A.seqHospedagem = B.seqHospedagem "
-                + "WHERE B.nroQuarto = ? "
-                + "ORDER BY A.datCheckIn DESC "
-                + "LIMIT 1";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, nroQuarto);
-        ResultSet rs = pStmt.executeQuery();
-        
-        if (rs.next())
-            return rs.getInt(1);
-        else
-            return 0;
     }
 }

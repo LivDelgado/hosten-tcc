@@ -29,7 +29,7 @@ public final class HospedeDao implements IHospedeDao{
     }
 
     @Override
-    public boolean adicionaHospede(Hospede hospede) throws SQLException {
+    public boolean adiciona(Hospede hospede) throws SQLException {
         String qry = "INSERT INTO Hospede"
                 + "(codCPF, nomHospede, desTelefone, desEmail)"
                 + " VALUES (?,?,?,?)";
@@ -42,11 +42,27 @@ public final class HospedeDao implements IHospedeDao{
 
         return pStmt.executeUpdate() > 0;
     }
+    
+    @Override
+    public Hospede buscaPorPk(String id) throws SQLException {
+        String qry = "SELECT * FROM Hospede "
+                + "WHERE codCpf LIKE ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+
+        pStmt.setString(1, id);
+
+        ResultSet rs = pStmt.executeQuery();
+
+        Hospede h = new Hospede(
+                            rs.getString(1),
+                            rs.getString(2),
+                            rs.getString(3),
+                            rs.getString(4));
+        return h;
+    }
 
     @Override
-    public List<Hospede> buscaHospede(
-            Object dadoBusca, 
-            String coluna) throws SQLException {
+    public List<Hospede> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException {
         String qry = "SELECT * FROM Hospede "
                 + "WHERE " + coluna + " "
                 + "LIKE ?";
@@ -62,7 +78,6 @@ public final class HospedeDao implements IHospedeDao{
 
         List<Hospede> hospedesEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
             hospedesEncontrados
                     .add(new Hospede(
@@ -70,13 +85,12 @@ public final class HospedeDao implements IHospedeDao{
                             rs.getString(2),
                             rs.getString(3),
                             rs.getString(4)));
-            i++;
         }
         return hospedesEncontrados;
     }
 
     @Override
-    public List<Hospede> buscaTodosHospedes() throws SQLException {
+    public List<Hospede> buscaTodos() throws SQLException {
         Statement stmt = con.createStatement();
 
         String qry = "SELECT * FROM Hospede";
@@ -84,7 +98,6 @@ public final class HospedeDao implements IHospedeDao{
 
         List<Hospede> hospedesEncontrados = new ArrayList<>();
 
-        int i = 0;
         while (rs.next()) {
             hospedesEncontrados
                     .add(new Hospede(
@@ -92,16 +105,13 @@ public final class HospedeDao implements IHospedeDao{
                             rs.getString(2),
                             rs.getString(3),
                             rs.getString(4)));
-            i++;
         }
 
         return hospedesEncontrados;
     }
 
     @Override
-    public boolean atualizaHospede(
-            Object pK, 
-            Hospede hospedeAtualizado) throws SQLException {
+    public boolean atualiza(String pK, Hospede hospedeAtualizado) throws SQLException {
         String qry = "UPDATE Hospede "
                 + "SET codCPF = ?, nomHospede = ?, desTelefone = ?, desEmail = ? "
                 + "WHERE codCPF = ?";
@@ -110,25 +120,17 @@ public final class HospedeDao implements IHospedeDao{
         pStmt.setString(2, hospedeAtualizado.getNomHospede());
         pStmt.setString(3, hospedeAtualizado.getDesTelefone());
         pStmt.setString(4, hospedeAtualizado.getDesEmail());
-        if (pK instanceof String) {
-            pStmt.setString(5, pK.toString());
-        } else {
-            pStmt.setInt(5, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(5, pK);
 
         return pStmt.executeUpdate() > 0;
     }
 
     @Override
-    public boolean deletaHospede(Object pK) throws SQLException {
+    public boolean deleta(String pK) throws SQLException {
         String qry = "DELETE FROM Hospede "
                 + "WHERE codCPF = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if (pK instanceof String) {
-            pStmt.setString(1, pK.toString());
-        } else {
-            pStmt.setInt(1, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setString(1, pK);
 
         return pStmt.executeUpdate() > 0;
     }

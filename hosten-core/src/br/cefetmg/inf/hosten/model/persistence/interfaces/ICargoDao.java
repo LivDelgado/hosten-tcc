@@ -5,17 +5,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ICargoDao {
-    boolean adicionaCargo(Cargo cargo)
-            throws SQLException;
 
-    List<Cargo> buscaCargo(Object dadoBusca, String coluna)
-            throws SQLException;
+    boolean adiciona(Cargo cargo) throws SQLException;
 
-    List<Cargo> buscaTodosCargos()
-            throws SQLException;
+    Cargo buscaPorPk(String id) throws SQLException;
 
-    boolean atualizaCargo(Object pK, Cargo cargoAtualizado)
-            throws SQLException;
+    List<Cargo> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
-    boolean deletaCargo(Object pK) throws SQLException;
+    List<Cargo> buscaTodos() throws SQLException;
+
+    boolean atualiza(String id, Cargo cargoAtualizado) throws SQLException;
+
+    boolean deleta(String cargo) throws SQLException;
 }
