@@ -20,7 +20,7 @@ public class ManterHospede implements IManterHospede {
     public boolean inserir(Hospede hospede)
             throws NegocioException, SQLException {
         // testa tamanho dos campos
-        if (hospede.getCodCpf().length() != 14) {
+        if (hospede.getCodCPF().length() != 14) {
             throw new NegocioException("O CPF do hóspede tem uma quantidade de caracteres diferente de 11.");
         }
         if (hospede.getNomHospede().length() > 90) {
@@ -36,7 +36,7 @@ public class ManterHospede implements IManterHospede {
         // pesquisa para saber se há algum hospede já 
         // inserido que possui o mesmo cpf
         List<Hospede> hospedesPesquisados
-                = listar(hospede.getCodCpf(), "codCPF");
+                = listar(hospede.getCodCPF(), "codCPF");
 
         if (hospedesPesquisados.isEmpty()) {
             // não tem hóspede com o mesmo cpf
@@ -74,7 +74,7 @@ public class ManterHospede implements IManterHospede {
     public boolean alterar(String codRegistro, Hospede hospede)
             throws NegocioException, SQLException {
         // testa tamanho dos campos
-        if (hospede.getCodCpf().length() != 14) {
+        if (hospede.getCodCPF().length() != 14) {
             throw new NegocioException("O CPF do hóspede tem uma quantidade de caracteres diferente de 11.");
         }
         if (hospede.getNomHospede().length() > 90) {
@@ -93,9 +93,9 @@ public class ManterHospede implements IManterHospede {
         // pesquisa para saber se há algum hospede já 
         // inserido que possui o mesmo cpf
         List<Hospede> hospedesPesquisados
-                = listar(hospede.getCodCpf(), "codCPF");
+                = listar(hospede.getCodCPF(), "codCPF");
 
-        if (hospedesPesquisados.isEmpty() || (codRegistro.equals(hospede.getCodCpf()))) {
+        if (hospedesPesquisados.isEmpty() || (codRegistro.equals(hospede.getCodCPF()))) {
             // não tem hóspede com o mesmo cpf
 
             // busca se tem hóspede com o mesmo email

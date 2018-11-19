@@ -39,7 +39,7 @@ public final class HospedeDao implements IHospedeDao {
 
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        pStmt.setString(1, hospede.getCodCpf());
+        pStmt.setString(1, hospede.getCodCPF());
         pStmt.setString(2, hospede.getNomHospede());
         pStmt.setString(3, hospede.getDesTelefone());
         pStmt.setString(4, hospede.getDesEmail());
@@ -52,7 +52,7 @@ public final class HospedeDao implements IHospedeDao {
 
         String qry
                 = "SELECT * FROM Hospede "
-                + "WHERE codCpf LIKE ?";
+                + "WHERE codCPF LIKE ?";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, id);
@@ -80,7 +80,7 @@ public final class HospedeDao implements IHospedeDao {
 
             case "codcpf":
                 if (dadoBusca instanceof Hospede) {
-                    pStmt.setString(1, ((Hospede) dadoBusca).getCodCpf());
+                    pStmt.setString(1, ((Hospede) dadoBusca).getCodCPF());
                 } else {
                     pStmt.setString(1, dadoBusca.toString());
                 }
@@ -145,7 +145,7 @@ public final class HospedeDao implements IHospedeDao {
 
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        pStmt.setString(1, hospedeAtualizado.getCodCpf());
+        pStmt.setString(1, hospedeAtualizado.getCodCPF());
         pStmt.setString(2, hospedeAtualizado.getNomHospede());
         pStmt.setString(3, hospedeAtualizado.getDesTelefone());
         pStmt.setString(4, hospedeAtualizado.getDesEmail());

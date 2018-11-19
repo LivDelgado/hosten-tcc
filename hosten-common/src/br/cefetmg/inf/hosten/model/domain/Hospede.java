@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "hospede", catalog = "hosten", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Hospede.findAll", query = "SELECT h FROM Hospede h")
-    , @NamedQuery(name = "Hospede.findByCodCpf", query = "SELECT h FROM Hospede h WHERE h.codCpf = :codCpf")
+    , @NamedQuery(name = "Hospede.findByCodCPF", query = "SELECT h FROM Hospede h WHERE h.codCPF = :codCPF")
     , @NamedQuery(name = "Hospede.findByNomHospede", query = "SELECT h FROM Hospede h WHERE h.nomHospede = :nomHospede")
     , @NamedQuery(name = "Hospede.findByDesTelefone", query = "SELECT h FROM Hospede h WHERE h.desTelefone = :desTelefone")
     , @NamedQuery(name = "Hospede.findByDesEmail", query = "SELECT h FROM Hospede h WHERE h.desEmail = :desEmail")})
@@ -25,7 +25,7 @@ public class Hospede implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "codcpf", nullable = false, length = 14)
-    private String codCpf;
+    private String codCPF;
 
     @Basic(optional = false)
     @Column(name = "nomhospede", nullable = false, length = 90)
@@ -46,22 +46,22 @@ public class Hospede implements Serializable {
     }
 
     public Hospede(String codcpf) {
-        this.codCpf = codcpf;
+        this.codCPF = codcpf;
     }
 
-    public Hospede(String codCpf, String nomHospede, String desTelefone, String desEmail) {
-        this.codCpf = codCpf;
+    public Hospede(String codCPF, String nomHospede, String desTelefone, String desEmail) {
+        this.codCPF = codCPF;
         this.nomHospede = nomHospede;
         this.desTelefone = desTelefone;
         this.desEmail = desEmail;
     }
 
-    public String getCodCpf() {
-        return codCpf;
+    public String getCodCPF() {
+        return codCPF;
     }
 
-    public void setCodCpf(String codCpf) {
-        this.codCpf = codCpf;
+    public void setCodCPF(String codCPF) {
+        this.codCPF = codCPF;
     }
 
     public String getNomHospede() {
@@ -111,7 +111,7 @@ public class Hospede implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codCpf != null ? codCpf.hashCode() : 0);
+        hash += (codCPF != null ? codCPF.hashCode() : 0);
         return hash;
     }
 
@@ -122,7 +122,7 @@ public class Hospede implements Serializable {
             return false;
         }
         Hospede other = (Hospede) object;
-        if ((this.codCpf == null && other.codCpf != null) || (this.codCpf != null && !this.codCpf.equals(other.codCpf))) {
+        if ((this.codCPF == null && other.codCPF != null) || (this.codCPF != null && !this.codCPF.equals(other.codCPF))) {
             return false;
         }
         return true;
@@ -130,7 +130,7 @@ public class Hospede implements Serializable {
 
     @Override
     public String toString() {
-        return "Hospede={codcpf=[" + codCpf + "], nomHospede=[" + nomHospede + ", "
+        return "Hospede={codcpf=[" + codCPF + "], nomHospede=[" + nomHospede + ", "
                 + "desTelefone=[" + desTelefone + "], desEmail=[" + desEmail + "]}";
     }
 

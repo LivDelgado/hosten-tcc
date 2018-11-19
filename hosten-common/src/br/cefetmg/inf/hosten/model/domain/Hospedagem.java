@@ -151,7 +151,7 @@ public class Hospedagem implements Serializable {
         saida += "Hospedagem={ seqhospedagem=[" + seqHospedagem + "], datCheckin=[" + datCheckin + "],"
                 + "datCheckout=[" + datCheckout + ", vlrPago=[" + vlrPago + "]";
         if (hospede != null) {
-            saida += ", codCpf = [" + hospede.toString() + "]";
+            saida += ", codCPF = [" + hospede.toString() + "]";
         }
         saida += "}";
 

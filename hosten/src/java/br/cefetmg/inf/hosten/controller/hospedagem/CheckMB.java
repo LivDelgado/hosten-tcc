@@ -82,7 +82,7 @@ public class CheckMB implements Serializable {
         this.diasDeEstadia = diasDeEstadia;
     }
 
-    public int getNroAdultos() {
+    public short getNroAdultos() {
         return nroAdultos;
     }
 
@@ -103,7 +103,7 @@ public class CheckMB implements Serializable {
 
         boolean testeRegistro = controlarHosp.efetuarCheckIn(
                 nroQuarto,
-                hospedeSelecionado.getCodCpf(),
+                hospedeSelecionado.getCodCPF(),
                 diasDeEstadia,
                 nroAdultos,
                 nroCriancas);
@@ -204,7 +204,7 @@ public class CheckMB implements Serializable {
 //               
         // buscar o nome do hospede pelo codigo do cpf que ta em hospedagem
         IManterHospede manterHospede = new ManterHospedeProxy();
-        Hospede hospede = manterHospede.listar(hosp.getHospede().getCodCpf(), "codCPF").get(0);
+        Hospede hospede = manterHospede.listar(hosp.getHospede().getCodCPF(), "codCPF").get(0);
         nomeHospede = hospede.getNomHospede();
 
         //

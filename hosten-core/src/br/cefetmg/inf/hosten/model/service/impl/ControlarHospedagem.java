@@ -69,8 +69,9 @@ public class ControlarHospedagem implements IControlarHospedagem {
             
             hosp.setHospede(new Hospede(codCPF));
             IHospedagemDao hospDAO = HospedagemDaoAdapter.getInstance();
+            hospDAO.adiciona(hosp);
 
-            Hospedagem hospEncontrada = hospDAO.buscaPorPk(hosp.getSeqHospedagem());
+            Hospedagem hospEncontrada = hospDAO.buscaHospedagem(hosp).get(0);
 
             IQuartoHospedagemDao quartoHosp = QuartoHospedagemDaoAdapter.getInstance();
             int seqHospedagem = hospEncontrada.getSeqHospedagem();

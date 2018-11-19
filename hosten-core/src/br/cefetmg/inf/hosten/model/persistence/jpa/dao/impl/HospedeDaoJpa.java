@@ -53,8 +53,8 @@ public class HospedeDaoJpa implements IHospedeDao {
 
         switch (coluna.toLowerCase()) {
             case "codcpf":
-                qryBusca += "CodCpf";
-                parametro = "codCpf";
+                qryBusca += "CodCPF";
+                parametro = "codCPF";
                 break;
             case "nomhospede":
                 qryBusca += "NomHospede";
@@ -110,9 +110,9 @@ public class HospedeDaoJpa implements IHospedeDao {
     }
 
     @Override
-    public boolean deleta(String codCpf) throws SQLException {
+    public boolean deleta(String codCPF) throws SQLException {
         em.getTransaction().begin();
-        em.remove(buscaPorPk(codCpf));
+        em.remove(buscaPorPk(codCPF));
         em.getTransaction().commit();
 
         return true;

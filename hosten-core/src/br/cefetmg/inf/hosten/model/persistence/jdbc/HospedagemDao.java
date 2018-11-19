@@ -44,7 +44,7 @@ public final class HospedagemDao implements IHospedagemDao {
         pStmt.setDate(1, hospedagem.getDatCheckin());
         pStmt.setDate(2, hospedagem.getDatCheckout());
         pStmt.setBigDecimal(3, hospedagem.getVlrPago());
-        pStmt.setString(4, hospedagem.getHospede().getCodCpf());
+        pStmt.setString(4, hospedagem.getHospede().getCodCPF());
 
         return pStmt.executeUpdate() > 0;
     }
@@ -103,7 +103,7 @@ public final class HospedagemDao implements IHospedagemDao {
 
             case "codcpf":
                 if (dadoBusca instanceof Hospede) {
-                    pStmt.setString(1, ((Hospede) dadoBusca).getCodCpf());
+                    pStmt.setString(1, ((Hospede) dadoBusca).getCodCPF());
                 } else {
                     pStmt.setString(1, dadoBusca.toString());
                 }
@@ -165,7 +165,7 @@ public final class HospedagemDao implements IHospedagemDao {
         pStmt.setDate(1, hospedagemAtualizado.getDatCheckin());
         pStmt.setDate(1, hospedagemAtualizado.getDatCheckout());
         pStmt.setBigDecimal(3, hospedagemAtualizado.getVlrPago());
-        pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCpf());
+        pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCPF());
         pStmt.setInt(5, id);
 
         return pStmt.executeUpdate() > 0;
