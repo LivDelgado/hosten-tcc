@@ -228,13 +228,13 @@
         
         <!-- Despesas -->
         <navigation-case>
-            <from-action>#{controleDespesaMB.excluir(despesa)}</from-action>
+            <from-action>#{despesaMB.excluir(despesa)}</from-action>
             <from-outcome>falha</from-outcome>
             <to-view-id>/view/detalhes-conta.jsf</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-action>#{controleDespesaMB.excluir(despesa)}</from-action>
+            <from-action>#{despesaMB.excluir(despesa)}</from-action>
             <from-outcome>sucesso</from-outcome>
             <to-view-id>/view/detalhes-conta.jsf</to-view-id>
             <redirect/>

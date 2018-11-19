@@ -43,7 +43,7 @@
 -->
 
                         <p:column headerText="Excluir" style="text-align: center; width: 55px">
-                            <p:commandButton title="Excluir" icon="ui-icon-trash" action="#{controleDespesaMB.excluir(despesa)}" update=":formRegistro:msgs">
+                            <p:commandButton title="Excluir" icon="ui-icon-trash" action="#{despesaMB.excluir(despesa)}" update=":formRegistro:msgs">
                                 <p:confirm header="Confirmação" message="Deseja realmente excluir o registro?" icon="ui-icon-alert" />
                             </p:commandButton>
 

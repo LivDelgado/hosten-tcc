@@ -329,7 +329,6 @@ FROM Quarto B
 ORDER BY nroquarto;
 
 -- Insert section -------------------------------------------------
-
 -- Insert on Programa
 INSERT INTO public.programa(codprograma, desprograma)
     VALUES ('001', 'cargos'),
@@ -345,18 +344,18 @@ INSERT INTO public.programa(codprograma, desprograma)
         ('011', 'servico-area'),
         ('012', 'servicos'),
         ('013', 'estado-quarto');
-
--- Insert on Cargo
-INSERT INTO public.cargo(codcargo, nomcargo, idtmaster)
-    VALUES('001', 'Administrador', true),
-        ('002', 'Zé ninguém', false);
-
--- Insert on Cargo Programa
-INSERT INTO public.cargoprograma(codprograma, codcargo)
-    VALUES ('008', '002'),
-        ('009', '002');
-
--- Insert on Usuario    
-INSERT INTO public.usuario(codusuario, nomusuario, codcargo, dessenha, desemail)
-    VALUES('0001', 'O Cara', '001','B7E94BE513E96E8C45CD23D162275E5A12EBDE9100A425C4EBCDD7FA4DCD897C', 'adm@email.com'),
-        ('0002', 'Zé', '002','B7E94BE513E96E8C45CD23D162275E5A12EBDE9100A425C4EBCDD7FA4DCD897C', 'ze@email.com');
+-- CRIA PROCEDURE PARA DELETAR DADOS
+-- APAGA TODOS OS DADOS DE TESTE INSERIDOS ANTERIORMENTE
+	CREATE OR REPLACE FUNCTION truncate_tables() RETURNS void AS $$
+	DECLARE
+		statements CURSOR FOR
+			SELECT tablename FROM pg_tables
+			WHERE tableowner = 'postgres'
+			AND schemaname = 'public' 
+			AND tablename <> 'programa';
+	BEGIN
+		FOR stmt IN statements LOOP
+			EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;';
+		END LOOP;
+	END;
+	$$ LANGUAGE plpgsql;
