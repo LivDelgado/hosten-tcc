@@ -43,7 +43,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
         Calendar calendario = Calendar.getInstance();
         calendario.setTime(dataAtual);
         calendario.add(Calendar.DATE, +diasEstadia);
-        Date dataCheckOut = new Timestamp(calendario.getTimeInMillis());
+        Date dataCheckout = new Timestamp(calendario.getTimeInMillis());
 
         try {
             // vlrDiaria
@@ -64,7 +64,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
             // realiza a operação de check-in
             Hospedagem hosp = new Hospedagem(
                     new java.sql.Date(dataCheckIn.getTime()),
-                    new java.sql.Date(dataCheckOut.getTime()), 
+                    new java.sql.Date(dataCheckout.getTime()), 
                     BigDecimal.valueOf(valorTotal));
             
             hosp.setHospede(new Hospede(codCPF));
@@ -93,7 +93,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
     }
 
     @Override
-    public int efetuarCheckOut(short nroQuarto) {
+    public int efetuarCheckout(short nroQuarto) {
 
         IQuartoDao quartoDAO = QuartoDaoAdapter.getInstance();
         int seqHospedagem = 0;
@@ -103,13 +103,13 @@ public class ControlarHospedagem implements IControlarHospedagem {
             seqHospedagem = qhDao.buscaUltimoRegistro(nroQuarto);
 
             Date dataAtual = new Date();
-            Timestamp dataCheckOut = new Timestamp(dataAtual.getTime());
+            Timestamp dataCheckout = new Timestamp(dataAtual.getTime());
 
             IHospedagemDao hospDAO = HospedagemDaoAdapter.getInstance();
             List<Hospedagem> hospBuscada = hospDAO.buscaPorColuna(seqHospedagem, "seqHospedagem");
 
             Hospedagem hospedagemAtualizado = hospBuscada.get(0);
-            hospedagemAtualizado.setDatCheckout(new java.sql.Date(dataCheckOut.getTime()));
+            hospedagemAtualizado.setDatCheckout(new java.sql.Date(dataCheckout.getTime()));
 
             // faz o cálculo das despesas
             IControlarDespesas controlarDespesas = new ControlarDespesas();
@@ -126,7 +126,7 @@ public class ControlarHospedagem implements IControlarHospedagem {
                 }
             }
             Date datCheckIn = hospedagemAtualizado.getDatCheckin();
-            long msDiferenca = (dataCheckOut.getTime()) - (datCheckIn.getTime());
+            long msDiferenca = (dataCheckout.getTime()) - (datCheckIn.getTime());
             long segundos = msDiferenca / 1000;
             long minutos = segundos / 60;
             long horas = minutos / 60;

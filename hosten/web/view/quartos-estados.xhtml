@@ -32,9 +32,9 @@
                             <h:outputText value="#{quartoEstado.idtOcupado ? 'Ocupado' : 'Livre'}"/>
                         </p:column>
 
-                        <p:column headerText="Data Limite (Prevista)" sortBy="#{quartoEstado.datCheckOut}" 
-                                  filterBy="#{quartoEstado.datCheckOut}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{quartoEstado.idtOcupado ? quartoEstado.datCheckOut.time : '-'}">
+                        <p:column headerText="Data Limite (Prevista)" sortBy="#{quartoEstado.datCheckout}" 
+                                  filterBy="#{quartoEstado.datCheckout}" filterStyle="width: 80%" style="text-align: center">
+                            <h:outputText value="#{quartoEstado.idtOcupado ? quartoEstado.datCheckout.time : '-'}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>

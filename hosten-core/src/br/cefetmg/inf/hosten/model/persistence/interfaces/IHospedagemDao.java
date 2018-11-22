@@ -10,6 +10,8 @@ public interface IHospedagemDao {
 
     Hospedagem buscaPorPk(int id) throws SQLException;
 
+    List<Hospedagem> buscaHospedagem(Hospedagem hospedagem) throws SQLException;
+
     List<Hospedagem> buscaPorColuna(Object dadoBusca, String coluna) throws SQLException;
 
     List<Hospedagem> buscaTodos() throws SQLException;

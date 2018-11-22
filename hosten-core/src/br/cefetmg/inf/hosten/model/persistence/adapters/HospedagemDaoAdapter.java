@@ -51,4 +51,9 @@ public final class HospedagemDaoAdapter implements IHospedagemDao {
     public boolean deleta(int pK) throws SQLException {
         return dao.deleta(pK);
     }
+
+    @Override
+    public List<Hospedagem> buscaHospedagem(Hospedagem hospedagem) throws SQLException {
+        return dao.buscaHospedagem(hospedagem);
+    }
 }

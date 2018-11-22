@@ -24,8 +24,8 @@ public class ControlarHospedagemAdapter implements IControlarHospedagemRemote {
     }
 
     @Override
-    public int efetuarCheckOut(short nroQuarto) throws RemoteException {
-        return controlarHospedagem.efetuarCheckOut(nroQuarto);
+    public int efetuarCheckout(short nroQuarto) throws RemoteException {
+        return controlarHospedagem.efetuarCheckout(nroQuarto);
     }
 
     @Override

@@ -127,4 +127,9 @@ public class HospedagemDaoJpa implements IHospedagemDao {
 
         return true;
     }
+
+    @Override
+    public List<Hospedagem> buscaHospedagem(Hospedagem hospedagem) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

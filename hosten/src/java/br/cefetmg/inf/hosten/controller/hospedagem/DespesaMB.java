@@ -49,7 +49,7 @@ public class DespesaMB implements Serializable {
         this.listaDespesas = listaDespesas;
     }
 
-    public int getNroQuarto() {
+    public short getNroQuarto() {
         return nroQuarto;
     }
 
@@ -164,7 +164,7 @@ public class DespesaMB implements Serializable {
         this.servicoSelecionado = servicoSelecionado;
     }
 
-    public int getQtdConsumo() {
+    public short getQtdConsumo() {
         return qtdConsumo;
     }
 

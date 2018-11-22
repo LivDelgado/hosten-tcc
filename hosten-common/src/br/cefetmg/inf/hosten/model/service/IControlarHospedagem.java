@@ -11,7 +11,7 @@ public interface IControlarHospedagem {
 
     public boolean efetuarCheckIn(short nroQuarto, String codCPF, short diasEstadia, short nroAdultos, short nroCriancas);
 
-    public int efetuarCheckOut(short nroQuarto);
+    public int efetuarCheckout(short nroQuarto);
 
     public List<QuartoEstado> listarTodos() throws NegocioException;
 

@@ -128,10 +128,10 @@ public class CheckMB implements Serializable {
 
     private Document document;
 
-    public void checkOut() {
+    public void checkout() {
         IControlarHospedagem controlarHosp = new ControlarHospedagemProxy();
 
-        int seqHospedagem = controlarHosp.efetuarCheckOut(nroQuarto);
+        int seqHospedagem = controlarHosp.efetuarCheckout(nroQuarto);
 
         String nomeArquivo = "fatura.pdf";
 
@@ -250,8 +250,8 @@ public class CheckMB implements Serializable {
 
         Date datCheckIn;
         datCheckIn = hosp.getDatCheckin();
-        Date datCheckOut = hosp.getDatCheckout();
-        long msDiferenca = (datCheckOut.getTime()) - (datCheckIn.getTime());
+        Date datCheckout = hosp.getDatCheckout();
+        long msDiferenca = (datCheckout.getTime()) - (datCheckIn.getTime());
         long segundos = msDiferenca / 1000;
         long minutos = segundos / 60;
         long horas = minutos / 60;

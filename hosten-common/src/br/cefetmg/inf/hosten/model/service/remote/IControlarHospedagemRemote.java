@@ -14,7 +14,7 @@ public interface IControlarHospedagemRemote extends Remote {
     public boolean efetuarCheckIn(short nroQuarto, String codCPF, short diasEstadia, short nroAdultos, short nroCriancas)
             throws RemoteException;
 
-    public int efetuarCheckOut(short nroQuarto)
+    public int efetuarCheckout(short nroQuarto)
             throws RemoteException;
 
     public List<QuartoEstado> listarTodos() throws NegocioException, RemoteException;

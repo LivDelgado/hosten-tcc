@@ -36,7 +36,7 @@ public final class HospedagemDao implements IHospedagemDao {
 
         String qry
                 = "INSERT INTO Hospedagem"
-                + "(datCheckIn, datCheckOut, vlrPago, codCPF) "
+                + "(datCheckIn, datCheckout, vlrPago, codCPF) "
                 + "VALUES (?,?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -128,6 +128,35 @@ public final class HospedagemDao implements IHospedagemDao {
     }
 
     @Override
+    public List<Hospedagem> buscaHospedagem(
+            Hospedagem hospedagem) throws SQLException {
+        String qry = "SELECT * FROM Hospedagem WHERE "
+                + "datCheckIn=? AND datCheckout=? AND vlrPago=? AND codCPF=?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setDate(1, hospedagem.getDatCheckin());
+        pStmt.setDate(2, hospedagem.getDatCheckout());
+        pStmt.setBigDecimal(3, hospedagem.getVlrPago());
+        pStmt.setString(4, hospedagem.getHospede().getCodCPF());
+
+        ResultSet rs = pStmt.executeQuery();
+        List<Hospedagem> hospedagemsEncontrados = new ArrayList<>();
+
+        while (rs.next()) {
+            Hospedagem h = new Hospedagem(
+                    rs.getInt(1),
+                    rs.getDate(2),
+                    rs.getDate(3),
+                    rs.getBigDecimal(4));
+            h.setHospede(new Hospede(rs.getString(5)));
+
+            hospedagemsEncontrados.add(h);
+        }
+
+        return hospedagemsEncontrados;
+    }
+
+    @Override
     public List<Hospedagem> buscaTodos() throws SQLException {
 
         String qry
@@ -157,7 +186,7 @@ public final class HospedagemDao implements IHospedagemDao {
 
         String qry
                 = "UPDATE Hospedagem "
-                + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
+                + "SET datCheckIn = ?, datCheckout = ?, vlrPago = ?, codCPF = ? "
                 + "WHERE seqHospedagem = ?";
 
         PreparedStatement pStmt = con.prepareStatement(qry);

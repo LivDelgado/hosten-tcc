@@ -143,7 +143,7 @@ ALTER TABLE Hospede ADD CONSTRAINT Key11 PRIMARY KEY (codCPF)
 CREATE TABLE Hospedagem(
  seqHospedagem Serial NOT NULL,
  datCheckIn Timestamp NOT NULL,
- datCheckOut Timestamp,
+ datCheckout Timestamp,
  vlrPago Numeric(7,2),
  codCPF Character(14)
 )
@@ -282,7 +282,7 @@ SELECT
     A.nroCriancas, 
     A.vlrDiaria,
     B.datCheckIn, 
-    B.datCheckOut, 
+    B.datCheckout, 
     B.vlrPago,
     C.nomHospede,
     D.seqServico, 
@@ -306,7 +306,7 @@ A.nroAdultos,
 A.nroCriancas,
 A.vlrDiaria,
 B.idtOcupado,
-A.datCheckOut
+A.datCheckout
 FROM Quarto B
 	LEFT JOIN 
         (SELECT 

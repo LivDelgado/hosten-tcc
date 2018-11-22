@@ -32,9 +32,9 @@ public class ControlarHospedagemProxy implements IControlarHospedagem {
     }
 
     @Override
-    public int efetuarCheckOut(short nroQuarto) {
+    public int efetuarCheckout(short nroQuarto) {
         try {
-            return controlarHospedagem.efetuarCheckOut(nroQuarto);
+            return controlarHospedagem.efetuarCheckout(nroQuarto);
         } catch (RemoteException ex) {
             Logger.getLogger(ControlarHospedagemProxy.class.getName()).log(Level.SEVERE, null, ex);
         }

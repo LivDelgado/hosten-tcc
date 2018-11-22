@@ -9,7 +9,6 @@ import br.cefetmg.inf.util.exception.NegocioException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
