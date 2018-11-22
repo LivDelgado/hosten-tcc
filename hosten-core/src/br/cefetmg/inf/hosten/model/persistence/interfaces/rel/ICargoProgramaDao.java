@@ -6,13 +6,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ICargoProgramaDao {
+
     boolean adiciona(CargoPrograma cargoPrograma) throws SQLException;
-    
-    List<CargoPrograma> busca(String cod, String coluna) throws SQLException;
-    
+
+    List<CargoPrograma> buscaPorColuna(String cod, String coluna) throws SQLException;
+
     List<Programa> buscaProgramasRelacionados(String codCargo) throws SQLException;
-    
-    //atualiza();
-    
+
     boolean deletaPorColuna(String cod, String coluna) throws SQLException;
 }

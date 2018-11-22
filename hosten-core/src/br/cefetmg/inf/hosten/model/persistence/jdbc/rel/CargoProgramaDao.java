@@ -44,8 +44,8 @@ public class CargoProgramaDao implements ICargoProgramaDao {
     }
 
     @Override
-    public List<CargoPrograma> busca(String cod, String coluna)
-            throws SQLException {
+    public List<CargoPrograma> buscaPorColuna(String cod, String coluna)throws SQLException {
+        
         String qry
                 = "SELECT * FROM CargoPrograma "
                 + "WHERE " + coluna + " = ?";

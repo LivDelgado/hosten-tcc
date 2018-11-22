@@ -43,7 +43,7 @@ public class ManterCargo implements IManterCargo {
         if (cargosPesquisados.isEmpty()) {
             // não tem cargo com o mesmo código
 
-            // busca se tem cargo com o mesmo nome
+            // buscaPorColuna se tem cargo com o mesmo nome
             List<Cargo> cargosPesquisados1 = listar(cargo.getNomCargo(), "nomCargo");
             
             if (cargosPesquisados1.isEmpty()) {
@@ -96,7 +96,7 @@ public class ManterCargo implements IManterCargo {
         if (cargosPesquisados.isEmpty() || (codRegistro.equals(cargo.getCodCargo()))) {
             // não tem cargo com o mesmo código
 
-            // busca se tem cargo com o mesmo nome
+            // buscaPorColuna se tem cargo com o mesmo nome
             List<Cargo> cargosPesquisados1 = listar(cargo.getNomCargo(), "nomCargo");
             
             if (cargosPesquisados1.isEmpty() 
@@ -117,7 +117,7 @@ public class ManterCargo implements IManterCargo {
                     ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
                     
                     // deleta todos os relacionamentos com aquele cargo
-                    List<CargoPrograma> listaREL = relDAO.busca(
+                    List<CargoPrograma> listaREL = relDAO.buscaPorColuna(
                             cargo.getCodCargo(),
                             "codCargo");
                     
@@ -159,7 +159,7 @@ public class ManterCargo implements IManterCargo {
         if (listaUsuarios.isEmpty()) {
             ICargoProgramaDao relDAO = CargoProgramaDaoAdapter.getInstance();
             // deleta todos os relacionamentos com aquele cargo
-            List<CargoPrograma> listaREL = relDAO.busca(codRegistro, "codCargo");
+            List<CargoPrograma> listaREL = relDAO.buscaPorColuna(codRegistro, "codCargo");
             if (!listaREL.isEmpty()) {
                 relDAO.deletaPorColuna(codRegistro, "codCargo");
             }
@@ -175,7 +175,7 @@ public class ManterCargo implements IManterCargo {
     public List<Cargo> listar(Object dadoBusca, String coluna)
             throws NegocioException, SQLException {
         //
-        // confere se foi digitado um dado busca e se a coluna é válida
+        // confere se foi digitado um dado buscaPorColuna e se a coluna é válida
         //
         if (dadoBusca != null) {
             return objetoDAO.buscaPorColuna(dadoBusca, coluna);

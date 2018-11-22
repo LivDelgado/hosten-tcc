@@ -29,9 +29,9 @@ public class CargoProgramaDaoAdapter implements ICargoProgramaDao {
     }
 
     @Override
-    public List<CargoPrograma> busca(String cod, String coluna)
+    public List<CargoPrograma> buscaPorColuna(String cod, String coluna)
             throws SQLException {
-        return dao.busca(cod, coluna);
+        return dao.buscaPorColuna(cod, coluna);
     }
 
     @Override
