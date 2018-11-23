@@ -47,7 +47,7 @@ public class QuartoEstadoDao implements IQuartoEstadoDao {
                     rs.getShort(5),
                     rs.getBigDecimal(6),
                     rs.getBoolean(7),
-                    rs.getDate(8)));
+                    rs.getTimestamp(8)));
         }
         
         return quartoEstadoEncontrados;

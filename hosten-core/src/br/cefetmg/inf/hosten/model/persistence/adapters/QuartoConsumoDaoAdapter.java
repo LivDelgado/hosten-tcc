@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
 import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.QuartoConsumoDao;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class QuartoConsumoDaoAdapter implements IQuartoConsumoDao {
 
@@ -29,7 +29,7 @@ public class QuartoConsumoDaoAdapter implements IQuartoConsumoDao {
     }
 
     @Override
-    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
+    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Timestamp datConsumo) throws SQLException {
         return dao.buscaPorPk(seqHospedagem, nroQuarto, datConsumo);
     }
 
@@ -44,7 +44,7 @@ public class QuartoConsumoDaoAdapter implements IQuartoConsumoDao {
     }
 
     @Override
-    public boolean deleta(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
+    public boolean deleta(int seqHospedagem, short nroQuarto, Timestamp datConsumo) throws SQLException {
         return dao.deleta(seqHospedagem, nroQuarto, datConsumo);
     }
 }

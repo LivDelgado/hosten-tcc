@@ -4,7 +4,7 @@ import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -41,11 +41,11 @@ public class Hospedagem implements Serializable {
     @Basic(optional = false)
     @Column(name = "datcheckin", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date datCheckin;
+    private Timestamp datCheckin;
 
     @Column(name = "datcheckout")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date datCheckout;
+    private Timestamp datCheckout;
 
     @Column(name = "vlrpago", precision = 7, scale = 2)
     private BigDecimal vlrPago;
@@ -60,13 +60,13 @@ public class Hospedagem implements Serializable {
     public Hospedagem() {
     }
 
-    public Hospedagem(Date datCheckin, Date datCheckout, BigDecimal vlrPago) {
+    public Hospedagem(Timestamp datCheckin, Timestamp datCheckout, BigDecimal vlrPago) {
         this.datCheckin = datCheckin;
         this.datCheckout = datCheckout;
         this.vlrPago = vlrPago;
     }
 
-    public Hospedagem(Integer seqHospedagem, Date datCheckin, Date datCheckout, BigDecimal vlrPago) {
+    public Hospedagem(Integer seqHospedagem, Timestamp datCheckin, Timestamp datCheckout, BigDecimal vlrPago) {
         this.seqHospedagem = seqHospedagem;
         this.datCheckin = datCheckin;
         this.datCheckout = datCheckout;
@@ -81,19 +81,19 @@ public class Hospedagem implements Serializable {
         this.seqHospedagem = seqHospedagem;
     }
 
-    public Date getDatCheckin() {
+    public Timestamp getDatCheckin() {
         return datCheckin;
     }
 
-    public void setDatCheckin(Date datCheckin) {
+    public void setDatCheckin(Timestamp datCheckin) {
         this.datCheckin = datCheckin;
     }
 
-    public Date getDatCheckout() {
+    public Timestamp getDatCheckout() {
         return datCheckout;
     }
 
-    public void setDatCheckout(Date datCheckout) {
+    public void setDatCheckout(Timestamp datCheckout) {
         this.datCheckout = datCheckout;
     }
 

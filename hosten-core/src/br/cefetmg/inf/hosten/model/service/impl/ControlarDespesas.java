@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IDespesaDao;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class ControlarDespesas implements IControlarDespesas {
 
@@ -53,7 +53,7 @@ public class ControlarDespesas implements IControlarDespesas {
                 quartoConsumoDAO.deleta(
                         quartoConsumo.getQuartoHospedagem().getId().getSeqHospedagem(),
                         quartoConsumo.getQuartoHospedagem().getId().getNroQuarto(), 
-                        (Date) quartoConsumo.getDatConsumo());
+                        (Timestamp) quartoConsumo.getDatConsumo());
                 return true;
             } catch (SQLException e) {
             }

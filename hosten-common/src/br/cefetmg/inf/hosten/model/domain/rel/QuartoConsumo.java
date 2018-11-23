@@ -4,7 +4,7 @@ import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoConsumoId;
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +47,7 @@ public class QuartoConsumo implements Serializable {
     @Basic(optional = false)
     @Column(name = "datconsumo", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date datConsumo;
+    private Timestamp datConsumo;
 
     @Basic(optional = false)
     @Column(name = "qtdconsumo", nullable = false)
@@ -76,7 +76,7 @@ public class QuartoConsumo implements Serializable {
         return quartoHospedagem;
     }
 
-    public Date getDatConsumo() {
+    public Timestamp getDatConsumo() {
         return datConsumo;
     }
 

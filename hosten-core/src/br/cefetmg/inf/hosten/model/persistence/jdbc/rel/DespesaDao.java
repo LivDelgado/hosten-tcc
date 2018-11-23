@@ -49,8 +49,8 @@ public class DespesaDao implements IDespesaDao {
         Short nroAdultos, 
         Short nroCriancas, 
         BigDecimal vlrDiaria, 
-        Date datCheckin, 
-        Date datCheckout, 
+        Timestamp datCheckin, 
+        Timestamp datCheckout, 
         BigDecimal vlrPago, 
         String nomHospede, 
         Short seqServico, 
@@ -61,19 +61,19 @@ public class DespesaDao implements IDespesaDao {
         while (rs.next()) {
             despesaEncontradas.add(new Despesa(
                     rs.getLong(1),
-                    rs.getInt(1),
-                    rs.getShort(2),
+                    rs.getInt(2),
                     rs.getShort(3),
                     rs.getShort(4),
-                    rs.getBigDecimal(5),
-                    rs.getDate(6),
-                    rs.getDate(7),
-                    rs.getBigDecimal(8),
-                    rs.getString(9),
-                    rs.getShort(10),
+                    rs.getShort(5),
+                    rs.getBigDecimal(6),
+                    rs.getTimestamp(7),
+                    rs.getTimestamp(8),
+                    rs.getBigDecimal(9),
+                    rs.getString(10),
                     rs.getShort(11),
-                    rs.getString(12),
-                    rs.getBigDecimal(13)));
+                    rs.getShort(12),
+                    rs.getString(13),
+                    rs.getBigDecimal(14)));
         }
         return despesaEncontradas;
     }

@@ -8,7 +8,7 @@ import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoConsumoId;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -142,7 +142,7 @@ public class QuartoHospedagem implements Serializable {
         return quartoConsumos;
     }
 
-    public void addQuartoConsumo(Usuario usuario, Date datConsumo, short qtdConsumo, Servico servico) {
+    public void addQuartoConsumo(Usuario usuario, Timestamp datConsumo, short qtdConsumo, Servico servico) {
         QuartoConsumoId qcid = new QuartoConsumoId(this, datConsumo);
         QuartoConsumo qc = new QuartoConsumo(qcid, qtdConsumo, servico, usuario);
 

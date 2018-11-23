@@ -2,7 +2,7 @@ package br.cefetmg.inf.hosten.model.domain.rel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -56,14 +56,11 @@ public class Despesa implements Serializable {
 
     @Column(name = "vlrdiaria", precision = 7, scale = 2)
     private BigDecimal vlrDiaria;
-
-    @Column(name = "datcheckin")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date datCheckin;
+    private Timestamp datCheckin;
 
     @Column(name = "datcheckout")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date datCheckout;
+    private Timestamp datCheckout;
 
     @Column(name = "vlrpago", precision = 7, scale = 2)
     private BigDecimal vlrPago;
@@ -86,7 +83,7 @@ public class Despesa implements Serializable {
     public Despesa() {
     }
 
-    public Despesa(long id, Integer seqHospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Date datCheckin, Date datCheckout, BigDecimal vlrPago, String nomHospede, Short seqServico, Short qtdConsumo, String desServico, BigDecimal vlrUnit) {
+    public Despesa(long id, Integer seqHospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Timestamp datCheckin, Timestamp datCheckout, BigDecimal vlrPago, String nomHospede, Short seqServico, Short qtdConsumo, String desServico, BigDecimal vlrUnit) {
         this.id = id;
         this.seqHospedagem = seqHospedagem;
         this.nroQuarto = nroQuarto;
@@ -127,11 +124,11 @@ public class Despesa implements Serializable {
         return vlrDiaria;
     }
 
-    public Date getDatCheckin() {
+    public Timestamp getDatCheckin() {
         return datCheckin;
     }
 
-    public Date getDatCheckout() {
+    public Timestamp getDatCheckout() {
         return datCheckout;
     }
 

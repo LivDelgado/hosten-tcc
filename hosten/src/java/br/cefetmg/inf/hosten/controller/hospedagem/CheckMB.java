@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -248,9 +248,9 @@ public class CheckMB implements Serializable {
         short nroCriancas = quartoHosp.getNroCriancas();
         Double vlrDiaria = quartoHosp.getVlrDiaria().doubleValue();
 
-        Date datCheckIn;
+        Timestamp datCheckIn;
         datCheckIn = hosp.getDatCheckin();
-        Date datCheckout = hosp.getDatCheckout();
+        Timestamp datCheckout = hosp.getDatCheckout();
         long msDiferenca = (datCheckout.getTime()) - (datCheckIn.getTime());
         long segundos = msDiferenca / 1000;
         long minutos = segundos / 60;

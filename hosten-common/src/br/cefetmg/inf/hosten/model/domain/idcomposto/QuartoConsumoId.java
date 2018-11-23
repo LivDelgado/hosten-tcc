@@ -2,7 +2,7 @@ package br.cefetmg.inf.hosten.model.domain.idcomposto;
 
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,12 +13,12 @@ public class QuartoConsumoId implements Serializable {
     private QuartoHospedagem quartoHospedagem;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date datConsumo;
+    private Timestamp datConsumo;
 
     public QuartoConsumoId() {
     }
 
-    public QuartoConsumoId(QuartoHospedagem quartoHospedagem, Date datConsumo) {
+    public QuartoConsumoId(QuartoHospedagem quartoHospedagem, Timestamp datConsumo) {
         this.quartoHospedagem = quartoHospedagem;
         this.datConsumo = datConsumo;
     }
@@ -27,7 +27,7 @@ public class QuartoConsumoId implements Serializable {
         return quartoHospedagem;
     }
 
-    public Date getDatConsumo() {
+    public Timestamp getDatConsumo() {
         return datConsumo;
     }
 

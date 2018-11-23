@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.IHospedagemDao;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public final class HospedagemDao implements IHospedagemDao {
 
@@ -41,8 +41,8 @@ public final class HospedagemDao implements IHospedagemDao {
 
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        pStmt.setDate(1, hospedagem.getDatCheckin());
-        pStmt.setDate(2, hospedagem.getDatCheckout());
+        pStmt.setTimestamp(1, hospedagem.getDatCheckin());
+        pStmt.setTimestamp(2, hospedagem.getDatCheckout());
         pStmt.setBigDecimal(3, hospedagem.getVlrPago());
         pStmt.setString(4, hospedagem.getHospede().getCodCPF());
 
@@ -62,8 +62,8 @@ public final class HospedagemDao implements IHospedagemDao {
 
         Hospedagem h = new Hospedagem(
                 rs.getInt(1),
-                rs.getDate(2),
-                rs.getDate(3),
+                rs.getTimestamp(2),
+                rs.getTimestamp(3),
                 rs.getBigDecimal(4));
         h.setHospede(new Hospede(rs.getString(5)));
 
@@ -90,11 +90,11 @@ public final class HospedagemDao implements IHospedagemDao {
                 break;
 
             case "datcheckin":
-                pStmt.setDate(1, (Date) dadoBusca);
+                pStmt.setTimestamp(1, (Timestamp) dadoBusca);
                 break;
 
             case "datcheckout":
-                pStmt.setDate(1, (Date) dadoBusca);
+                pStmt.setTimestamp(1, (Timestamp) dadoBusca);
                 break;
 
             case "vlrpago":
@@ -116,8 +116,8 @@ public final class HospedagemDao implements IHospedagemDao {
         while (rs.next()) {
             Hospedagem h = new Hospedagem(
                     rs.getInt(1),
-                    rs.getDate(2),
-                    rs.getDate(3),
+                    rs.getTimestamp(2),
+                    rs.getTimestamp(3),
                     rs.getBigDecimal(4));
             h.setHospede(new Hospede(rs.getString(5)));
 
@@ -134,8 +134,8 @@ public final class HospedagemDao implements IHospedagemDao {
                 + "datCheckIn=? AND datCheckout=? AND vlrPago=? AND codCPF=?";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setDate(1, hospedagem.getDatCheckin());
-        pStmt.setDate(2, hospedagem.getDatCheckout());
+        pStmt.setTimestamp(1, hospedagem.getDatCheckin());
+        pStmt.setTimestamp(2, hospedagem.getDatCheckout());
         pStmt.setBigDecimal(3, hospedagem.getVlrPago());
         pStmt.setString(4, hospedagem.getHospede().getCodCPF());
 
@@ -145,8 +145,8 @@ public final class HospedagemDao implements IHospedagemDao {
         while (rs.next()) {
             Hospedagem h = new Hospedagem(
                     rs.getInt(1),
-                    rs.getDate(2),
-                    rs.getDate(3),
+                    rs.getTimestamp(2),
+                    rs.getTimestamp(3),
                     rs.getBigDecimal(4));
             h.setHospede(new Hospede(rs.getString(5)));
 
@@ -170,8 +170,8 @@ public final class HospedagemDao implements IHospedagemDao {
         while (rs.next()) {
             Hospedagem h = new Hospedagem(
                     rs.getInt(1),
-                    rs.getDate(2),
-                    rs.getDate(3),
+                    rs.getTimestamp(2),
+                    rs.getTimestamp(3),
                     rs.getBigDecimal(4));
             h.setHospede(new Hospede(rs.getString(5)));
 
@@ -191,8 +191,8 @@ public final class HospedagemDao implements IHospedagemDao {
 
         PreparedStatement pStmt = con.prepareStatement(qry);
 
-        pStmt.setDate(1, hospedagemAtualizado.getDatCheckin());
-        pStmt.setDate(1, hospedagemAtualizado.getDatCheckout());
+        pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckin());
+        pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckout());
         pStmt.setBigDecimal(3, hospedagemAtualizado.getVlrPago());
         pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCPF());
         pStmt.setInt(5, id);

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -91,15 +90,15 @@ public class DespesaMB implements Serializable {
     public String inserir() {
         codUsuarioRegistro = Sessao.getInstance().getUsuarioLogado().getCodUsuario();
         IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
-        Date dataAtual = new Date();
-        Timestamp datConsumo = new Timestamp(dataAtual.getTime());
+        
+        Timestamp datConsumo = new Timestamp(System.currentTimeMillis());
 
         QuartoConsumo registro = new QuartoConsumo(
                 new QuartoConsumoId(
                         new QuartoHospedagem(
                                 seqHospedagem,
                                 nroQuarto),
-                        new java.sql.Date(datConsumo.getTime())),
+                        datConsumo),
                 qtdConsumo,
                 servicoSelecionado,
                 new Usuario(codUsuarioRegistro));
@@ -124,8 +123,7 @@ public class DespesaMB implements Serializable {
 
         //
         //
-        Date dataAtual = new Date();
-        Timestamp datConsumo = new Timestamp(dataAtual.getTime());
+        Timestamp datConsumo = new Timestamp(System.currentTimeMillis());
         //
         //
 
@@ -135,7 +133,7 @@ public class DespesaMB implements Serializable {
                                 despesa.getSeqHospedagem(),
                                 despesa.getNroQuarto()),
                         //                despesa.getDatConsumo(),
-                        new java.sql.Date(datConsumo.getTime())),
+                        new Timestamp(datConsumo.getTime())),
                 //                
                  despesa.getQtdConsumo(),
                  new Servico(despesa.getSeqServico()),

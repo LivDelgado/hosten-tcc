@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.sql.Statement;
 
 public class QuartoConsumoDao implements IQuartoConsumoDao {
@@ -45,7 +45,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
 
         pStmt.setInt(1, quartoConsumo.getQuartoHospedagem().getId().getSeqHospedagem());
         pStmt.setShort(2, quartoConsumo.getQuartoHospedagem().getId().getNroQuarto());
-        pStmt.setDate(3, quartoConsumo.getDatConsumo());
+        pStmt.setTimestamp(3, quartoConsumo.getDatConsumo());
         pStmt.setShort(4, quartoConsumo.getQtdConsumo());
         pStmt.setShort(5, quartoConsumo.getServico().getSeqServico());
         pStmt.setString(6, quartoConsumo.getUsuarioRegistro().getCodUsuario());
@@ -54,7 +54,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
     }
 
     @Override
-    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
+    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Timestamp datConsumo) throws SQLException {
 
         String qry
                 = "SELECT * "
@@ -65,7 +65,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
 
         pStmt.setInt(1, seqHospedagem);
         pStmt.setShort(2, nroQuarto);
-        pStmt.setDate(3, datConsumo);
+        pStmt.setTimestamp(3, datConsumo);
 
         ResultSet rs = pStmt.executeQuery();
 
@@ -74,7 +74,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
                         new QuartoHospedagem(
                                 rs.getInt(1),
                                 rs.getShort(2)),
-                        rs.getDate(3)),
+                        rs.getTimestamp(3)),
                 rs.getShort(4),
                 new Servico(rs.getShort(5)),
                 new Usuario(rs.getString(6)));
@@ -117,9 +117,9 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
 
             case "datconsumo":
                 if (dadoBusca instanceof QuartoConsumo) {
-                    pStmt.setDate(1,((QuartoConsumo) dadoBusca).getDatConsumo());
+                    pStmt.setTimestamp(1,((QuartoConsumo) dadoBusca).getDatConsumo());
                 } else {
-                    pStmt.setDate(1, (Date) dadoBusca);
+                    pStmt.setTimestamp(1, (Timestamp) dadoBusca);
                 }
                 break;
 
@@ -149,7 +149,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
                             new QuartoHospedagem(
                                     rs.getInt(1),
                                     rs.getShort(2)),
-                            rs.getDate(3)),
+                            rs.getTimestamp(3)),
                     rs.getShort(4),
                     new Servico(rs.getShort(5)),
                     new Usuario(rs.getString(6))));
@@ -174,7 +174,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
                             new QuartoHospedagem(
                                     rs.getInt(1),
                                     rs.getShort(2)),
-                            rs.getDate(3)),
+                            rs.getTimestamp(3)),
                     rs.getShort(4),
                     new Servico(rs.getShort(5)),
                     new Usuario(rs.getString(6))));
@@ -183,7 +183,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
     }
 
     @Override
-    public boolean deleta(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
+    public boolean deleta(int seqHospedagem, short nroQuarto, Timestamp datConsumo) throws SQLException {
 
         String qry
                 = "DELETE FROM QuartoConsumo "
@@ -193,7 +193,7 @@ public class QuartoConsumoDao implements IQuartoConsumoDao {
 
         pStmt.setInt(1, seqHospedagem);
         pStmt.setShort(2, nroQuarto);
-        pStmt.setDate(3, datConsumo);
+        pStmt.setTimestamp(3, datConsumo);
 
         return pStmt.executeUpdate() > 0;
     }

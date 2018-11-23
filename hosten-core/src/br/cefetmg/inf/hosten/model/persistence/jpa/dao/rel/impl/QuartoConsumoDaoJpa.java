@@ -7,7 +7,7 @@ import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoConsumoDao;
 import br.cefetmg.inf.hosten.model.persistence.interfaces.rel.IQuartoHospedagemDao;
 import br.cefetmg.inf.hosten.model.persistence.jdbc.rel.QuartoHospedagemDao;
 import br.cefetmg.inf.util.bd.BdUtils;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -41,7 +41,7 @@ public class QuartoConsumoDaoJpa implements IQuartoConsumoDao {
     }
 
     @Override
-    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Date datConsumo) throws SQLException {
+    public QuartoConsumo buscaPorPk(int seqHospedagem, short nroQuarto, Timestamp datConsumo) throws SQLException {
         IQuartoHospedagemDao qhDao = QuartoHospedagemDao.getInstance();
         QuartoHospedagem qh = qhDao.buscaPorPk(seqHospedagem, nroQuarto);
         
@@ -106,7 +106,7 @@ public class QuartoConsumoDaoJpa implements IQuartoConsumoDao {
     }
 
     @Override
-    public boolean deleta(int seqHospedage, short nroQuarto, Date datConsumo) throws SQLException {
+    public boolean deleta(int seqHospedage, short nroQuarto, Timestamp datConsumo) throws SQLException {
         em.getTransaction().begin();
         em.remove(buscaPorPk(seqHospedage, nroQuarto, datConsumo));
         em.getTransaction().commit();

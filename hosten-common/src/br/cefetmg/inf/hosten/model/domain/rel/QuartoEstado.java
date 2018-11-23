@@ -3,7 +3,7 @@ package br.cefetmg.inf.hosten.model.domain.rel;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -52,12 +52,12 @@ public class QuartoEstado implements Serializable {
 
     @Column(name = "datcheckout")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date datCheckout;
+    private Timestamp datCheckout;
 
     public QuartoEstado() {
     }
 
-    public QuartoEstado(long id, Integer seqhospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Boolean idtOcupado, Date datCheckout) {
+    public QuartoEstado(long id, Integer seqhospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Boolean idtOcupado, Timestamp datCheckout) {
         this.id = id;
         this.seqhospedagem = seqhospedagem;
         this.nroQuarto = nroQuarto;
@@ -96,7 +96,7 @@ public class QuartoEstado implements Serializable {
         return idtOcupado;
     }
 
-    public Date getDatCheckout() {
+    public Timestamp getDatCheckout() {
         return datCheckout;
     }
 }
