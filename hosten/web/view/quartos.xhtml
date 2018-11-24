@@ -45,8 +45,10 @@
                             
                         </p:column>
 
-                        <p:column headerText="Categoria de Quarto" sortBy="#{quarto.codCategoria}" 
-                                  filterBy="#{quarto.codCategoria}" filterStyle="width: 80%" style="text-align: center">
+                        <p:column headerText="Categoria de Quarto" 
+                                  sortBy="#{quarto.categoria.nomCategoria}" 
+                                  filterBy="#{quarto.categoria.codCategoria}" 
+                                  filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{quartoMB.getCategoriaQuarto(quarto)}" converter="categoriaConverter"/>

@@ -15,6 +15,27 @@ import java.util.logging.Logger;
 public class ServidorRMI {
 
     private static Registry registro;
+    
+    private static IControlarDespesasRemote controlarDespesas;
+    private static IControlarDespesasRemote controlarDespesasStub;
+    private static IControlarHospedagemRemote controlarHospedagem;
+    private static IControlarHospedagemRemote controlarHospedagemStub;
+    private static IManterCargoRemote manterCargo;
+    private static IManterCargoRemote manterCargoStub;
+    private static IManterCategoriaQuartoRemote manterCategoriaQuarto;
+    private static IManterCategoriaQuartoRemote manterCategoriaQuartoStub;
+    private static IManterHospedeRemote manterHospede;
+    private static IManterHospedeRemote manterHospedeStub;
+    private static IManterItemConfortoRemote manterItemConforto;
+    private static IManterItemConfortoRemote manterItemConfortoStub;
+    private static IManterQuartoRemote manterQuarto;
+    private static IManterQuartoRemote manterQuartoStub;
+    private static IManterServicoAreaRemote manterServicoArea;
+    private static IManterServicoAreaRemote manterServicoAreaStub;
+    private static IManterServicoRemote manterServico;
+    private static IManterServicoRemote manterServicoStub;
+    private static IManterUsuarioRemote manterUsuario;
+    private static IManterUsuarioRemote manterUsuarioStub;
 
     public static void main(String[] args) {
         if (System.getSecurityManager() == null) {
@@ -49,44 +70,44 @@ public class ServidorRMI {
     }
 
     private static void cadastraStubs() throws RemoteException {
-        IControlarDespesasRemote controlarDespesas = new ControlarDespesasAdapter();
-        IControlarDespesasRemote controlarDespesasStub = (IControlarDespesasRemote) UnicastRemoteObject.exportObject(controlarDespesas, 0);
+        controlarDespesas = new ControlarDespesasAdapter();
+        controlarDespesasStub = (IControlarDespesasRemote) UnicastRemoteObject.exportObject(controlarDespesas, 0);
         registro.rebind("ControlarDespesas", controlarDespesasStub);
 
-        IControlarHospedagemRemote controlarHospedagem = new ControlarHospedagemAdapter();
-        IControlarHospedagemRemote controlarHospedagemStub = (IControlarHospedagemRemote) UnicastRemoteObject.exportObject(controlarHospedagem, 0);
+        controlarHospedagem = new ControlarHospedagemAdapter();
+        controlarHospedagemStub = (IControlarHospedagemRemote) UnicastRemoteObject.exportObject(controlarHospedagem, 0);
         registro.rebind("ControlarHospedagem", controlarHospedagemStub);
 
-        IManterCargoRemote manterCargo = new ManterCargoAdapter();
-        IManterCargoRemote manterCargoStub = (IManterCargoRemote) UnicastRemoteObject.exportObject(manterCargo, 0);
+        manterCargo = new ManterCargoAdapter();
+        manterCargoStub = (IManterCargoRemote) UnicastRemoteObject.exportObject(manterCargo, 0);
         registro.rebind("ManterCargo", manterCargoStub);
 
-        IManterCategoriaQuartoRemote manterCategoriaQuarto = new ManterCategoriaQuartoAdapter();
-        IManterCategoriaQuartoRemote manterCategoriaQuartoStub = (IManterCategoriaQuartoRemote) UnicastRemoteObject.exportObject(manterCategoriaQuarto, 0);
+        manterCategoriaQuarto = new ManterCategoriaQuartoAdapter();
+        manterCategoriaQuartoStub = (IManterCategoriaQuartoRemote) UnicastRemoteObject.exportObject(manterCategoriaQuarto, 0);
         registro.rebind("ManterCategoriaQuarto", manterCategoriaQuartoStub);
 
-        IManterHospedeRemote manterHospede = new ManterHospedeAdapter();
-        IManterHospedeRemote manterHospedeStub = (IManterHospedeRemote) UnicastRemoteObject.exportObject(manterHospede, 0);
+        manterHospede = new ManterHospedeAdapter();
+        manterHospedeStub = (IManterHospedeRemote) UnicastRemoteObject.exportObject(manterHospede, 0);
         registro.rebind("ManterHospede", manterHospedeStub);
 
-        IManterItemConfortoRemote manterItemConforto = new ManterItemConfortoAdapter();
-        IManterItemConfortoRemote manterItemConfortoStub = (IManterItemConfortoRemote) UnicastRemoteObject.exportObject(manterItemConforto, 0);
+        manterItemConforto = new ManterItemConfortoAdapter();
+        manterItemConfortoStub = (IManterItemConfortoRemote) UnicastRemoteObject.exportObject(manterItemConforto, 0);
         registro.rebind("ManterItemConforto", manterItemConfortoStub);
 
-        IManterQuartoRemote manterQuarto = new ManterQuartoAdapter();
-        IManterQuartoRemote manterQuartoStub = (IManterQuartoRemote) UnicastRemoteObject.exportObject(manterQuarto, 0);
+        manterQuarto = new ManterQuartoAdapter();
+        manterQuartoStub = (IManterQuartoRemote) UnicastRemoteObject.exportObject(manterQuarto, 0);
         registro.rebind("ManterQuarto", manterQuartoStub);
 
-        IManterServicoAreaRemote manterServicoArea = new ManterServicoAreaAdapter();
-        IManterServicoAreaRemote manterServicoAreaStub = (IManterServicoAreaRemote) UnicastRemoteObject.exportObject(manterServicoArea, 0);
+        manterServicoArea = new ManterServicoAreaAdapter();
+        manterServicoAreaStub = (IManterServicoAreaRemote) UnicastRemoteObject.exportObject(manterServicoArea, 0);
         registro.rebind("ManterServicoArea", manterServicoAreaStub);
 
-        IManterServicoRemote manterServico = new ManterServicoAdapter();
-        IManterServicoRemote manterServicoStub = (IManterServicoRemote) UnicastRemoteObject.exportObject(manterServico, 0);
+        manterServico = new ManterServicoAdapter();
+        manterServicoStub = (IManterServicoRemote) UnicastRemoteObject.exportObject(manterServico, 0);
         registro.rebind("ManterServico", manterServicoStub);
 
-        IManterUsuarioRemote manterUsuario = new ManterUsuarioAdapter();
-        IManterUsuarioRemote manterUsuarioStub = (IManterUsuarioRemote) UnicastRemoteObject.exportObject(manterUsuario, 0);
+        manterUsuario = new ManterUsuarioAdapter();
+        manterUsuarioStub = (IManterUsuarioRemote) UnicastRemoteObject.exportObject(manterUsuario, 0);
         registro.rebind("ManterUsuario", manterUsuarioStub);
 
     }

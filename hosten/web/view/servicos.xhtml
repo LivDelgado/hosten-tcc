@@ -62,7 +62,10 @@
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column headerText="Área" style="text-align: center">
+                        <p:column headerText="Área" 
+                                  sortBy="#{servico.servicoArea.nomServicoArea}" 
+                                  filterBy="#{servico.servicoArea.codServicoArea}" 
+                                  style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="output">
                                     <h:outputText value="#{servicoMB.getAreaServico(servico)}" converter="servicoAreaConverter"/>
