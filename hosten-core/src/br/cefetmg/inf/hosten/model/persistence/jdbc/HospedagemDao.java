@@ -192,7 +192,7 @@ public final class HospedagemDao implements IHospedagemDao {
         PreparedStatement pStmt = con.prepareStatement(qry);
 
         pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckin());
-        pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckout());
+        pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckout());
         pStmt.setBigDecimal(3, hospedagemAtualizado.getVlrPago());
         pStmt.setString(4, hospedagemAtualizado.getHospede().getCodCPF());
         pStmt.setInt(5, id);
