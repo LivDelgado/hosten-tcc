@@ -38,8 +38,8 @@ public class FiltroAcesso implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        System.out.println("REQUEST =>" + ((HttpServletRequest) request).getRequestURI());
-        System.out.println("REQUEST CONTEXT PATH =>" + ((HttpServletRequest) request).getContextPath());
+//        System.out.println("REQUEST =>" + ((HttpServletRequest) request).getRequestURI());
+//        System.out.println("REQUEST CONTEXT PATH =>" + ((HttpServletRequest) request).getContextPath());
 
         Usuario usuario = null;
         HttpSession sessaoHttp = ((HttpServletRequest) request).getSession(false);
@@ -95,7 +95,7 @@ public class FiltroAcesso implements Filter {
         int indexUrlPattern = pgRqstdCompleta.lastIndexOf(URL_PATTERN);
 
         String nomPgRqstd = pgRqstdCompleta.substring(indexBarra + 1, indexUrlPattern);
-        System.out.println("nomPgRqstd =>" + nomPgRqstd);
+//        System.out.println("nomPgRqstd =>" + nomPgRqstd);
 
         return nomPgRqstd;
     }

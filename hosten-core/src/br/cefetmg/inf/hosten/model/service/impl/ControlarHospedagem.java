@@ -62,8 +62,6 @@ public class ControlarHospedagem implements IControlarHospedagem {
             Timestamp datCheckin = new Timestamp(dataAtual.getTime());
             Timestamp datCheckout = new Timestamp(dataCheckout.getTime());
             
-            System.out.println("datCheckin = " + datCheckin.toGMTString());
-
             // ----------------------------------------------------------------------------------------------------------------------------------------
             // realiza a operação de check-in
             Hospedagem hosp = new Hospedagem(

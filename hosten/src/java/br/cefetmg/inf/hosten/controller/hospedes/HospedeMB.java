@@ -40,7 +40,6 @@ public class HospedeMB implements Serializable {
     }
 
     public List<Hospede> getListaHospedes() {
-        System.out.println("listaHospede => " + listaHospedes == null);
         return listaHospedes;
     }
 
