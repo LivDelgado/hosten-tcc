@@ -1,0 +1,56 @@
+.template-body {
+    background: linear-gradient(270deg, #8a5289, #a478a3, #df9db0, #d6819a);
+    background-size: 800% 800%;
+
+    -webkit-animation: AnimationName 20s ease infinite;
+    -moz-animation: AnimationName 20s ease infinite;
+    animation: AnimationName 20s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName { 
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.div-centro {
+    width: 412px;
+    height: 412px;
+    text-align:center;
+
+    /* alinhando no centro da tela */
+    position: absolute;
+    top: 50%; /* posiciona na metade da tela */
+    margin-top: -206px; /* e retrocede metade da altura */
+    left: 50%; /* posiciona na metade da tela */
+    margin-left: -206px; /* e retrocede metade da largura */
+}
+
+.div-centro h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 70px;
+    letter-spacing: 10px;
+    text-align: center;
+    color: white;
+    font-weight: 400;
+    text-transform: uppercase;
+    z-index: 10;
+    opacity: .9;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.logo-image {
+    width: 200px;
+    height: 200px;
+}

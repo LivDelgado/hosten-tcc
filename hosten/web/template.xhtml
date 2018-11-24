@@ -9,6 +9,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/images/favicon.png"/>
         <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/header-sistema.css"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/template.css"/>
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Oswald"/>
         
         <title>Hosten</title>
@@ -45,7 +46,15 @@
         </h:form>
 
         <div id="content">
-            <h4><ui:insert name="content">Conteúdo</ui:insert></h4>
+            <ui:insert name="content">
+                <h:body class="template-body">                  
+                    <div class="div-centro">
+                        <h2>BEM-VINDO</h2>
+                        <img class="logo-image" src="#{request.contextPath}/images/favicon.png"/>
+                        <h2>AO HOSTEN</h2>
+                    </div>
+                </h:body>
+            </ui:insert>
         </div>
     </h:body>
 
