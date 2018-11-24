@@ -1,0 +1,96 @@
+/***** HOME *****/
+
+@import url(https://fonts.googleapis.com/css?family=Oswald:300,400,700);
+
+/* Parallax */
+.parallax-hosten-home .parallax-one {
+    padding-top: 200px;
+    padding-bottom: 200px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background-image: url("../images/home-parallax-one-background.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+.parallax-hosten-home .parallax-two {
+    padding-top: 200px;
+    padding-bottom: 200px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background-image: url("../images/home-parallax-two-background.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+/* Tipografia */
+p {
+    line-height: 2rem;
+}
+.parallax-hosten-home h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 70px;
+    letter-spacing: 10px;
+    text-align: center;
+    color: white;
+    font-weight: 400;
+    text-transform: uppercase;
+    z-index: 10;
+    opacity: .9;
+}
+
+/* Icons */
+.icon-block {
+    padding: 0 15px;
+}
+.icon-block .material-icons {
+    font-size: inherit;
+}
+.ultraviolet-text {
+    color: rgba(95, 75, 139, 0.8) !important;
+}
+.rose-text {
+    color: #D2738F;
+}
+
+/* Media Queries */
+@media screen and (max-width: 959px) and (min-width: 768px) {
+    .parallax-hosten-home .block {
+        padding: 40px;
+        width: 620px;
+    }
+}
+@media screen and (max-width: 767px) {
+    .parallax-hosten-home .block {
+        padding: 30px;
+        width:420px;
+    }
+    .parallax-hosten-home h2 {
+        font-size: 30px;
+    }
+    .parallax-hosten-home .block {
+        padding: 30px;
+    }
+    .parallax-hosten-home .parallax-one,
+    .parallax-hosten-home .parallax-two,
+    .parallax-hosten-home .parallax-three {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+}
+@media screen and (max-width: 479px) {
+    .parallax-hosten-home .block {
+        padding: 30px 15px;
+        width: 290px;
+  }
+}
+
