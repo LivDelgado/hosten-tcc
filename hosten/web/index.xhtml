@@ -7,46 +7,65 @@
     
     <h:head>
         <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/images/favicon.png"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/materialize/materialize.css"/>
         <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/header-login.css"/>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/login.css"/>
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Oswald"/>
         
         <title>Hosten</title>
     </h:head>
     
     <h:body>
-        
-        <header class="header-fixed">
-            <div class="header-limiter">
-                <img class="header-image" src="#{request.contextPath}/images/favicon.png" align="left"/>
-                <h1><a href="#logo">&nbsp;&nbsp;HOSTEN</a></h1>
-                <nav>
-                    <a class="a-home" href="home.jsf">Home</a>
-                    <a class="a-login" href="#login">Login</a>
-                </nav>
-            </div>
-        </header>
-        
-        <h:form>
-            <p:growl id="mensagens" showDetail="true" sticky="true" />  
-            <div align="center">
-                <p:panelGrid columns="2" style="text-align: right">
-                    <f:facet name="header">
-                        <h:outputText value="Login" style="font-size: 25px"/>
-                    </f:facet>
+        <div id="wrapper">
+            
+            <div class="body-content">
+                <header class="header-fixed">
+                    <div class="header-limiter">
+                        <img class="header-image" src="#{request.contextPath}/images/favicon.png" align="left"/>
+                        <h1><a href="#logo">&nbsp;&nbsp;HOSTEN</a></h1>
+                        <nav>
+                            <a class="a-home" href="home.jsf">Home</a>
+                            <a class="a-login" href="#login">Login</a>
+                        </nav>
+                    </div>
+                </header>
+                
+                <div class="div-centro">
+                    <h:form>
+                        <p:growl id="mensagens" showDetail="true" sticky="true" />  
+                        <div align="center">
+                            <p:panelGrid columns="2" style="text-align: right">
+                                <f:facet name="header">
+                                    <h:outputText class="form-title" value="LOGIN"/>
+                                </f:facet>
 
-                    <h:outputLabel for="emailLogin" value="Email" />
-                    <p:inputText id="emailLogin" value="#{loginMB.email}" required="true" requiredMessage="Campo obrigatório" validatorMessage="Email inválido">
-                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
-                    </p:inputText>
-                   
-                    <h:outputLabel for="senhaLogin" value="Senha" />
-                    <p:password id="senhaLogin" value="#{loginMB.senha}" required="true" requiredMessage="Campo obrigatório"/>
-                    
-                    <h:outputLabel value="" />
-                    <p:commandButton value="Login" action="#{loginMB.validaLogin}" ajax="false" /> 
-                </p:panelGrid>
+                                <h:outputLabel class="form-label" for="emailLogin" value="Email" />
+                                <p:inputText id="emailLogin" value="#{loginMB.email}" required="true" requiredMessage="Campo obrigatório" validatorMessage="Email inválido">
+                                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                </p:inputText>
+
+                                <h:outputLabel class="form-label" for="senhaLogin" value="Senha" />
+                                <p:password id="senhaLogin" value="#{loginMB.senha}" required="true" requiredMessage="Campo obrigatório"/>
+
+                                <h:outputLabel value="" />
+                                <p:commandButton value="Login" action="#{loginMB.validaLogin}" ajax="false" /> 
+                            </p:panelGrid>
+                        </div>
+                    </h:form>
+                    <br/>
+                    <hr/>
+                    <p class="p-contato">Não tem uma conta? Entre em contato conosco por meio do telefone (031) 3344-2288 ou do email equipe@hosten.com e se cadastre!</p>
+                </div>
             </div>
-        </h:form>
-        
+            
+            <footer>
+              <div class="footer-copyright">
+                <div class="container">
+                  Copyright © 2018 | Feito com ♡ por estudantes do CEFET-MG
+                </div>
+              </div>
+            </footer>
+            
+        </div>
     </h:body>
 </html>

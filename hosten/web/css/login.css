@@ -1,0 +1,106 @@
+/***** LOGIN *****/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#wrapper{
+    min-height: 100%;
+    position: relative;
+}
+.body-content{
+    padding-bottom: 50px; /* altura do rodapé tem que ser igual */
+}
+.div-centro {
+    height: 320px;
+    width: 420px;
+    text-align:center;
+
+    /* alinhando no centro da tela */
+    position: absolute;
+    top: 50%; /* posiciona na metade da tela */
+    margin-top: -160px; /* e retrocede metade da altura */
+    left: 50%; /* posiciona na metade da tela */
+    margin-left: -210px; /* e retrocede metade da largura */
+}
+hr {
+    border-color: #D8C5D7;
+}
+.p-contato {
+    color: #7D3F7C;
+}
+
+/* Form */
+td, th {
+    text-align: center !important;
+}
+td.ui-panelgrid-cell.ui-widget-header {
+    border-color: #D8C5D7 !important;
+}
+input[type=text]:not(.browser-default), input[type=password]:not(.browser-default) {
+    color: #D2738F !important;
+    border-width: 0px 0px 2px 0px !important;
+    border-color: #f1d5dd !important;
+    font-size: 18px !important;
+    margin: 0 0 0 0 !important;
+}
+.ui-widget-header {
+    background: #D8C5D7;
+}
+.ui-inputfield.ui-state-focus, .ui-widget-content .ui-inputfield.ui-state-focus, .ui-widget-header .ui-inputfield.ui-state-focus {
+    color: #D2738F !important;
+    border-width: 0px 0px 2px 0px !important;
+    border-color: #D2738F !important;
+    box-shadow: 0 0 0 0 !important;
+}
+.form-title {
+    font-family: Oswald, Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 30px;
+    color: #7D3F7C;
+}
+.form-label {
+    font-size: 18px;
+    color: #7D3F7C;
+}
+
+/* Botão do form */
+.ui-widget .ui-widget {
+    font-size: 18px;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    color: #D2738F;
+    text-shadow: none;
+}
+.ui-button-text-only .ui-button-text {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 50px;
+    padding-left: 50px;
+    background-color: #f1d5dd;
+}
+
+/* Rodapé */
+.footer-copyright {
+    overflow: hidden;
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #5f4b8b;
+}
