@@ -81,6 +81,12 @@ input[type=text]:not(.browser-default), input[type=password]:not(.browser-defaul
     background-color: #f1d5dd;
 }
 
+/* Popups */
+.ui-growl-item {
+    border-radius: 5px;
+    background-color: #A28AAC;
+}
+
 /* Rodapé */
 .footer-copyright {
     overflow: hidden;
