@@ -60,7 +60,9 @@
                             <p:cellEditor>
                                 
                                 <f:facet name="output">
-                                    <h:outputText value="#{categoria.vlrDiaria}"/>
+                                    <h:outputText value="R$ #{categoria.vlrDiaria}">
+                                        <f:convertNumber pattern="#0.00" />
+                                    </h:outputText>
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputNumber id="vlrDiaria" value="#{categoria.vlrDiaria}" required="true" style="width: 77%"

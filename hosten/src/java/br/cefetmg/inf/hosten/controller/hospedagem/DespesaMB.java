@@ -7,6 +7,7 @@ import br.cefetmg.inf.hosten.dist.proxy.ManterQuartoProxy;
 import br.cefetmg.inf.hosten.model.domain.Servico;
 import br.cefetmg.inf.hosten.model.domain.Usuario;
 import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoConsumoId;
+import br.cefetmg.inf.hosten.model.domain.idcomposto.QuartoHospedagemId;
 import br.cefetmg.inf.hosten.model.domain.rel.Despesa;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoConsumo;
 import br.cefetmg.inf.hosten.model.domain.rel.QuartoHospedagem;
@@ -15,6 +16,7 @@ import br.cefetmg.inf.hosten.model.service.IManterQuarto;
 import br.cefetmg.inf.util.exception.NegocioException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -121,23 +123,17 @@ public class DespesaMB implements Serializable {
     public String excluir(Despesa despesa) {
         IControlarDespesas controlarDespesas = new ControlarDespesasProxy();
 
-        //
-        //
-        Timestamp datConsumo = new Timestamp(System.currentTimeMillis());
-        //
-        //
-
         QuartoConsumo registro = new QuartoConsumo(
                 new QuartoConsumoId(
                         new QuartoHospedagem(
-                                despesa.getSeqHospedagem(),
-                                despesa.getNroQuarto()),
-                        //                despesa.getDatConsumo(),
-                        new Timestamp(datConsumo.getTime())),
-                //                
-                 despesa.getQtdConsumo(),
-                 new Servico(despesa.getSeqServico()),
-                 null);
+                                despesa.getSeqHospedagem(), 
+                                despesa.getNroQuarto()), 
+                        despesa.getDatConsumo()
+                ),
+                despesa.getQtdConsumo(),
+                new Servico(despesa.getSeqServico()),
+                null
+        );
 
         try {
             boolean testeRegistro = controlarDespesas.excluir(registro);

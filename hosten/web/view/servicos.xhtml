@@ -48,7 +48,9 @@
                                   filterBy="#{servico.vlrUnit}" filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
                                 <f:facet name="output">
-                                    <h:outputText value="#{servico.vlrUnit}"/>
+                                    <h:outputText value="R$ #{servico.vlrUnit}">
+                                        <f:convertNumber pattern="#0.00" />
+                                    </h:outputText>
                                 </f:facet>
                                 <f:facet name="input">
                                     <p:inputNumber id="vlrUnit" value="#{servico.vlrUnit}" required="true" style="width: 77%"

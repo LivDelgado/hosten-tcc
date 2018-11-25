@@ -27,20 +27,21 @@
                         </p:column>
 
                         <p:column headerText="Valor" sortBy="#{despesa.vlrUnit}" filterBy="#{despesa.vlrUnit}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{despesa.vlrUnit}"/>
+                            <h:outputText value="R$ #{despesa.vlrUnit}">
+                                <f:convertNumber pattern="#0.00" />
+                            </h:outputText>
                         </p:column>
 
                         <p:column headerText="Quantidade" sortBy="#{despesa.qtdConsumo}" filterBy="#{despesa.qtdConsumo}" filterStyle="width: 80%" style="text-align: center">
                             <h:outputText value="#{despesa.qtdConsumo}"/>
                         </p:column>
 
-<!--
+
                         <p:column headerText="Data de consumo" sortBy="#{despesa.datConsumo}" filterBy="#{despesa.datConsumo}" filterStyle="width: 80%" style="text-align: center">
                             <h:outputText value="#{despesa.datConsumo.time}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
--->
 
                         <p:column headerText="Excluir" style="text-align: center; width: 55px">
                             <p:commandButton title="Excluir" icon="ui-icon-trash" action="#{despesaMB.excluir(despesa)}" update=":formRegistro:msgs">
@@ -81,7 +82,9 @@
 
                             <p:column headerText="Valor" sortBy="#{servico.vlrUnit}" 
                                       filterBy="#{servico.vlrUnit}" filterStyle="width: 80%" style="text-align: center">
-                                <h:outputText value="#{servico.vlrUnit}"/>
+                                <h:outputText value="R$ #{servico.vlrUnit}">
+                                    <f:convertNumber pattern="#0.00" />
+                                </h:outputText>
                             </p:column>
 
                             <p:column headerText="Área" style="text-align: center">
