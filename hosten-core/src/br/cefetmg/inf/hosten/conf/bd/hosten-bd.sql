@@ -287,6 +287,7 @@ SELECT
     C.nomHospede,
     D.seqServico, 
     D.qtdConsumo,
+    D.datConsumo,
     E.desServico, 
     E.vlrUnit
 FROM
@@ -344,6 +345,7 @@ INSERT INTO public.programa(codprograma, desprograma)
         ('011', 'servico-area'),
         ('012', 'servicos'),
         ('013', 'estado-quarto');
+        
 -- CRIA PROCEDURE PARA DELETAR DADOS
 -- APAGA TODOS OS DADOS DE TESTE INSERIDOS ANTERIORMENTE
 	CREATE OR REPLACE FUNCTION truncate_tables() RETURNS void AS $$

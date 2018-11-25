@@ -55,6 +55,7 @@ public class DespesaDao implements IDespesaDao {
         String nomHospede, 
         Short seqServico, 
         Short qtdConsumo, 
+        Timestamp datConsumo, 
         String desServico, 
         BigDecimal vlrUnit
          */
@@ -72,8 +73,9 @@ public class DespesaDao implements IDespesaDao {
                     rs.getString(10),
                     rs.getShort(11),
                     rs.getShort(12),
-                    rs.getString(13),
-                    rs.getBigDecimal(14)));
+                    rs.getTimestamp(13),
+                    rs.getString(14),
+                    rs.getBigDecimal(15)));
         }
         return despesaEncontradas;
     }

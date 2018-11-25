@@ -56,6 +56,9 @@ public class Despesa implements Serializable {
 
     @Column(name = "vlrdiaria", precision = 7, scale = 2)
     private BigDecimal vlrDiaria;
+    
+    @Column(name = "datcheckin")
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp datCheckin;
 
     @Column(name = "datcheckout")
@@ -73,6 +76,9 @@ public class Despesa implements Serializable {
 
     @Column(name = "qtdconsumo")
     private Short qtdConsumo;
+    
+    @Column(name = "datconsumo")
+    private Timestamp datConsumo;
 
     @Column(name = "desservico", length = 40)
     private String desServico;
@@ -83,7 +89,7 @@ public class Despesa implements Serializable {
     public Despesa() {
     }
 
-    public Despesa(long id, Integer seqHospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Timestamp datCheckin, Timestamp datCheckout, BigDecimal vlrPago, String nomHospede, Short seqServico, Short qtdConsumo, String desServico, BigDecimal vlrUnit) {
+    public Despesa(long id, Integer seqHospedagem, Short nroQuarto, Short nroAdultos, Short nroCriancas, BigDecimal vlrDiaria, Timestamp datCheckin, Timestamp datCheckout, BigDecimal vlrPago, String nomHospede, Short seqServico, Short qtdConsumo, Timestamp datConsumo, String desServico, BigDecimal vlrUnit) {
         this.id = id;
         this.seqHospedagem = seqHospedagem;
         this.nroQuarto = nroQuarto;
@@ -96,6 +102,7 @@ public class Despesa implements Serializable {
         this.nomHospede = nomHospede;
         this.seqServico = seqServico;
         this.qtdConsumo = qtdConsumo;
+        this.datConsumo = datConsumo;
         this.desServico = desServico;
         this.vlrUnit = vlrUnit;
     }
@@ -146,6 +153,10 @@ public class Despesa implements Serializable {
 
     public Short getQtdConsumo() {
         return qtdConsumo;
+    }
+
+    public Timestamp getDatConsumo() {
+        return datConsumo;
     }
 
     public String getDesServico() {
