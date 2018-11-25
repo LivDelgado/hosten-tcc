@@ -263,34 +263,33 @@ SELECT truncate_tables();
 -- smallint, character, numeric(7,2), character
 	INSERT INTO 
 		public.servico(
-            seqservico, 
 			desservico, 
 			vlrunit, 
 			codservicoarea
 		)
     VALUES
 	-- restaurante
-		(1, 'Café da manhã', 7.00, '001'),
-		(2, 'Almoço', 10.00, '001'),
-		(3, 'Jantar', 10.00, '001'),
+		('Café da manhã', 7.00, '001'),
+		('Almoço', 10.00, '001'),
+		('Jantar', 10.00, '001'),
 	-- spa
-		(4, 'Piscina climatizada', 10.00, '002'),
-		(5, 'Sauna', 20.00, '002'),
-		(6, 'Massagem', 20.00, '002'),
-		(7, 'Hidromassagem', 25.00, '002'),
-		(8, 'Hidratação à base de cacau', 50.00, '002'),
+		('Piscina climatizada', 10.00, '002'),
+		('Sauna', 20.00, '002'),
+		('Massagem', 20.00, '002'),
+		('Hidromassagem', 25.00, '002'),
+		('Hidratação à base de cacau', 50.00, '002'),
 	-- lazer
-		(9, 'Academia (dia)', 40.00, '003'),
-		(10, 'Piscina (dia)', 20.00, '003'),
-		(11, 'Ginásio (dia)', 50.00, '003'),
-		(12, 'Equitação (hora)', 80.00, '003'),
-		(13, 'Pista de kart (hora)', 60.00, '003'),
+		('Academia (dia)', 40.00, '003'),
+		('Piscina (dia)', 20.00, '003'),
+		('Ginásio (dia)', 50.00, '003'),
+		('Equitação (hora)', 80.00, '003'),
+		('Pista de kart (hora)', 60.00, '003'),
 	-- salão
-		(14, 'Matização dos fios', 50.00, '004'),
-		(15, 'Sobrancelha', 20.00, '004'),
-		(16, 'Spa de mãos', 40.00, '004'),
-		(17, 'Spá de pés', 45.00, '004'),
-		(18, 'Maquiagem', 50.00, '004'),
+		('Matização dos fios', 50.00, '004'),
+		('Sobrancelha', 20.00, '004'),
+		('Spa de mãos', 40.00, '004'),
+		('Spá de pés', 45.00, '004'),
+		('Maquiagem', 50.00, '004'),
 	-- estacionamento
-		(19, '1 vaga', 5.00, '005'),
-		(20, 'Estacionamento com manobrista', 15.00, '005');
+		('1 vaga', 5.00, '005'),
+		('Estacionamento com manobrista', 15.00, '005');

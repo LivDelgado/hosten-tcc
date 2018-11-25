@@ -124,13 +124,13 @@
         
         <!-- Quartos -->
         <navigation-case>
-            <from-action>#{quartoMB.excluir(cargo)}</from-action>
+            <from-action>#{quartoMB.excluir(quarto)}</from-action>
             <from-outcome>falha</from-outcome>
             <to-view-id>/view/quartos.jsf</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-action>#{quartoMB.excluir(cargo)}</from-action>
+            <from-action>#{quartoMB.excluir(quarto)}</from-action>
             <from-outcome>sucesso</from-outcome>
             <to-view-id>/view/quartos.jsf</to-view-id>
             <redirect/>

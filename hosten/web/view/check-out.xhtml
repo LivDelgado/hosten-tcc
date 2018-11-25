@@ -27,7 +27,9 @@
                         </p:column>
 
                         <p:column headerText="Valor" sortBy="#{despesa.vlrUnit}" filterBy="#{despesa.vlrUnit}" filterStyle="width: 80%" style="text-align: center">
-                            <h:outputText value="#{despesa.vlrUnit}"/>
+                            <h:outputText value="#{despesa.vlrUnit}">
+                                <f:convertNumber pattern="#0.00" />
+                            </h:outputText>
                         </p:column>
 
                         <p:column headerText="Quantidade" sortBy="#{despesa.qtdConsumo}" filterBy="#{despesa.qtdConsumo}" filterStyle="width: 80%" style="text-align: center">
@@ -49,7 +51,6 @@
                         <p:commandButton  icon="ui-icon-suitcase" title="Check-out"
                                           ajax="false"
                                           action="#{checkMB.checkout()}"
-                                          onclick="window.open('http://localhost:8080/hosten/view/quartos-estados.jsf');"
                         />
                     </h:panelGrid>
                 </h:form>
