@@ -17,7 +17,8 @@
                 <h:form id="formRegistro"> 
                     <p:growl id="msgs" showDetail="true"/>
 
-                    <p:dataTable id="registros" var="servicoArea" value="#{servicoAreaMB.listaServicoAreas}" editable="true">
+                    <p:dataTable id="registros" var="servicoArea" value="#{servicoAreaMB.listaServicoAreas}" 
+                                 editable="true" scrollable="true" scrollHeight="500">
                         <f:facet name="header">
                             <h:outputText value="Áreas de Serviço" style="font-size: 25px"/>
                         </f:facet>

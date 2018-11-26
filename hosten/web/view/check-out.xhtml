@@ -17,11 +17,12 @@
                 <h:form id="formRegistro"> 
                     <p:growl id="msgs" showDetail="true"/>
 
-                    <p:dataTable id="registros" var="despesa" value="#{despesaMB.listaDespesas}">
+                    <p:dataTable id="registros" var="despesa" value="#{despesaMB.listaDespesas}"
+                                 scrollable="true" scrollHeight="500">
                         <f:facet name="header">
                             <h:outputText value="Detalhes da Conta" style="font-size: 25px"/>
                         </f:facet>
-
+                        
                         <p:column headerText="Serviço" sortBy="#{despesa.desServico}" filterBy="#{despesa.desServico}" filterStyle="width: 80%" style="text-align: center">
                             <h:outputText value="#{despesa.desServico}"/>
                         </p:column>
@@ -36,13 +37,13 @@
                             <h:outputText value="#{despesa.qtdConsumo}"/>
                         </p:column>
 
-<!--
+
                         <p:column headerText="Data de consumo" sortBy="#{despesa.datConsumo}" filterBy="#{despesa.datConsumo}" filterStyle="width: 80%" style="text-align: center">
                             <h:outputText value="#{despesa.datConsumo.time}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
--->
+
                     </p:dataTable>
                 </h:form>
 

@@ -17,7 +17,8 @@
                 <h:form id="formRegistro"> 
                     <p:growl id="msgs" showDetail="true"/>
 
-                    <p:dataTable id="registros" var="item" value="#{itemMB.listaItens}" editable="true">
+                    <p:dataTable id="registros" var="item" value="#{itemMB.listaItens}" 
+                                 editable="true" scrollable="true" scrollHeight="500">
                         <f:facet name="header">
                             <h:outputText value="Itens de Conforto" style="font-size: 25px"/>
                         </f:facet>
@@ -29,12 +30,11 @@
 
                         <p:column headerText="Código" sortBy="#{item.codItem}" filterBy="#{item.codItem}" filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
-
                                 <f:facet name="output">
                                     <h:outputText value="#{item.codItem}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText id="codItem" value="#{itemMB.item.codItem}" required="true" 
+                                    <p:inputText id="codItem" value="#{item.codItem}" required="true" 
                                                  requiredMessage="Campo obrigatório" validatorMessage="Código inválido" 
                                                  title="Código de 3 caracteres">
                                         <f:validateLength minimum="3" maximum="3"/>

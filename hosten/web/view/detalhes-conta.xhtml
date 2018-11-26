@@ -17,7 +17,8 @@
                 <h:form id="formRegistro"> 
                     <p:growl id="msgs" showDetail="true"/>
 
-                    <p:dataTable id="registros" var="despesa" value="#{despesaMB.listaDespesas}">
+                    <p:dataTable id="registros" var="despesa" value="#{despesaMB.listaDespesas}"
+                                 scrollable="true" scrollHeight="500">
                         <f:facet name="header">
                             <h:outputText value="Detalhes da Conta" style="font-size: 25px"/>
                         </f:facet>
@@ -69,7 +70,8 @@
                     <h:form>
                         <p:growl id="msgi" showDetail="true"/>
 
-                        <p:dataTable id="registros" var="servico" value="#{servicoMB.listaServicos}" editable="true">
+                        <p:dataTable id="registros" var="servico" value="#{servicoMB.listaServicos}" 
+                                     editable="true" scrollable="true" scrollHeight="500">
 
                             <f:facet name="header">
                                 <h:outputText value="Serviços" style="font-size: 25px"/>

@@ -17,7 +17,8 @@
                 <h:form id="formRegistro"> 
                     <p:growl id="msgs" showDetail="true"/>
 
-                    <p:dataTable id="registros" var="servico" value="#{servicoMB.listaServicos}" editable="true">
+                    <p:dataTable id="registros" var="servico" value="#{servicoMB.listaServicos}" 
+                                 editable="true" scrollable="true" scrollHeight="500">
                         <f:facet name="header">
                             <h:outputText value="Serviços" style="font-size: 25px"/>
                         </f:facet>
@@ -47,6 +48,7 @@
                         <p:column headerText="Valor" sortBy="#{servico.vlrUnit}" 
                                   filterBy="#{servico.vlrUnit}" filterStyle="width: 80%" style="text-align: center">
                             <p:cellEditor>
+                                
                                 <f:facet name="output">
                                     <h:outputText value="R$ #{servico.vlrUnit}">
                                         <f:convertNumber pattern="#0.00" />

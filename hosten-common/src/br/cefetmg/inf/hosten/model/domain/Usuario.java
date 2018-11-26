@@ -66,6 +66,10 @@ public class Usuario implements Serializable {
         this.desEmail = desEmail;
     }
 
+    public void setCodUsuario(String codUsuario) {
+        this.codUsuario = codUsuario;
+    }
+
     public String getCodUsuario() {
         return codUsuario;
     }
