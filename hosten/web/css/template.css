@@ -1,3 +1,72 @@
+/* Fontes */
+@font-face {
+  font-family: "Roboto";
+  src: local(Roboto Thin), url("./fonts/roboto/Roboto-Thin.woff2") format("woff2"), url("./fonts/roboto/Roboto-Thin.woff") format("woff");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: local(Roboto Light), url("./fonts/roboto/Roboto-Light.woff2") format("woff2"), url("./fonts/roboto/Roboto-Light.woff") format("woff");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: local(Roboto Regular), url("./fonts/roboto/Roboto-Regular.woff2") format("woff2"), url("./fonts/roboto/Roboto-Regular.woff") format("woff");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: local(Roboto Medium), url("./fonts/roboto/Roboto-Medium.woff2") format("woff2"), url("./fonts/roboto/Roboto-Medium.woff") format("woff");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: local(Roboto Bold), url("./fonts/roboto/Roboto-Bold.woff2") format("woff2"), url("./fonts/roboto/Roboto-Bold.woff") format("woff");
+  font-weight: 700;
+}
+
+/* HTML */
+html {
+  line-height: 1.5;
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+@media only screen and (min-width: 0) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  html {
+    font-size: 14.5px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+#wrapper{
+    min-height: 100%;
+    position: relative;
+}
+.body-content{
+    padding-bottom: 50px; /* altura do rodapé tem que ser igual */
+}
 .template-body {
     background: linear-gradient(270deg, #8a5289, #a478a3, #df9db0, #d6819a);
     background-size: 800% 800%;
@@ -54,3 +123,52 @@
     width: 200px;
     height: 200px;
 }
+
+/* Rodapé */
+.container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+}
+
+@media only screen and (min-width: 601px) {
+  .container {
+    width: 85%;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 70%;
+  }
+}
+
+.container .row {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.footer-copyright {
+    overflow: hidden;
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #5f4b8b;
+}
+
+
