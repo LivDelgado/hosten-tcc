@@ -18,7 +18,10 @@
                     <p:growl id="msgs" showDetail="true"/>
 
                     <p:dataTable id="registros" var="hospede" value="#{hospedeMB.listaHospedes}"
-                                 scrollable="true" scrollHeight="210">
+                                rowKey="#{hospede.codCPF}"
+                                selection="${checkMB.hospedeSelecionado}"
+                                selectionMode="single"
+                                scrollable="true" scrollHeight="210">
                         <f:facet name="header">
                             <h:outputText value="Hóspedes" style="font-size: 25px"/>
                         </f:facet>
@@ -39,14 +42,14 @@
                             <h:outputText value="#{hospede.desTelefone}"/>
                         </p:column>
 
-                        <p:column style="width:32px;text-align: center">
+                        <!--<p:column style="width:32px;text-align: center">
                             <p:commandButton  icon="ui-icon-circle-check" title="Selecionar">
                                 <f:setPropertyActionListener 
                                     value="#{hospede}" 
                                     target="#{checkMB.hospedeSelecionado}"
-                                    />
+                                />
                             </p:commandButton>
-                        </p:column>
+                        </p:column>-->
                     </p:dataTable>
 
                     <p:panelGrid columns="2" style="width: 100%">

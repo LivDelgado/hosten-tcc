@@ -70,8 +70,11 @@
                     <h:form>
                         <p:growl id="msgi" showDetail="true"/>
 
-                        <p:dataTable id="registros" var="servico" value="#{servicoMB.listaServicos}" 
-                                     editable="true" scrollable="true" scrollHeight="345">
+                        <p:dataTable id="registros" var="servico" value="#{servicoMB.listaServicos}"
+                                    rowKey="#{servico.seqServico}"
+                                    selection="#{despesaMB.servicoSelecionado}"
+                                    selectionMode="single"
+                                    editable="true" scrollable="true" scrollHeight="345">
 
                             <f:facet name="header">
                                 <h:outputText value="Serviços" style="font-size: 25px"/>
@@ -93,14 +96,14 @@
                                 <h:outputText value="#{servicoMB.getAreaServico(servico)}" converter="servicoAreaConverter"/>
                             </p:column>
 
-                            <p:column style="width:32px;text-align: center">
+                            <!--<p:column style="width:32px;text-align: center">
                                 <p:commandButton  icon="ui-icon-circle-check" title="Selecionar">
                                     <f:setPropertyActionListener 
                                         value="#{servico}" 
                                         target="#{despesaMB.servicoSelecionado}"
                                         />
                                 </p:commandButton>
-                            </p:column>
+                            </p:column>-->
 
                         </p:dataTable>
 
