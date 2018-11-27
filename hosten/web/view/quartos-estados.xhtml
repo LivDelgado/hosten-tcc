@@ -20,7 +20,7 @@
                     <p:dataTable id="registros" var="quartoEstado" value="#{quartoEstadoMB.listaQuartosEstados}"
                                  scrollable="true" scrollHeight="345">
                         <f:facet name="header">
-                            <h:outputText value="Estados dos Quartos" style="font-size: 25px"/>
+                            <h:outputText value="Estados dos Quartos"/>
                         </f:facet>
 
                         <p:column headerText="Número do Quarto" sortBy="#{quartoEstado.nroQuarto}" 
@@ -41,15 +41,18 @@
                         </p:column>
 
                         <p:column headerText="Ações" style="text-align: center">
-                            <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
+                            <h:commandButton style="background-color: #f1d5dd; color: #D2738F; padding-top: 8px; padding-bottom: 8px; border: 1px solid #D2738F; border-radius: 5px; margin-right: 1px;" 
+                                             rendered="#{quartoEstado.idtOcupado}" 
                                              value="Detalhes"
                                              action="#{despesaMB.exibeDespesas(quartoEstado.nroQuarto, 1)}"
                                              />
-                            <h:commandButton rendered="#{quartoEstado.idtOcupado}" 
+                            <h:commandButton style="background-color: #f1d5dd; color: #D2738F; padding-top: 8px; padding-bottom: 8px; border: 1px solid #D2738F; border-radius: 5px; margin-left: 1px;"
+                                             rendered="#{quartoEstado.idtOcupado}" 
                                              value="Check-out" 
                                              action="#{checkMB.iniciaCheck(quartoEstado.nroQuarto, 'out')}"
                                              />
-                            <h:commandButton rendered="#{!quartoEstado.idtOcupado}" 
+                            <h:commandButton style="background-color: #f1d5dd; color: #D2738F; padding-top: 8px; padding-bottom: 8px; border: 1px solid #D2738F; border-radius: 5px;"
+                                             rendered="#{!quartoEstado.idtOcupado}" 
                                              value="Check-in" 
                                              action="#{checkMB.iniciaCheck(quartoEstado.nroQuarto, 'in')}"
                                              />

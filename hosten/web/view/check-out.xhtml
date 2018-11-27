@@ -20,7 +20,7 @@
                     <p:dataTable id="registros" var="despesa" value="#{despesaMB.listaDespesas}"
                                  scrollable="true" scrollHeight="320">
                         <f:facet name="header">
-                            <h:outputText value="Detalhes da Conta" style="font-size: 25px"/>
+                            <h:outputText value="Detalhes da Conta"/>
                         </f:facet>
                         
                         <p:column headerText="Serviço" sortBy="#{despesa.desServico}" filterBy="#{despesa.desServico}" filterStyle="width: 80%" style="text-align: center">

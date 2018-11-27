@@ -124,6 +124,58 @@ html, body {
     height: 200px;
 }
 
+/* Menu */
+.ui-button .ui-button-text {
+    font-family: "Roboto", sans-serif;
+    color: #D2738F;
+}
+.ui-menu.ui-widget a {
+    color: #D2738F;
+}
+.ui-menu.ui-widget li > .ui-menuitem-link.ui-state-hover {
+    background-image: none;
+    background-color: #D2738F;
+}
+
+/* Tabela */
+.ui-state-default {
+    color: #7D3F7C !important;
+}
+.ui-datatable .ui-datatable-header {
+    text-transform: uppercase;
+    font-family: Oswald, Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 30px !important;
+    color: #7D3F7C;
+}
+.ui-dialog.ui-widget-content .ui-dialog-title {
+    text-transform: uppercase;
+    font-family: Oswald, Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 25px !important;
+    color: #7D3F7C;    
+}
+
+.ui-inputfield.ui-state-focus, .ui-widget-content .ui-inputfield.ui-state-focus {
+    border-color: #7D3F7C !important;
+    box-shadow: none !important;
+}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight {
+    background-color: #A28AAC !important;
+    background-image: none !important;
+}
+/* Linhas selecionadas de uma tabela */
+.ui-datatable .ui-state-highlight {
+    background-image: none;
+    background-color: #A28AAC;
+}
+
+/* Popups */
+.ui-growl-item {
+    border-radius: 5px;
+    background-color: #A28AAC;
+}
+
 /* Rodapé */
 .container {
   margin: 0 auto;
