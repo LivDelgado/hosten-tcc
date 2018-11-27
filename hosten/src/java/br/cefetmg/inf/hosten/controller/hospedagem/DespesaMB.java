@@ -45,6 +45,11 @@ public class DespesaMB implements Serializable {
 
         return listaDespesas;
     }
+    
+    public void resetaVariaveis() {
+        qtdConsumo = 0;
+        servicoSelecionado = null;
+    }
 
     public void setListaDespesas(List<Despesa> listaDespesas) {
         this.listaDespesas = listaDespesas;
@@ -64,12 +69,6 @@ public class DespesaMB implements Serializable {
 
     public void setSeqHospedagem(int seqHospedagem) {
         this.seqHospedagem = seqHospedagem;
-    }
-
-    public void resetaVariaveis() {
-        nroQuarto = 0;
-        seqHospedagem = 0;
-        listaDespesas = null;
     }
 
     public void exibeDespesas(short nroQuarto, int operacao) {
@@ -107,6 +106,9 @@ public class DespesaMB implements Serializable {
 
         try {
             boolean testeRegistro = controlarDespesas.inserir(registro);
+            
+            resetaVariaveis();
+            
             if (testeRegistro) {
                 ContextUtils.mostrarMensagem("Inserção efetuada", "Registro inserido com sucesso!", true);
                 return "sucesso";
@@ -137,6 +139,9 @@ public class DespesaMB implements Serializable {
 
         try {
             boolean testeRegistro = controlarDespesas.excluir(registro);
+            
+            resetaVariaveis();
+            
             if (testeRegistro) {
                 ContextUtils.mostrarMensagem("Exclusão efetuada", "Registro excluído com sucesso!", true);
                 return "sucesso";
